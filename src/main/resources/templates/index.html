@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<p>Hello, world</p>
+<div class="container">
+    <div class="list" th:each="elem : ${listToDo}">
+        <div class="list-elem">
+            <input class="list-elem-id" name="id" th:value="${elem.id}" />
+            <input class="list-elem-description" name="description" th:value="${elem.description}"/>
+        </div>
+    </div>
+</div>
 </body>
-</html>-
+</html>
+
