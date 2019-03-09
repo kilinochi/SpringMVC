@@ -8,8 +8,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ToDoDAO {
     private static AtomicLong counter = new AtomicLong();
 
-    public ToDo create(String description){
+    public ToDo create(String description) {
         long id = counter.incrementAndGet();
-        return new ToDo(id,description);
+        return new ToDo(id, description);
     }
 }
