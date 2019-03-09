@@ -2,8 +2,8 @@ package ru.Technopolis.model;
 
 
 public class Todo {
-    private long id;
 
+    private long id;
     private String description;
 
     public Todo(){
@@ -22,7 +22,6 @@ public class Todo {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public long getId() {
           return id;
