@@ -1,5 +1,7 @@
 package ru.Technopolis;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +30,23 @@ public class Service {
     public @ResponseBody /*Превращает в JSON*/
     ToDo create(@RequestParam String description){
         return dao.create(description);
+    }
+
+    @RequestMapping( value = "/update", method = RequestMethod.PATCH)
+    public @ResponseBody
+    ToDo update(@RequestParam long id, @RequestParam String description){
+        return dao.update(id,description);
+    }
+
+    @RequestMapping( value = "/delete", method = RequestMethod.DELETE)
+    public @ResponseBody
+    ToDo delete(@RequestParam long id){
+        return dao.delete(id);
+    }
+
+    @RequestMapping( value = "/list", method = RequestMethod.GET)
+    public @ResponseBody
+    Collection<ToDo> list(){
+        return dao.list();
     }
 }

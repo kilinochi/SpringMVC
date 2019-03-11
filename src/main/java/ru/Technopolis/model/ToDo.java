@@ -4,7 +4,7 @@ package ru.Technopolis.model;
 public class ToDo {
 
     private final long id;
-    private final String description;
+    private String description;
 
     public ToDo(long id, String description) {
         this.id = id;
@@ -16,6 +16,10 @@ public class ToDo {
     }
 
     public String getDescription() {
+        return description;
+    }
+    public String setDescription(String description){
+        this.description = description;
         return description;
     }
 }
