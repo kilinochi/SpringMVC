@@ -1,32 +1,51 @@
 package ru.Technopolis;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.Technopolis.model.ToDo;
-import ru.Technopolis.model.ToDoDAO;
 
 @Controller
 public class Service {
-
-    private ToDoDAO dao;
+    private TodoDAO dao;
 
     @RequestMapping("/")
     public String index() {
         return "index";
     }
 
-    @Autowired //Dependency Injection
-    public Service(ToDoDAO dao){
+    @Autowired
+    public Service(TodoDAO dao) {
         this.dao = dao;
     }
 
-    @RequestMapping( value = "/create", method = RequestMethod.POST)
-    public @ResponseBody /*Превращает в JSON*/
-    ToDo create(@RequestParam String description){
+    @RequestMapping(value = "/create")
+    public @ResponseBody
+    Todo create(@RequestParam String description) {
         return dao.create(description);
+    }
+
+    @RequestMapping(value = "/update")
+    public @ResponseBody
+    Todo update(@RequestParam long id, @RequestParam String description) {
+        return dao.update(id, description);
+    }
+
+    @RequestMapping(value = "/delete")
+    public @ResponseBody
+    String delete(@RequestParam long id) {
+        if (dao.delete(id))
+            return "DONE";
+        else
+            return "ERROR";
+    }
+
+    @RequestMapping(value = "/get")
+    public @ResponseBody
+    List<Todo> getAll() {
+        return dao.getAll();
     }
 }

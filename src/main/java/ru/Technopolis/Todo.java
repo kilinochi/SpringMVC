@@ -1,12 +1,11 @@
-package ru.Technopolis.model;
+package ru.Technopolis;
 
-
-public class ToDo {
+public class Todo {
 
     private final long id;
-    private final String description;
+    private String description;
 
-    public ToDo(long id, String description) {
+    public Todo(long id, String description) {
         this.id = id;
         this.description = description;
     }
@@ -17,5 +16,9 @@ public class ToDo {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
