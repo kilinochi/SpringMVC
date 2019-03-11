@@ -14,19 +14,37 @@ public class Service {
 
     private ToDoDAO dao;
 
+    @Autowired
+    public Service(ToDoDAO dao) {
+        this.dao = dao;
+    }
+
     @RequestMapping("/")
     public String index() {
         return "index";
     }
 
-    @Autowired //Dependency Injection
-    public Service(ToDoDAO dao){
-        this.dao = dao;
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public @ResponseBody
+    String delete(long id) {
+        return dao.delete(id);
     }
 
-    @RequestMapping( value = "/create", method = RequestMethod.POST)
-    public @ResponseBody /*Превращает в JSON*/
-    ToDo create(@RequestParam String description){
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public @ResponseBody
+    ToDo create(String description) {
         return dao.create(description);
+    }
+
+    @RequestMapping(value = "/mode", method = RequestMethod.PUT)
+    public @ResponseBody
+    String mode(long id, String description) {
+        return dao.mode(id, description);
+    }
+
+    @RequestMapping(value = "/read", method = RequestMethod.GET)
+    public @ResponseBody
+    ToDo[] read() {
+        return dao.read();
     }
 }
