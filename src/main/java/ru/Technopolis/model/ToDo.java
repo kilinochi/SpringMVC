@@ -1,8 +1,6 @@
-package ru.Technopolis.model;
-
+package ru.technopolis.model;
 
 public class ToDo {
-
     private final long id;
     private final String description;
 
@@ -17,5 +15,10 @@ public class ToDo {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getId() + "] " + getDescription();
     }
 }
