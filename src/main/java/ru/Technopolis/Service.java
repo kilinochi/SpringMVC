@@ -52,12 +52,12 @@ public class Service {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<ToDo> delete(@RequestParam String id) {
+    ResponseEntity<Void> delete(@RequestParam String id) {
         if (id.length() == 0)
             return ResponseEntity.badRequest().build();
         ToDo toDo = dao.delete(Long.parseLong(id));
         if (toDo == null)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(toDo);
+        return ResponseEntity.ok().build();
     }
 }
