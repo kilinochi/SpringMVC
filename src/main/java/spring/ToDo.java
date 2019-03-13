@@ -1,8 +1,6 @@
-package ru.Technopolis.model;
-
+package spring;
 
 public class ToDo {
-
     private final long id;
     private final String description;
 
