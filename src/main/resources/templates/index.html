@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Todos</title>
 </head>
 
 <body>
-    <p>Hello, world!</p>
+    <!--<p th:align='center' -->
+       <!--th:title="${hello}" -->
+       <!--th:text="${hello}">-->
+        <!--Hello, world!-->
+    <!--</p>-->
+
+    <p>List</p>
+    <ul>
+        <li data-th-each="it : ${data}" th:text="${it.description}">TODO</li>
+    </ul>
 </body>
 
 </html>
