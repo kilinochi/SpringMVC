@@ -3,6 +3,7 @@ package ru.mail.polis.todos.repository;
 import org.springframework.stereotype.Repository;
 import ru.mail.polis.todos.model.Todo;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public class TodoRepository {
     private final Map<Long, Todo> storage = new ConcurrentHashMap<>();
     private final AtomicLong      counter = new AtomicLong();
 
-    public Iterable<Todo> findAll() {
+    public Collection<Todo> findAll() {
         return Collections.unmodifiableCollection(storage.values());
     }
 
