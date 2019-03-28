@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,9 @@ public class Service {
     private ToDoDAO dao;
 
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) {
+        generateSomeData();
+        model.addAttribute("list", listToDo.toArray(new ToDo[listToDo.size()]));
         return "index";
     }
 
@@ -70,5 +73,12 @@ public class Service {
             }
         }
         return response;
+    }
+
+    public void generateSomeData() {
+        listToDo.add(dao.create("HTML"));
+        listToDo.add(dao.create("CSS"));
+        listToDo.add(dao.create("JavaScript"));
+        listToDo.add(dao.create("Spring"));
     }
 }
