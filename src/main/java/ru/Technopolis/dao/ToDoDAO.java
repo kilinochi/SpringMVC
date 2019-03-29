@@ -35,15 +35,19 @@ public class ToDoDAO {
         return -1;
     }
 
-    public ToDo delete(long id) {
+    public void delete(long id) {
         int taskId = getToDoId(id);
         if (taskId == -1)
-            return null;
-        return list.remove(taskId);
+            return;
+        list.remove(taskId);
     }
 
-    public ToDo[] read() {
+    public ToDo[] getTodos() {
         ToDo[] toDos = new ToDo[list.size()];
         return list.toArray(toDos);
+    }
+
+    public boolean isEmpty() {
+        return list.size() == 0;
     }
 }
