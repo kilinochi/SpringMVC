@@ -1,0 +1,92 @@
+.todos-list{
+
+
+}
+
+    .todos-list_item{
+        padding: 16px;
+        border-top:1px solid #ccc;
+        border-bottom:1px solid #ccc;
+        margin-bottom:-1px;
+    }
+        .todos-list_item.__is-hidden{
+            display: none;
+            content: '';
+        }
+
+        .todos-list_item.__is-checked .todos-list_item_text{
+            text-decoration:line-through ;
+            color: #ccc;
+        }
+
+
+        .todos-list_item:before,
+        .todos-list_item:after{
+            content: '';
+            clear: both;
+            display: block;
+        }
+
+
+        .todos-list_item_ready-marker{
+            float: left;
+            margin-right: 12px;
+        }
+
+        .todos-list_item_text-w{
+            overflow: hidden;
+            margin-top:4px;
+
+
+        }
+
+            .todos-list_item_text{
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 300;
+            font-style: normal;
+            width: 100%;
+            height: 36px;
+            resize: none;
+            border:0;
+        }
+
+        .todos-list_item_remove{
+            float: right;
+            margin-left: 16px;
+            visibility: hidden;
+            height:18px;
+            width:18px;
+            background: url("../../../../icons/close.png") no-repeat 0 0;
+            border:0;
+            margin:12px;
+        }
+            .todos-list_item_remove:focus{
+                border:0;
+            }                              
+            @media (-webkit-min-device-pixel-ratio: 1.5),
+                       (min-resolution: 120dpi),
+                       (min-resolution: 1.5dppx) {
+                            .todos-list_item_remove {
+                                background: url("../../../../icons/close@2x.png") no-repeat 0 0;
+                                width: 34px;
+                                height: 34px;
+                                margin-top: 2px;
+                                margin-left: 8px;
+                                }
+                            }
+
+            .todos-list_item:hover .todos-list_item_remove {
+                        visibility: visible;
+            }
+
+
+
+
+
+
+
+
+
+
+

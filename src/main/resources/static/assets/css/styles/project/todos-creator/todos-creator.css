@@ -1,0 +1,49 @@
+.todos-creator {
+padding: 16px 16px;
+
+position: relative;
+}
+    .todos-creator:after{
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    .todos-creator_check-all {
+        float:left;
+        margin-right: 18px;
+        margin-left: 6px;
+        margin-top: 8px;
+        background: url("../../../../icons/select-all.png") no-repeat 0 0;
+        width: 24px;
+        height: 12px;
+        border:0;
+    }
+    @media (-webkit-min-device-pixel-ratio: 1.5),
+           (min-resolution: 120dpi),
+           (min-resolution: 1.5dppx) {
+                .todos-creator_check-all {
+                    background: url("../../../../icons/select-all@2x.png") no-repeat 0 0;
+                    width: 48px;
+                    height: 24px;
+                    margin-top: 2px;
+                    margin-right: 10px;
+                    margin-left: -6px;
+                    }
+                }
+
+    .todos-creator_text-input-w {
+        overflow: hidden;
+    }
+        .todos-creator_text-input {
+            border: none;
+            background: none;
+            outline:none;
+            width: 100%;
+            color: #666;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 300;
+            font-style: italic;
+
+        }

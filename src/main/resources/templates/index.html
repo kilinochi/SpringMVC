@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8">
+
+    <title>Todos MVC</title>
+
+    <link rel="stylesheet" href="../static/assets/css/styles/default.css" type="text/css" media="all" th:href="@{/assets/css/styles/default.css}" >
+    
 </head>
 <body>
-<p>Hello, world</p>
+    <div class="main-layout">
+
+
+        <h1 class="todos-title">todos</h1>
+
+        <div class="todos-board  __has-content">
+            <div class="todos-creator">
+                <button class="todos-creator_check-all" aria-label="Check all items as dine"></button>
+                <form class="todos-creator_text-input-w">
+                    <input type="text" class="todos-creator_text-input" placeholder="What needs to be done?" aria-label="Input new todos"/>
+                </form>
+
+            </div>
+
+            <div class="todos-list" >
+                <div class="todos-list_item" th:each="todoItem : ${todosList}">
+                    <div class="custom-checkbox todos-list_item_ready-marker">
+                        <input type="checkbox"  class="custom-checkbox_target" aria-label="Mark todo as ready"/>
+                        <div class="custom-checkbox_visual">
+                            <div class="custom-checkbox_visual_icon">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="todos-list_item_remove" aria-label="Delete todo"></button>
+
+                    <div class="todos-list_item_text-w">
+                        <textarea class="todos-list_item_text" readonly rows="1" th:text="${todoItem.getDescription()}">HTML</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="todos-toolbar">
+                <div class="todos-toolbar_unready-counter" > <span th:text="${counter}"></span> item left</div>
+
+                <button class="todos-toolbar_clear-completed">Clear completed</button>
+
+                <div class="filters-todos-toolbar_filters">
+                    <button class="todos-toolbar_filter __All __selected" aria-label="Filter: All, is selected">All</button>
+                    <button class="todos-toolbar_filter __Active" aria-label="Filter: Active, is not selected">Active</button>
+                    <button class="todos-toolbar_filter __Completed" aria-label="Filter: Completed, is not selected">Completed</button>
+                </div>
+            </div>
+
+        </div>
+
+
+</div>
+
 </body>
-</html>-
+</html>

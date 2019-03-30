@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,31 +18,31 @@ public class Service {
 
     private ToDoDAO dao;
     private ToDo currentToDo;
-    private HashMap<Long, ToDo> toDoData;
-
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
 
     @Autowired //Dependency Injection
     public Service(ToDoDAO dao) {
         this.dao = dao;
-        toDoData = new HashMap<>();
+        this.dao.creatSampleExample();
+    }
+
+    @RequestMapping("/")
+    public String index(Model model) {
+        model.addAttribute("todosList",dao.getToDosArray());
+        model.addAttribute("counter",dao.size());
+        return "index";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     String create(@RequestParam String description) {
-        currentToDo = dao.create(description);
-        toDoData.put(currentToDo.getId(), currentToDo);
-        return String.format("Item %d was created", currentToDo.getId());
+        int id = dao.addDAO(description);
+        return String.format("Item %d was created", id);
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public @ResponseBody
     String remove(@RequestParam long id) {
-        if (toDoData.remove(id) == null) {
+        if (!dao.deleteDAO(id)) {
             return String.format("Item %d is missing", id);
         }
         return String.format("Item %d was deleted", id);
@@ -50,18 +51,16 @@ public class Service {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     String update(@RequestParam long id, @RequestParam String description) {
-        currentToDo = toDoData.get(id);
-        if (currentToDo == null) {
+        if (!dao.updateDAO(id, description)) {
             return String.format("Item %d is missing", id);
         }
-        currentToDo.changeDescription(description);
         return String.format("Item %d description was changed", id);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public @ResponseBody
     String get(@RequestParam long id) {
-        currentToDo = toDoData.get(id);
+        currentToDo = dao.getDAO(id);
         if (currentToDo == null) {
             return String.format("Item %d is missing", id);
         }
@@ -70,7 +69,7 @@ public class Service {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public @ResponseBody
-    HashMap<Long, ToDo> read() {
-        return toDoData;
+    ToDo[] read() {
+        return dao.getToDosArray();
     }
 }

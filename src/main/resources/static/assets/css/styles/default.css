@@ -1,0 +1,10 @@
+@import "reset.css";
+@import "base/main.css";
+
+@import "base/custom-checkbox/custom-checkbox.css";
+
+@import "project/todos-title/todos-title.css";
+@import "project/todos-board/todos-board.css";
+@import "project/todos-creator/todos-creator.css";
+@import "project/todos-list/todos-list.css";
+@import "project/todos-toolbar/todos-toolbar.css";

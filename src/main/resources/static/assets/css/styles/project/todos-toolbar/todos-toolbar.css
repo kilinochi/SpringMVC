@@ -1,0 +1,48 @@
+.todos-toolbar{
+    margin-top:1px;
+    padding:8px;
+
+}
+    .todos-toolbar:after{
+        content:'';
+        clear: both;
+        display: table;
+    }
+    .todos-toolbar_unready-counter{
+        float:left;
+        margin-right:112px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        font-style: normal;
+        border:0;
+        background:#fff;
+
+
+    }
+    .filters-todos-toolbar_filters{
+        overflow: hidden;
+        margin:0;
+    }
+        .todos-toolbar_filter{
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            font-style: normal;
+            border:0;
+            background:#fff;
+        }
+            .todos-toolbar_filter.__selected{
+                border:1px solid #ccc;
+                border-radius:10%;
+            }
+    .todos-toolbar_clear-completed{
+        float: right;
+        margin-left:70px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        font-style: normal;
+        border:0;
+        background:#fff;
+    }
