@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.Technopolis.model.ToDo;
 import ru.Technopolis.model.ToDoDAO;
 
-import java.util.Queue;
 
 @Controller
 public class Service {
@@ -16,15 +15,9 @@ public class Service {
 
     private ToDoDAO dao;
 
-    @RequestMapping(value = "/")
-    public String index(Model model, String todo_name, String id) {
-        if (todo_name != null && todo_name.trim().length() != 0) {
-            dao.create(todo_name);
-        } else if (id != null) {
-            dao.delete(Long.parseLong(id));
-        }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(Model model) {
         model.addAttribute("todos", dao.toDoList());
-        model.addAttribute("hasContent", !dao.isEmpty());
         return "index";
     }
 
