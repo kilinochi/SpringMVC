@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/reset.css" media="all" data-th-href="@{../static/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,400&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,100i,300,400&amp;subset=cyrillic"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/main.css" media="all" data-th-href="@{../static/css/main.css}" type="text">
+    <title>TodoList</title>
 </head>
 <body>
-<p>Hello, world</p>
+<div class="container">
+    <h1>todos</h1>
+
+    <div class="todo" id="todo_list">
+        <form class="todo_form" id="todo-add-form" action="/" method="post">
+            <div class="todo_form_arrow" id="todo-all-done"></div>
+            <input type="text" placeholder="What needs to be done?" class="todo_form_input">
+        </form>
+
+        <div class="todo_list_wrapper">
+            <ul class="todo_list" id="todo-list">
+                <li class="todo_list_item ">
+                    <div class="checkbox">
+                           <input type="checkbox"
+                                   id="todo_checkbox"
+                                   class="checkbox_input"
+                                   aria-label="isReady"/>
+                           <label for="todo_checkbox"></label>
+                       </div>
+                        <input type="text" class="todo_list_item_name" value="{text}"/>
+                    <form action="/" method="post">
+                        <div class="todo_list_item_remove"></div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div class="todo_toolbar">
+            <div class="todo_toolbar_count" id="todo-count"></div>
+            <div class="todo_toolbar_buttons" id="filter-btn"></div>
+            <div class="todo_toolbar_completed">
+                <div class="todo_toolbar_buttons_item" id="clear-completed">Clear completed</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

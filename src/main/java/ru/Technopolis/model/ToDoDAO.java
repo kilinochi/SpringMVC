@@ -35,4 +35,8 @@ public class ToDoDAO {
         }
         return false;
     }
+
+    public boolean isEmpty() {
+        return toDos.isEmpty();
+    }
 }
