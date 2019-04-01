@@ -1,0 +1,36 @@
+.remove-btn {
+  display: inline-block;
+  position: relative;
+  margin: 20px 20px;
+  }
+
+  .remove-btn_target {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    }
+
+  .remove-btn_visual {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    position: relative;
+    }
+    .remove-btn_visual_icon {
+      position: absolute;
+      background-image: url(../../../images/close.png);
+      -webkit-filter: opacity(.5) drop-shadow(0 0 0 #cc9a9a);
+      filter: opacity(.5) drop-shadow(0 0 0 #cc9a9a);
+      width: 20px;
+      height: 20px;
+      }
+
+      .remove-btn:hover .remove-btn_visual_icon {
+        -webkit-filter: opacity(.8) drop-shadow(0 0 0 #b33e42);
+        filter: opacity(.8) drop-shadow(0 0 0 #b33e42);
+        }

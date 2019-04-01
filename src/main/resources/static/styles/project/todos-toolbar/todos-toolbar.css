@@ -1,0 +1,35 @@
+.todos-toolbar {
+  color: #777;
+  padding: 10px 15px;
+  text-align: center;
+  border-top: 1px solid #e6e6e6;
+  }
+
+  .todos-toolbar_unready-counter {
+    float: left;
+    text-align: left;
+    margin-top: 3px;
+    }
+
+  .todos-toolbar_filters {
+    
+    }
+
+    .todos-toolbar_filter {
+      padding: 3px 7px;
+      border: 1px solid transparent;
+      border-radius: 3px; 
+      }
+      .todos-toolbar_filter:hover {
+        cursor: pointer;
+        border: 1px solid #f6ebea;
+        }
+      .todos-toolbar_filter.__selected {
+        border-color: #ecd8d6;
+        }
+
+  .todos-toolbar_clear-completed {
+    float: right;
+    cursor: pointer;
+    margin-top: 3px;
+  }
