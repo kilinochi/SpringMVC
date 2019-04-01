@@ -1,14 +1,12 @@
 package ru.Technopolis.dao;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
-import ru.Technopolis.model.Todo;
-
 public interface TodoDAO<T> {
-    Optional<Todo> get(long id);
-    Collection<T> getAll();
-    Todo save(String description);
-    Optional<Todo> update(T todo);
-    Optional<Todo> delete(long id);
+    Optional<T> get(long id);
+    List<T> getAll();
+    T save(String description);
+    Optional<T> update(T todo);
+    Optional<T> delete(long id);
 }

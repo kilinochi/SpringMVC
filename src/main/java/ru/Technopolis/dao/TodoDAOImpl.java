@@ -1,11 +1,10 @@
 package ru.Technopolis.dao;
 
-
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ import ru.Technopolis.model.Todo;
 @Component
 public class TodoDAOImpl implements TodoDAO<Todo> {
 
-    private Map<Long, Todo> todoMap = new HashMap<>();
+    private ConcurrentMap<Long, Todo> todoMap = new ConcurrentHashMap<>();
     private final AtomicLong counter = new AtomicLong();
 
     @Override
@@ -25,7 +24,7 @@ public class TodoDAOImpl implements TodoDAO<Todo> {
     }
 
     @Override
-    public Collection<Todo> getAll() {
+    public List<Todo> getAll() {
         return todoMap
                 .values()
                 .stream()

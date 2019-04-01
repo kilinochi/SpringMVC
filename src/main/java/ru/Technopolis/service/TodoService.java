@@ -31,6 +31,10 @@ public class TodoService {
 
     @RequestMapping("/")
     public String index(Model model) {
+        dao.save("Java");
+        dao.save("Spring");
+        dao.save("CSS");
+        model.addAttribute("todos", dao.getAll());
         return "index";
     }
 
