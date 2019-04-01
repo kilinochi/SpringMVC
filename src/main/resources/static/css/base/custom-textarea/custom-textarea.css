@@ -1,0 +1,21 @@
+.todos-list_item_text-w {
+    position: relative;
+}
+
+.todos-list_item_text {
+    -webkit-appearance: none;
+    background: none;
+    outline: none;
+    border: none;
+    overflow: hidden;
+    resize: none;
+    cursor: pointer;
+    position: relative;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 100;
+    text-align: left;
+   
+    padding-top: 10px;
+    height: 15px;
+}

@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://ww.thymeleaf.org" xmlns:spring="http://www.springframework.org/tags">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Todo MVC</title>
+    <!--<script src="js/index.js"></script>-->
+    <!--<link type= "text/css" rel="stylesheet" media="screen" href="styles/default.css"/>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}"/>
 </head>
+
 <body>
-<p>Hello, world</p>
+
+<div class="main-layout">
+
+    <h1 class="todo-title">Todos</h1>
+
+    <div class="todo-board __has-content">
+
+        <form class="todo-creator">
+            <input type="button" class="todo-creator_check-all" aria-label="Check all items as done"/>
+            <div class="todo-creator_text-input-w">
+                <input class="todo-creator_text-input" type="text" placeholder="New todo name"
+                       aria-label="Input new todo text"/>
+            </div>
+        </form>
+        <hr/>
+
+        <div class="todos-list" th:if="${data != null && data.length > 0}">
+            <div class="todos-list_item" th:each="it : ${data}">
+                <div class="custom-checkbox todos-list_item_ready-marker">
+                    <input type="checkbox" th:checked="${it.isMark()}" class="custom-checkbox_target"
+                           aria-label="Mark todo as ready"/>
+                    <div class="custom-checkbox_visual">
+                        <div class="custom-checkbox_visual_icon"></div>
+                    </div>
+                </div>
+                <button class="todos-list_item_remove" aria-label="Delete todo"></button>
+                <div class="todos-list_item_text-w">
+                <textarea th:text="${it.description}" readonly class="todos-list_item_text">
+                    Text
+                </textarea>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+        <div class="todos-toolbar">
+            <div class="todos-toolbar_unready-counter" id="counter">3 items left</div>
+
+            <span class="todos-toolbar_filters">
+                    <span class="filters-item" aria-label="Filter: All, is selected">
+                        <input type="checkbox" checked id="filter1" class="filters-checkbox"/>
+                        <label for="filter1" class="filters-label">All</label>
+                    </span>
+                    <span class="filters-item" aria-label="Filter: Active">
+                        <input type="checkbox" id="filter2" class="filters-checkbox"/>
+                        <label for="filter2" class="filters-label">Active</label>
+                    </span>
+
+                    <span class="filters-item" aria-label="Filter: Completed">
+                        <input type="checkbox" id="filter3" class="filters-checkbox"/>
+                        <label for="filter3" class="filters-label">Completed</label>
+                    </span>
+                </span>
+
+            <button class="todos-toolbar_clear-completed">Clear completed</button>
+
+        </div>
+
+
+    </div>
+</div>
+
 </body>
-</html>

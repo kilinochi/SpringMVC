@@ -7,14 +7,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Component /*Кладем в контейнер */
+@Component
 public class ToDoDAO {
     private List<ToDo> toDos = Collections.synchronizedList(new ArrayList<>());
 
-    private static AtomicLong counter = new AtomicLong();
+    public ToDoDAO() {
+        toDos.add(new ToDo(0, "abc"));
+        toDos.add(new ToDo(1, "cba"));
+        toDos.add(new ToDo(2, "lol"));
+    }
 
     public ToDo create(String description) {
-        long id = counter.incrementAndGet();
+        long id = toDos.size() + 1;
         ToDo toDo = new ToDo(id, description);
         toDos.add(toDo);
         return toDo;
@@ -36,7 +40,7 @@ public class ToDoDAO {
         return "OK";
     }
 
-    public ToDo[] read(){
-        return  toDos.toArray(new ToDo[0]);
+    public ToDo[] read() {
+        return toDos.toArray(new ToDo[0]);
     }
 }

@@ -1,0 +1,58 @@
+.todos-list {}
+
+.todos-list_item {
+    padding: 16px;
+    max-height: 50px;
+}
+
+.todos-list_item:after {
+    content: '';
+    clear: both;
+    display: table;
+}
+
+
+.todos-list_item_ready-marker {
+    float: left;
+    margin-right: 16px;
+}
+
+.todos-list_item_text-w {
+    overflow: hidden;
+}
+
+.todos-list_item_text{
+    width: 100%;
+}
+
+.todos-list_item_remove {
+    float: right;
+    margin-left: 16px;
+    visibility: hidden;
+}
+
+.todos-list_item:hover {
+    background-color: rgba(243, 231, 231, 0.459);
+}
+
+.todos-list_item:hover .todos-list_item_remove {
+    visibility: visible;
+}
+
+.todos-list_item.__completed .todos-list_item_text {
+    text-decoration-line: line-through;
+    color: gray;
+}
+.todos-list_item.__completed .custom-checkbox_visual {
+    border-color: #5bc3ca;
+}
+
+.todos-list_item.__completed .custom-checkbox_visual .custom-checkbox_visual_icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -10px;
+    background: url(../../../images/completed.png);
+}

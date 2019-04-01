@@ -1,0 +1,13 @@
+.todos-list_item_remove {
+  background: none;
+  outline: none;
+  border: none;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin: 8px;
+  cursor: pointer;
+  background: url(../../../images/close.png);
+}
+
+.todos-list_item_remove:hover {}

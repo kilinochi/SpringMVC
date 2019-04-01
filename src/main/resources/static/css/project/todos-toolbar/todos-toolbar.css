@@ -1,0 +1,45 @@
+.todos-toolbar {
+    padding: 10px;
+}
+
+.filters-checkbox {
+    background: none;
+    border: none;
+    padding: 0px;
+    visibility: hidden;
+}
+
+.filters-label {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.filters-checkbox:checked~.filters-label {
+    background: -webkit-linear-gradient( #ffffff 0%, #e7eaec 100%);
+    border: 1px solid black;
+    /* Параметры рамки */
+    border-radius: 5%;
+}
+
+.todos-toolbar_unready-counter {
+    float: left;
+    width: 25%;
+}
+
+.todos-toolbar_clear-completed {
+    float: right;
+    width: 25%;
+}
+
+.todos-toolbar_filters {
+    width: 40%;
+  
+    position: relative;
+}
+
+.todos-toolbar button {
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
