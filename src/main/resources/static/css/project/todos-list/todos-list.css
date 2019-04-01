@@ -1,0 +1,81 @@
+
+.todos-list {
+        
+    }
+
+    .todos-list_item {
+        padding: 16px;
+        border-bottom: solid rgb(230, 230, 230) 1px;
+        position: relative;
+        }
+        .todos-list_item:after {
+            content: '';
+            clear: both;
+            display: table;
+            }
+
+        .todos-list_item_ready-marker {
+            float: left;
+            margin-right: 16px;
+            }
+            
+        .todos-list_item_text-w {
+            overflow: hidden;
+            }
+
+            .todos-list_item_text {
+                border: none;
+                background: none;
+                outline: none;
+                width: 100%;
+                height: auto;
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                font-size: 24px;
+                color: rgb(98, 98, 98);
+                font-weight: 200;    
+                resize: none;
+
+                position: relative;
+                top: 2px;            
+                }
+
+            .todos-list_item_text.__checked {
+                color: #ccc;
+                text-decoration: line-through;
+                }
+
+        .todos-list_item_remove {
+            float: right;
+            margin-left: 16px;
+            /*display: none;*/
+            visibility: hidden;
+
+            width: 18px;
+            height: 18px;
+            
+            position: relative;
+            top: 9px;
+            
+            border: none;
+            outline: none;
+
+            background: url(../../../images/close.png) no-repeat 0 0;
+            }
+
+            @media (-webkit-min-device-pixel-ratio: 1.5),
+                    (min-resolution: 120dpi),
+                    (min-resolution: 1.5dppx) {
+                .todo-creator_check-all {
+                    background: url(../../../images/close@2x.png) no-repeat 0 0;
+                }
+            }            
+
+            .todos-list_item:hover .todos-list_item_remove {
+                /*display: block;*/
+                visibility: visible;
+                }
+    
+    .todos-list_item:hover {
+        background-color: rgb(249, 249, 249);
+        }    
