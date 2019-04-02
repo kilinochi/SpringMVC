@@ -1,64 +1,19 @@
 package ru.Technopolis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.Technopolis.model.Todo;
-import ru.Technopolis.model.TodoDao;
-import ru.Technopolis.payload.TodoRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Collection;
-
-@RestController
-@RequestMapping("/api/todos")
+@Controller
 public class TodoController {
 
-    private TodoDao todoDAO;
-
     @Autowired
-    public TodoController(TodoDao todoDAO) {
-        this.todoDAO = todoDAO;
-    }
+    private TodoRestController restController;
 
-    @GetMapping
-    public Collection<Todo> getAllTodos() {
-        return todoDAO.getAll();
+    @GetMapping("/")
+    public String getTodos(Model model) {
+        model.addAttribute("todos", restController.getAllTodos());
+        return "index";
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Todo> getTodo(@PathVariable("id") long id) {
-        Todo todo = todoDAO.getById(id);
-        if (todo != null) {
-            return new ResponseEntity<>(todo, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-    }
-
-    @PostMapping()
-    public ResponseEntity<Todo> createTodo(@RequestBody TodoRequest request) {
-        return new ResponseEntity<>(todoDAO.create(request.getDescription()), HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Todo> updateTodo(@PathVariable("id") long id, @RequestBody TodoRequest request) {
-        Todo todo = todoDAO.update(id, request.getDescription());
-        if (todo != null) {
-            return new ResponseEntity<>(todo, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Todo> deleteTodo(@PathVariable("id") long id) {
-        Todo todo = todoDAO.delete(id);
-        if (todo != null) {
-            return new ResponseEntity<>(todo, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
 }

@@ -1,6 +1,7 @@
 package ru.Technopolis.model;
 
 import org.springframework.stereotype.Component;
+import ru.Technopolis.payload.TodoRequest;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +14,19 @@ public class TodoDao {
     private static AtomicLong counter = new AtomicLong();
 
     private final Map<Long, Todo> todos = new HashMap<>();
+
+    /**
+     * Temp stub constructor
+     */
+    public TodoDao() {
+        Todo todo = new Todo(counter.incrementAndGet(), "Todo #1");
+        todos.put(todo.getId(), todo);
+        Todo todo2 = new Todo(counter.incrementAndGet(), "Todo #2");
+        todo2.setCompleted(true);
+        todos.put(todo2.getId(), todo2);
+        Todo todo3 = new Todo(counter.incrementAndGet(), "Todo #3");
+        todos.put(todo3.getId(), todo3);
+    }
 
     public Collection<Todo> getAll() {
         return todos.values();
@@ -27,9 +41,10 @@ public class TodoDao {
         return todos.getOrDefault(id, null);
     }
 
-    public Todo create(String description) {
+    public Todo create(TodoRequest request) {
         long id = counter.incrementAndGet();
-        Todo todo = new Todo(id, description);
+        Todo todo = new Todo(id, request.getDescription());
+        todo.setCompleted(request.isChecked());
         todos.put(id, todo);
         return todo;
     }
@@ -39,10 +54,11 @@ public class TodoDao {
      *
      * @return updated todo_item or null if an item with this id doesn't not exist
      */
-    public Todo update(long id, String description) {
+    public Todo update(long id, TodoRequest request) {
         Todo todo = todos.getOrDefault(id, null);
         if (todo != null) {
-            todo.setDescription(description);
+            todo.setDescription(request.getDescription());
+            todo.setCompleted(request.isChecked());
         }
         return todo;
     }
