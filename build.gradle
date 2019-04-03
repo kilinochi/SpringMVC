@@ -27,6 +27,9 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '3.2.0.RELEASE'
+    compile 'org.springframework.security:spring-security-web:4.0.1.RELEASE'
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
     testCompile("junit:junit")
