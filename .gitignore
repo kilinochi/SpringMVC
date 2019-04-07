@@ -2,4 +2,8 @@
 .idea/*
 out/*
 build/*
-gradle/*
+node_modules/*
+package-lock.json
+package.json
+yarn.lock
+webpack.config.js

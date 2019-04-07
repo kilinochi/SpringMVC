@@ -1,12 +1,11 @@
 package ru.technopolis.model;
 
-
 public class ToDo {
 
     private final long id;
     private final String description;
 
-    ToDo(long id, String description) {
+    public ToDo(long id, String description) {
         this.id = id;
         this.description = description;
     }

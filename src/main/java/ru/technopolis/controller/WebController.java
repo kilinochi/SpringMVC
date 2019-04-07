@@ -3,11 +3,11 @@ package ru.technopolis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.technopolis.model.ToDo;
-import ru.technopolis.model.ToDoDAO;
+import ru.technopolis.dao.ToDoDAO;
 
-import java.util.Map;
 
-@RestController("/todo")
+@RequestMapping("/todo")
+@RestController
 public class WebController {
 
     private ToDoDAO dao;
@@ -21,11 +21,11 @@ public class WebController {
     /*
      * curl -X POST -i localhost:8080/todо -d "description = shopping"
      * */
-    @PostMapping
+    @PostMapping("/create")
     public ToDo create(@RequestParam String description){
         return dao.create(description);
     }
-    @DeleteMapping("id")
+    @DeleteMapping("delete/id")
     public void delete(long id) {
         dao.delete(id);
     }
@@ -35,13 +35,13 @@ public class WebController {
         dao.getToDo(id);
     }
 
-    @PutMapping("id")
+    @PutMapping("update/id")
     public void updateTodo(@RequestParam long id, String data){
         dao.update(id,data);
     }
 
     @GetMapping
-    public Map getAll(){
+    public ToDo[] getAll(){
         return dao.getList();
     }
 }
