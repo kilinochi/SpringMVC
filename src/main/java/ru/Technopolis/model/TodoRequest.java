@@ -1,19 +1,10 @@
 package ru.Technopolis.model;
 
+public class TodoRequest {
 
-public class ToDo {
-
-    private final long id;
     private String description;
 
-    public ToDo(long id, String description) {
-        this.id = id;
-        this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
+    private boolean checked;
 
     public String getDescription() {
         return description;
@@ -21,5 +12,13 @@ public class ToDo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
