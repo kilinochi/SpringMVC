@@ -19,13 +19,13 @@ public class WebController {
     }
 
     /*
-     * curl -X POST -i localhost:8080/todо -d "description = shopping"
+     * curl -X POST -i localhost:8080/todо -d "description=shopping"
      * */
-    @PostMapping("/create")
+    @PostMapping
     public ToDo create(@RequestParam String description){
         return dao.create(description);
     }
-    @DeleteMapping("delete/id")
+    @DeleteMapping("id")
     public void delete(long id) {
         dao.delete(id);
     }
@@ -35,7 +35,7 @@ public class WebController {
         dao.getToDo(id);
     }
 
-    @PutMapping("update/id")
+    @PutMapping("id")
     public void updateTodo(@RequestParam long id, String data){
         dao.update(id,data);
     }
