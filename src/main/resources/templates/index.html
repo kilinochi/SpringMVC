@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
     <title>todo</title>
 </head>
 <body>
 <div class="main-wrapper">
     <header>todo</header>
     <div class="todo-main">
-        <form action="#" th:action="@{/create}" method="post">
+        <div>
             <div class="todo-creator">
                 <input type="text" name="description" class="todo-creator__input" placeholder="What to do today?">
                 <input type="hidden" name="checked" th:value="false">
-                <input type="submit" name="AddButton" class="todo-creator__addButton" value="">
+                <input type="submit" name="AddButton" class="todo-creator__addButton" value="" onclick="handleAddButtonClick()">
             </div>
-        </form>
+        </div>
         <div class="todo-list">
             <ul>
+
+                <li class="todo-item template">
+                    <span class="todo-item__checkbox-container">
+                        <input type="checkbox" class="todo-item__checkbox">
+                        <span class="todo-item__checkbox-mark"></span>
+                    </span>
+                    <span class="todo-item__text">[text]</span>
+                    <button class="todo-item__button"></button>
+                </li>
 
                 <li class="todo-item" th:each="toDoItem: ${toDoItems}"
                     th:classappend="${toDoItem.getChecked()} ? 'todo-item__selected'">
@@ -27,8 +37,9 @@
                             <span class="todo-item__checkbox-mark"></span>
                         </span>
                     <span class="todo-item__text" th:utext="${toDoItem.getDescription()}">[default]</span>
-                    <button class="todo-item__button"></button>
+                    <button class="todo-item__button" th:id="${toDoItem.getId()}" onclick="deleteTaskById(this.id)"></button>
                 </li>
+                <li class="todo-list__emptyFiller">No more tasks! Go get some sleep!</li>
 
                 <!--                    <li class="todo-item todo-item__selected">-->
                 <!--                        <span class="todo-item__checkbox-container">-->

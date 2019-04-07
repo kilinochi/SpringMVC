@@ -30,8 +30,8 @@ public class Service {
 
    @RequestMapping(value = "/create")
    public @ResponseBody /*Превращает в JSON*/
-   ToDo create(@RequestParam String description, @RequestParam boolean checked) {
-      return dao.create(description, checked);
+   ToDo create(@RequestParam String description) {
+      return dao.create(description, false);
    }
 
    @RequestMapping(value = "/update")
