@@ -21,19 +21,11 @@ public class Service {
     }
 
     @RequestMapping(value = "/")
-    public String index(/*Model model, String todo_name, String id*/) {
-//        if (todo_name != null && todo_name.trim().length() != 0) {
-//            dao.create(todo_name);
-//        } else if (id != null) {
-//            dao.delete(Long.parseLong(id));
-//        }
-//        model.addAttribute("todos", dao.getToDos());
-//        model.addAttribute("hasContent", !dao.isEmpty());
-//        model.addAttribute("counter", dao.getToDos().length + " items left");
+    public String index() {
         return "index";
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity<String> create(@RequestParam String description) {
         if (description.trim().length() == 0)
