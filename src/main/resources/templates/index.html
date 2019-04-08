@@ -14,7 +14,8 @@
             <div class="todo-creator">
                 <input type="text" name="description" class="todo-creator__input" placeholder="What to do today?">
                 <input type="hidden" name="checked" th:value="false">
-                <input type="submit" name="AddButton" class="todo-creator__addButton" value="" onclick="handleAddButtonClick()">
+                <input type="submit" name="AddButton" class="todo-creator__addButton" value=""
+                       onclick="handleAddButtonClick()">
             </div>
         </div>
         <div class="todo-list">
@@ -30,14 +31,16 @@
                 </li>
 
                 <li class="todo-item" th:each="toDoItem: ${toDoItems}"
-                    th:classappend="${toDoItem.getChecked()} ? 'todo-item__selected'">
+                    th:classappend="${toDoItem.getChecked()} ? 'todo-item__selected'"
+                    th:id="${toDoItem.getId()}">
                         <span class="todo-item__checkbox-container">
                             <input type="checkbox" class="todo-item__checkbox"
-                                   th:checked="${toDoItem.getChecked()}">
+                                   th:checked="${toDoItem.getChecked()}"
+                                   onchange="changeSelectedState(this.parentElement.parentElement.id, this.parentElement.parentElement, this)">
                             <span class="todo-item__checkbox-mark"></span>
                         </span>
                     <span class="todo-item__text" th:utext="${toDoItem.getDescription()}">[default]</span>
-                    <button class="todo-item__button" th:id="${toDoItem.getId()}" onclick="deleteTaskById(this.id)"></button>
+                    <button class="todo-item__button" onclick="deleteTaskById(this.parentElement.id)"></button>
                 </li>
                 <li class="todo-list__emptyFiller">No more tasks! Go get some sleep!</li>
 

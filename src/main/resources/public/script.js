@@ -53,27 +53,55 @@ function addNewTaskByJson(request) {
 }
 
 function deleteTaskById(id) {
-    var button = document.getElementById(id);
-    var taskToDelete = button.parentElement;
+    var data = new FormData();
+    data.append("id", id);
+    sendPostRequest("/delete", data, deletionRequestHandler());
+    var taskToDelete = document.getElementById(id);
     taskToDelete.parentElement.removeChild(taskToDelete);
 }
 
+function changeSelectedState(id, taskElement, checkbox){
+
+    var isChecked = !checkbox.checked;
+
+    if (isChecked){
+        // checkbox.checked = false;
+        taskElement.classList.remove("todo-item__selected");
+    } else {
+        // checkbox.checked = true;
+        taskElement.classList.add("todo-item__selected");
+    }
+}
+
+function changeSelectedStateByEvent(mouseEvent) {
+    var parent = mouseEvent.target.parentElement.parentElement;
+    var id = parent.id;
+    changeSelectedState(id, parent, mouseEvent.target);
+}
+
+function deletionRequestHandler() {
+    //do nothing?
+    return;
+}
+
 function deleteTaskByEvent(mouseEvent) {
-    var id = mouseEvent.target.id;
+    var id = mouseEvent.target.parentElement.id;
     deleteTaskById(id);
 }
 
 function addNewTask(isSelected, description, id) {
     var taskClone = document.querySelector('.template').cloneNode(true);
-    // taskClone.classList.remove('template');
+    taskClone.classList.remove('template');
     taskClone.querySelector('.todo-item__text').textContent = description;
+    var checkbox = taskClone.querySelector('.todo-item__checkbox');
     if (isSelected) {
         taskClone.classList.add('todo-item__selected');
-        taskClone.querySelector('.todo-item__checkbox').checked = true;
+        checkbox.checked = true;
     }
     var button = taskClone.getElementsByClassName('todo-item__button')[0];
-    button.id = id;
     button.onclick = deleteTaskByEvent;
+    taskClone.id = id;
+    checkbox.onchange = changeSelectedStateByEvent;
     var parent = document.querySelector('.todo-list > ul');
     var beforeElement = document.querySelector('.todo-list__emptyFiller');
     parent.insertBefore(taskClone, beforeElement);
