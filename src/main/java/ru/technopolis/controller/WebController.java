@@ -25,18 +25,18 @@ public class WebController {
     public ToDo create(@RequestParam String description){
         return dao.create(description);
     }
-    @DeleteMapping("id")
-    public void delete(long id) {
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable long id) {
         dao.delete(id);
     }
 
-    @GetMapping("id")
-    public void getToDo(long id) {
+    @GetMapping("{id}")
+    public void getToDo(@PathVariable long id) {
         dao.getToDo(id);
     }
 
-    @PutMapping("id")
-    public void updateTodo(@RequestParam long id, String data){
+    @PutMapping("{id}")
+    public void updateTodo(@PathVariable long id, @RequestParam String data){
         dao.update(id,data);
     }
 
