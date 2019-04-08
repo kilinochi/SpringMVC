@@ -12,7 +12,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ToDoDAO {
     private static AtomicLong counter = new AtomicLong();
 
-    private Map<Long, ToDo> todo = new ConcurrentHashMap<>();
+    private Map<Long, ToDo> todo = new ConcurrentHashMap<Long, ToDo>(){{
+        this.put(1L, new ToDo(1, "Milk"));
+    }};
 
     public ToDo create(String description){
         long id = counter.incrementAndGet();
