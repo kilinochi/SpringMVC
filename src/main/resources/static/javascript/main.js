@@ -1,3 +1,26 @@
+let formEl = new Vue({
+    el: '#todo-add-form',
+    data: function () {
+        return {
+            inputValue: '',
+        }
+    },
+    methods: {
+        postData : function () {
+            axios.post('/todo?description='+this.inputValue)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            this.inputValue = '';
+        }
+    }
+});
+
+
+
 Vue.component('todo-item',{
     props:['todo'],
     template: '<li class="todo_list_item">{{todo.description}}</li>'
@@ -49,20 +72,4 @@ Vue.component('todo-list',{
 let wrapper = new Vue({
     el: '#todo-wrapper',
     template: '<todo-list/>',
-});
-
-const formEl = document.getElementById('todo-add-form');
-formEl.addEventListener('submit', function (event) {
-        event.preventDefault();
-        let input = event.target.getElementsByClassName('todo_form_input')[0];
-        if (input && input.value) {
-             axios.post('/todo?description='+input.value)
-                 .then(function (response) {
-                     console.log(response);
-                 })
-                 .catch(function (error) {
-                     console.log(error);
-                 });
-            input.value = '';
-        }
 });

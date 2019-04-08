@@ -17,9 +17,9 @@
         <h1>todos</h1>
 
         <div class="todo" id="todo_list">
-            <form class="todo_form" id="todo-add-form">
+            <form class="todo_form" id="todo-add-form" v-on:submit="postData">
                 <div class="todo_form_arrow" id="todo-all-done"></div>
-                <input v-model="todo" type="text" placeholder="What needs to be done?" class="todo_form_input">
+                <input v-model="inputValue" type="text" placeholder="What needs to be done?" class="todo_form_input">
             </form>
             <div class="todo_list_wrapper" id="todo-wrapper">
 
