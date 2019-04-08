@@ -13,15 +13,15 @@ public class ToDoDAO {
     private final ArrayList<ToDo> list = new ArrayList<>();
 
     public ToDo create(String description) {
-        list.add(new ToDo(counter.getAndIncrement(), description));
+        list.add(new ToDo(counter.getAndIncrement(), description, false));
         return list.get(list.size() - 1);
     }
 
-    public ToDo update(long id, String description) {
+    public ToDo update(long id, String description, boolean checked) {
         int todoId = getToDoId(id);
         if (todoId == -1)
             return null;
-        list.set(todoId, new ToDo(id, description));
+        list.set(todoId, new ToDo(id, description == null ? list.get(todoId).getDescription() : description, checked));
         return list.get(todoId);
     }
 
@@ -35,14 +35,14 @@ public class ToDoDAO {
         return -1;
     }
 
-    public void delete(long id) {
+    public ToDo delete(long id) {
         int taskId = getToDoId(id);
         if (taskId == -1)
-            return;
-        list.remove(taskId);
+            return null;
+        return list.remove(taskId);
     }
 
-    public ToDo[] getTodos() {
+    public ToDo[] getToDos() {
         ToDo[] toDos = new ToDo[list.size()];
         return list.toArray(toDos);
     }
