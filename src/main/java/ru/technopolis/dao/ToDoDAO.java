@@ -3,7 +3,6 @@ package ru.technopolis.dao;
 import org.springframework.stereotype.Component;
 import ru.technopolis.model.ToDo;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,13 +11,13 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ToDoDAO {
     private static AtomicLong counter = new AtomicLong();
 
-    private Map<Long, ToDo> todo = new ConcurrentHashMap<Long, ToDo>(){{
-        this.put(1L, new ToDo(1, "Milk"));
-    }};
+    private Map<Long, ToDo> todo = new ConcurrentHashMap<Long, ToDo>();
 
     public ToDo create(String description){
         long id = counter.incrementAndGet();
-        return new ToDo(id,description);
+        ToDo toDo = new ToDo(id, description);
+        todo.put(toDo.getId(), toDo);
+        return toDo;
     }
 
     public ToDo getToDo(long id) {
