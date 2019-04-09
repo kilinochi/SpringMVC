@@ -6,8 +6,8 @@ let formEl = new Vue({
         }
     },
     methods: {
-        postData : function () {
-            axios.post('/todo?description='+this.inputValue)
+        postData: function () {
+            axios.post('/todo?description=' + this.inputValue)
                 .then(function (response) {
                     console.log(response);
                 })
@@ -20,31 +20,40 @@ let formEl = new Vue({
 });
 
 
-
-Vue.component('todo-item',{
-    props:['todo'],
+Vue.component('todo-item', {
+    props: ['todo'],
     template:
         '<li class="todo_list_item">' +
-            '<div class="todo_list_item_name">{{todo.description}}</div>' +
-            '<div class="todo_list_item_remove" v-on:click="removeItem">'+
+        '<div class="todo_list_item_name">{{todo.description}}</div>' +
+        '<div class="todo_list_item_remove" v-on:click="removeItem">' +
         '</li>',
+
+    data() {
+        return {
+            loading: false,
+        };
+    },
     methods: {
-        removeItem : function () {
-            axios.delete('/todo/'+this.todo.id,
-                )
+        removeItem: function () {
+            var that = this;
+
+            this.loading = true;
+
+            axios.delete('/todo/' + this.todo.id)
                 .then(function (response) {
-                    console.log(response)
+                    that.$emit('deleteItem', that.todo.id);
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
+                .finally(function () {
+                    that.loading = false;
+                });
         }
     }
 });
 
-var loopFetchTodoInterval = null;
-
-Vue.component('todo-list',{
+Vue.component('todo-list', {
     data: function () {
         return {
             todos: []
@@ -53,24 +62,15 @@ Vue.component('todo-list',{
 
     template:
         '<ul class="todo_list" id="todo-list">' +
-            '<todo-item v-for="todo in todos" v-bind:todo="todo" :key="todo.id"></todo-item>' +
+        '<todo-item v-for="todo in todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
         '</ul>',
 
-    created: function() {
-        loopFetchTodoInterval = setInterval(this.fetchTodo, 2000);
-
+    created: function () {
         this.fetchTodo();
     },
 
-    destroyed: function() {
-        if(loopFetchTodoInterval) {
-            clearInterval(loopFetchTodoInterval);
-            loopFetchTodoInterval = null;
-        }
-    },
-
     methods: {
-        fetchTodo:function () {
+        fetchTodo: function () {
             let that = this;
 
             axios.get('/todo')
@@ -80,7 +80,17 @@ Vue.component('todo-list',{
                 .catch(function (error) {
                     console.log(error);
                 })
-        }
+        },
+
+        deleteItem: function (id) {
+            var itemIndex = this.todos.findIndex(function (todo) {
+                return todo.id === id;
+            });
+
+            if (itemIndex >= 0) {
+                this.todos.splice(itemIndex, 1);
+            }
+        },
     }
 });
 
