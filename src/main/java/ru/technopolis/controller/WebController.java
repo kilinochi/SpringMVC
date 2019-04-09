@@ -25,14 +25,17 @@ public class WebController {
     public ToDo create(@RequestParam String description){
         return dao.create(description);
     }
+    /*
+     * curl -X DELETE -i localhost:8080/todо/1
+     * */
     @DeleteMapping("{id}")
     public void delete(@PathVariable long id) {
         dao.delete(id);
     }
 
     @GetMapping("{id}")
-    public void getToDo(@PathVariable long id) {
-        dao.getToDo(id);
+    public ToDo getToDo(@PathVariable long id) {
+        return dao.getToDo(id);
     }
 
     @PutMapping("{id}")

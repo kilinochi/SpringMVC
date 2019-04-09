@@ -11,28 +11,28 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ToDoDAO {
     private static AtomicLong counter = new AtomicLong();
 
-    private Map<Long, ToDo> todo = new ConcurrentHashMap<Long, ToDo>();
+    private Map<Long, ToDo> todos = new ConcurrentHashMap<Long, ToDo>();
 
     public ToDo create(String description){
         long id = counter.incrementAndGet();
         ToDo toDo = new ToDo(id, description);
-        todo.put(toDo.getId(), toDo);
+        todos.put(toDo.getId(), toDo);
         return toDo;
     }
 
     public ToDo getToDo(long id) {
-        return todo.get(id);
+        return todos.get(id);
     }
 
     public void delete(long id) {
-        todo.remove(id);
+        todos.remove(id);
     }
 
     public void update(long id, String data) {
-        todo.replace(id, new ToDo(id, data));
+        todos.replace(id, new ToDo(id, data));
     }
 
     public ToDo[] getList() {
-        return todo.values().toArray(new ToDo[0]);
+        return todos.values().toArray(new ToDo[0]);
     }
 }

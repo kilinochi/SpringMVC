@@ -23,7 +23,23 @@ let formEl = new Vue({
 
 Vue.component('todo-item',{
     props:['todo'],
-    template: '<li class="todo_list_item">{{todo.description}}</li>'
+    template:
+        '<li class="todo_list_item">' +
+            '<div class="todo_list_item_name">{{todo.description}}</div>' +
+            '<div class="todo_list_item_remove" v-on:click="removeItem">'+
+        '</li>',
+    methods: {
+        removeItem : function () {
+            axios.delete('/todo/'+this.todo.id,
+                )
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+    }
 });
 
 var loopFetchTodoInterval = null;
