@@ -143,7 +143,7 @@ function filterAll() {
     items.forEach(function (item) {
         if (item.classList.contains("template"))
             return;
-        item.style.display = "flex";
+        showItem(item);
     })
 }
 
@@ -155,9 +155,9 @@ function filterChecked() {
             return;
         var checkbox = item.querySelector('.todo-item__checkbox');
         if (checkbox.checked) {
-            item.style.display = "flex";
+            showItem(item);
         } else {
-            item.style.display = "none";
+            hideItem(item);
         }
     })
 }
@@ -170,11 +170,22 @@ function filterUnChecked() {
             return;
         var checkbox = item.querySelector('.todo-item__checkbox');
         if (!checkbox.checked) {
-            item.style.display = "flex";
+            showItem(item);
         } else {
-            item.style.display = "none";
+            hideItem(item);
         }
     })
 }
 
 
+function hideItem(item) {
+    if (!item.classList.contains("hidden")){
+        item.classList.add("hidden");
+    }
+}
+
+function showItem(item) {
+    if (item.classList.contains("hidden")){
+        item.classList.remove("hidden");
+    }
+}

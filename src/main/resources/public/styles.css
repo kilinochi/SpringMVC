@@ -12,7 +12,35 @@ html {
 
 body {
     font-size: 1em;
-    background: linear-gradient(45deg, #EECFBA, #C5DDE8);
+
+    background: linear-gradient(45deg, #7ce3f3, #f3ba6a);
+    background-size: 400% 400%;
+
+    -webkit-animation: animatedBackground 8s ease infinite;
+    -moz-animation: animatedBackground 8s ease infinite;
+    -o-animation: animatedBackground 8s ease infinite;
+    animation: animatedBackground 8s ease infinite;
+}
+
+@-webkit-keyframes animatedBackground {
+    0%{background-position:67% 0%}
+    50%{background-position:34% 100%}
+    100%{background-position:67% 0%}
+}
+@-moz-keyframes animatedBackground {
+    0%{background-position:67% 0%}
+    50%{background-position:34% 100%}
+    100%{background-position:67% 0%}
+}
+@-o-keyframes animatedBackground {
+    0%{background-position:67% 0%}
+    50%{background-position:34% 100%}
+    100%{background-position:67% 0%}
+}
+@keyframes animatedBackground {
+    0%{background-position:67% 0%}
+    50%{background-position:34% 100%}
+    100%{background-position:67% 0%}
 }
 
 header {
@@ -66,7 +94,7 @@ header {
 
 .todo-list__emptyFiller {
     display: none;
-    color: rgba(141, 141, 141, 0.52);
+    color: rgba(141, 141, 141, 0.36);
     width: 100%;
     margin-top: 25%;
     user-select: none;
@@ -89,7 +117,7 @@ header {
 
 .todo-item {
     font-family: 'Rubik', sans-serif;
-    background-color: rgba(209, 182, 163, 0.23);
+    background-color: rgba(231, 221, 196, 0.4);
     display: -webkit-flex;
     display: flex;
     justify-content: space-between;
@@ -98,8 +126,14 @@ header {
     /*height: 40px;*/
     box-sizing: border-box;
     width: 100%;
-    border: 1px lightgrey solid;
     border-radius: 20px;
+    transition: margin-bottom 0.5s, visibility 0.5s, height 0.5s, opacity 0.5s ease-out;
+}
+
+.todo-item.hidden {
+    margin-bottom: 0;
+    opacity: 0;
+    height: 0;
 }
 
 .todo-item__checked {
