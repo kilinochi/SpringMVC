@@ -31,12 +31,12 @@
                 </li>
 
                 <li class="todo-item" th:each="toDoItem: ${toDoItems}"
-                    th:classappend="${toDoItem.getChecked()} ? 'todo-item__selected'"
+                    th:classappend="${toDoItem.getChecked()} ? 'todo-item__checked'"
                     th:id="${toDoItem.getId()}">
                         <span class="todo-item__checkbox-container">
                             <input type="checkbox" class="todo-item__checkbox"
                                    th:checked="${toDoItem.getChecked()}"
-                                   onchange="changeSelectedState(this.parentElement.parentElement.id, this.parentElement.parentElement, this)">
+                                   onchange="changeCheckedState(this.parentElement.parentElement.id, this.parentElement.parentElement, this)">
                             <span class="todo-item__checkbox-mark"></span>
                         </span>
                     <span class="todo-item__text" th:utext="${toDoItem.getDescription()}">[default]</span>
@@ -44,7 +44,7 @@
                 </li>
                 <li class="todo-list__emptyFiller">No more tasks! Go get some sleep!</li>
 
-                <!--                    <li class="todo-item todo-item__selected">-->
+                <!--                    <li class="todo-item todo-item__checked">-->
                 <!--                        <span class="todo-item__checkbox-container">-->
                 <!--                            <input type="checkbox" class="todo-item__checkbox" checked>-->
                 <!--                            <span class="todo-item__checkbox-mark"></span>-->
@@ -72,9 +72,9 @@
             </ul>
         </div>
         <div class="todo-toolbar">
-            <button class="todo-toolbar__button">All</button>
-            <button class="todo-toolbar__button">Checked</button>
-            <button class="todo-toolbar__button">Todo</button>
+            <button class="todo-toolbar__button" onclick="filterAll()">All</button>
+            <button class="todo-toolbar__button" onclick="filterChecked()">Checked</button>
+            <button class="todo-toolbar__button" onclick="filterUnChecked()">Todo</button>
         </div>
     </div>
 </div>

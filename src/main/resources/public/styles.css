@@ -102,7 +102,7 @@ header {
     border-radius: 20px;
 }
 
-.todo-item__selected {
+.todo-item__checked {
     text-decoration: line-through;
     opacity: 0.4;
 }

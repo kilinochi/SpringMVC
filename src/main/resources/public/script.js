@@ -60,36 +60,36 @@ function deleteTaskById(id) {
     taskToDelete.parentElement.removeChild(taskToDelete);
 }
 
-function changeSelectedState(id, taskElement, checkbox){
+function changeCheckedState(id, taskElement, checkbox) {
 
     var isChecked = checkbox.checked;
 
     //К сожалению, я так и не понял, зачем здесь нужно отрицание,
     //но методом проб и ошибок это заработало.
-    if (!isChecked){
+    if (!isChecked) {
         // checkbox.checked = false;
-        taskElement.classList.remove("todo-item__selected");
+        taskElement.classList.remove("todo-item__checked");
     } else {
         // checkbox.checked = true;
-        taskElement.classList.add("todo-item__selected");
+        taskElement.classList.add("todo-item__checked");
     }
 
     var data = new FormData();
     data.append("id", id);
     data.append("isChecked", isChecked);
-    sendPostRequest("/select", data, changeSelectedStateHandler);
+    sendPostRequest("/check", data, changeCheckedStateHandler);
 
 }
 
-function changeSelectedStateHandler() {
+function changeCheckedStateHandler() {
     //do nothing?
     return;
 }
 
-function changeSelectedStateByEvent(mouseEvent) {
+function changeCheckedStateByEvent(mouseEvent) {
     var parent = mouseEvent.target.parentElement.parentElement;
     var id = parent.id;
-    changeSelectedState(id, parent, mouseEvent.target);
+    changeCheckedState(id, parent, mouseEvent.target);
 }
 
 function deletionRequestHandler() {
@@ -102,19 +102,19 @@ function deleteTaskByEvent(mouseEvent) {
     deleteTaskById(id);
 }
 
-function addNewTask(isSelected, description, id) {
+function addNewTask(isChecked, description, id) {
     var taskClone = document.querySelector('.template').cloneNode(true);
     taskClone.classList.remove('template');
     taskClone.querySelector('.todo-item__text').textContent = description;
     var checkbox = taskClone.querySelector('.todo-item__checkbox');
-    if (isSelected) {
-        taskClone.classList.add('todo-item__selected');
+    if (isChecked) {
+        taskClone.classList.add('todo-item__Checked');
         checkbox.checked = true;
     }
     var button = taskClone.getElementsByClassName('todo-item__button')[0];
     button.onclick = deleteTaskByEvent;
     taskClone.id = id;
-    checkbox.onchange = changeSelectedStateByEvent;
+    checkbox.onchange = changeCheckedStateByEvent;
     var parent = document.querySelector('.todo-list > ul');
     var beforeElement = document.querySelector('.todo-list__emptyFiller');
     parent.insertBefore(taskClone, beforeElement);
@@ -127,8 +127,8 @@ function initDeleteEvent(element) {
 function handleAddButtonClick() {
     var inputField = document.querySelector('.todo-creator__input');
     var description = inputField.value;
-    if (description.trim() === ""){
-        alert("Task text is empty!1!");
+    if (description.trim() === "") {
+        alert("Task text is empty!");
         return;
     }
     inputField.value = "";
@@ -136,3 +136,45 @@ function handleAddButtonClick() {
     data.append("description", description);
     sendPostRequest("/create", data, addNewTaskByJson);
 }
+
+function filterAll() {
+    var nodes = document.querySelectorAll(".todo-item");
+    var items = Array.from(nodes);
+    items.forEach(function (item) {
+        if (item.classList.contains("template"))
+            return;
+        item.style.display = "flex";
+    })
+}
+
+function filterChecked() {
+    var nodes = document.querySelectorAll(".todo-item");
+    var items = Array.from(nodes);
+    items.forEach(function (item) {
+        if (item.classList.contains("template"))
+            return;
+        var checkbox = item.querySelector('.todo-item__checkbox');
+        if (checkbox.checked) {
+            item.style.display = "flex";
+        } else {
+            item.style.display = "none";
+        }
+    })
+}
+
+function filterUnChecked() {
+    var nodes = document.querySelectorAll(".todo-item");
+    var items = Array.from(nodes);
+    items.forEach(function (item) {
+        if (item.classList.contains("template"))
+            return;
+        var checkbox = item.querySelector('.todo-item__checkbox');
+        if (!checkbox.checked) {
+            item.style.display = "flex";
+        } else {
+            item.style.display = "none";
+        }
+    })
+}
+
+
