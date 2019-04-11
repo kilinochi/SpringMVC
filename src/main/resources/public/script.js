@@ -62,15 +62,28 @@ function deleteTaskById(id) {
 
 function changeSelectedState(id, taskElement, checkbox){
 
-    var isChecked = !checkbox.checked;
+    var isChecked = checkbox.checked;
 
-    if (isChecked){
+    //К сожалению, я так и не понял, зачем здесь нужно отрицание,
+    //но методом проб и ошибок это заработало.
+    if (!isChecked){
         // checkbox.checked = false;
         taskElement.classList.remove("todo-item__selected");
     } else {
         // checkbox.checked = true;
         taskElement.classList.add("todo-item__selected");
     }
+
+    var data = new FormData();
+    data.append("id", id);
+    data.append("isChecked", isChecked);
+    sendPostRequest("/select", data, changeSelectedStateHandler);
+
+}
+
+function changeSelectedStateHandler() {
+    //do nothing?
+    return;
 }
 
 function changeSelectedStateByEvent(mouseEvent) {

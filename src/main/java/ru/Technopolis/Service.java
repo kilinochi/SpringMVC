@@ -28,6 +28,12 @@ public class Service {
       this.dao = dao;
    }
 
+   @RequestMapping(value = "/select")
+   public @ResponseBody
+   void select(@RequestParam long id, @RequestParam boolean isChecked) {
+      dao.changeCheckedState(id, isChecked);
+   }
+
    @RequestMapping(value = "/create")
    public @ResponseBody /*Превращает в JSON*/
    ToDo create(@RequestParam String description) {

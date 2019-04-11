@@ -4,15 +4,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component /*Кладем в контейнер */
 public class ToDoDAO {
 
    private static AtomicLong counter = new AtomicLong();
-   private static HashMap<Long, ToDo> values = new HashMap<>();
+   private static ConcurrentMap<Long, ToDo> values = new ConcurrentHashMap<>();
 
-   public ToDoDAO(){
+   public ToDoDAO() {
       create("Покормить кошку", true);
       create("Сходить в магазин", false);
       create("Помыть машину", false);
@@ -46,4 +48,25 @@ public class ToDoDAO {
    public Collection<ToDo> getAll() {
       return values.values();
    }
+
+   public void changeCheckedState(long id, boolean isChecked) {
+      if (!values.containsKey(id)) {
+         //Error!
+         return;
+      }
+      ToDo todo = values.get(id);
+      todo.setChecked(isChecked);
+      values.replace(id, todo);
+      printValues();
+   }
+
+   private void printValues() {
+      System.out.println("------------");
+      for (ToDo todo: values.values()) {
+         System.out.println(todo);
+         System.out.println("----");
+      }
+      System.out.println("------------");
+   }
+
 }

@@ -26,4 +26,17 @@ public class ToDo {
       return checked;
    }
 
+   public void setChecked(boolean isChecked) {
+      checked = isChecked;
+   }
+
+   @Override
+   public String toString(){
+      StringBuilder sb = new StringBuilder();
+      sb.append("id      = " + id + "\n");
+      sb.append("desc    = " + description + "\n");
+      sb.append("checked = " + checked + "\n");
+      return sb.toString();
+   }
+
 }
