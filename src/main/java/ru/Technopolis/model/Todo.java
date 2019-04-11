@@ -1,11 +1,12 @@
 package ru.Technopolis.model;
 
+import java.util.Objects;
 
 public class Todo {
 
     private long id;
     private String text;
-    private boolean isReady;
+    private boolean ready;
 
     public Todo(){
 
@@ -32,11 +33,28 @@ public class Todo {
         return text;
     }
 
-    public boolean isReady() {
-        return isReady;
+    public boolean getReady() {
+        return ready;
     }
 
     public void setReady(boolean ready) {
-        isReady = ready;
+        this.ready = ready;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if(!(obj instanceof Todo )) {
+            return false;
+        }
+        Todo todo = (Todo) obj;
+        return todo.id == this.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

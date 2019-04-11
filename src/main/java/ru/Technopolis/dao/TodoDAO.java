@@ -9,4 +9,7 @@ public interface TodoDAO<T> {
     T save(String description);
     Optional<T> update(T todo);
     Optional<T> delete(long id);
+    boolean deleteCompleted();
+    boolean markAllAs(boolean ready);
+    int getCountActive();
 }

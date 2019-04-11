@@ -17,14 +17,14 @@
     border: none;
     outline: none;
 
-    background: url(../../../images/select-all.png) no-repeat 0 0;
+    //background: url(../../../images/select-all.png) no-repeat 0 0;
     }
 
     @media(-webkit-min-device-pisel-ratio:1.5),
           (min-resolution: 120dpi),
           (min-resolution: 1.5dppx) {
         .todo-creator_check-all{
-          background: url(../../../images/select-all.png) no-repeat 0 0;
+          //background: url(../../../images/select-all.png) no-repeat 0 0;
         }
       }
     
