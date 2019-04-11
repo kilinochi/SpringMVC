@@ -69,12 +69,21 @@ document.addEventListener("DOMContentLoaded", function () {
             var div_item = document.createElement('div');
             div_item.innerHTML = item_template.innerHTML;
             var txt = div_item.querySelector('.todos-list_item_text');
+            var markCompleted = div_item.querySelector('.custom-checkbox_target');
+
             if(data.text) {
                 txt.innerText = data.text;
             }
+
+            if (data.isCompleted) {
+                markCompleted.checked = true;
+            }
+
             var deleteLink = div_item.querySelector('.todos-list_item_remove');
             return {
                 root: div_item,
+                txt: txt,
+                markCompleted: markCompleted,
                 deleteLink: deleteLink
             };
         }
@@ -115,10 +124,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Компонент элементов списка
-    function ListItemComponent(text) {
-    	var templateResult = templates.item({text: text});
+    function ListItemComponent(text, isCompleted) {
+    	var templateResult = templates.item({text: text, isCompleted: isCompleted});
     	this._root = templateResult.root;
-    	var checkbox = templateResult.root.querySelector('.custom-checkbox_target');
+    	var checkbox = templateResult.markCompleted;
     	checkbox.addEventListener('change', checkFilters);
     	checkbox.addEventListener('change', renewUnreadyCounter);
     	templateResult.deleteLink.addEventListener('click', this);
@@ -147,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ListComponent.prototype = new Eventable();
     ListComponent.prototype.add = function (text) {
-    	var item = new ListItemComponent(text);
+    	var item = new ListItemComponent(text, false);
     	this._items.push(item);
     	this._root.appendChild(item.getRoot());
     	item.on('remove', this._onItemRemove, this);
@@ -173,6 +182,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var listItems = listNode.getElementsByClassName('todos-list_item');
     var checkboxes = listNode.getElementsByClassName('custom-checkbox_target');
+
+    for(var i = 0; i < listItems.length; i++) {
+        var oldText = listItems[i].querySelector('.todos-list_item_text').innerText;
+        var oldCheckbox = listItems[i].querySelector('.custom-checkbox_target');
+        //var oldItem = new ListItemComponent(oldText, oldCheckbox.checked);
+        var oldDelLink = listItems[i].querySelector('.todos-list_item_remove');
+        //list._items.push(oldItem);
+        oldCheckbox.addEventListener('change', checkFilters);
+        oldCheckbox.addEventListener('change', renewUnreadyCounter);
+        oldDelLink.addEventListener('click', listItems[i].remove);
+        //oldItem.on('remove', list._onItemRemove, list);
+    }
 
     //Поставить галочку на всех элементах
     var checkAll = document.querySelector('.todo-creator_check-all');

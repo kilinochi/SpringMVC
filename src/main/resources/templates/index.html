@@ -20,6 +20,7 @@
         <div class="todos-list_item_text-w">
         	<textarea class="todos-list_item_text" contenteditable="true"></textarea>
         </div>
+        <input type="hidden" name="id" class="js-hidden-id"/>
     </div>
 </script>
 
@@ -38,8 +39,8 @@
             </div>
         </form>
 
-        <div class="todos-list" th:each="elem : ${list}">
-			<div class="todos-list_item">
+        <div class="todos-list">
+			<div class="todos-list_item" th:each="elem : ${list}">
 				<div class="custom-checkbox todos-list_item_ready-marker">
 					<input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" />
 					<div class="custom-checkbox_visual">
@@ -50,6 +51,7 @@
 				<div class="todos-list_item_text-w">
 					<textarea class="todos-list_item_text" contenteditable="true" th:text="${elem.description}"></textarea>
 				</div>
+                <input type="hidden" name="id" class="js-hidden-id" th:value="${elem.id}"/>
 			</div>
         </div>
 

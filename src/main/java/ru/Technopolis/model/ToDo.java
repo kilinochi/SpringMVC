@@ -1,21 +1,59 @@
 package ru.Technopolis.model;
 
+import java.io.Serializable;
 
-public class ToDo {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-    private final long id;
-    private final String description;
+@Entity
+public class ToDo implements Serializable, Comparable<ToDo>{
+    @Id
+    @GeneratedValue
+    private int id;
 
-    public ToDo(long id, String description) {
-        this.id = id;
-        this.description = description;
+    @Column
+    private String description;
+
+    @Column
+    private boolean completed = false;
+
+    public ToDo() {
+        this.description = "";
     }
 
-    public long getId() {
+    public ToDo(String description, boolean completed) {
+        this.description = description;
+        this.completed = completed;
+    }
+
+    public int getId() {
         return id;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    @Override
+    public int compareTo(ToDo o) {
+        return Integer.compare(id, o.getId());
     }
 }
