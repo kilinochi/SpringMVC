@@ -20,13 +20,30 @@ let formEl = new Vue({
 });
 
 
+function debounce(f, ms) {
+    let timer = null;
+
+    return function (...args) {
+        const onComplete = () => {
+            f.apply(this, args);
+            timer = null;
+        };
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        timer = setTimeout(onComplete, ms);
+    };
+}
+
 Vue.component('todo-item', {
     props: ['todo'],
     template:
-        '<li class="todo_list_item">' +
-        '<div class="todo_list_item_name">{{todo.description}}</div>' +
-        '<div class="todo_list_item_remove" v-on:click="removeItem">' +
-        '</li>',
+        '<li class="todo_list_item">'
+           + '<input class="todo_list_item_name" @input="onInput" v-model="todo.description"/>'
+           + '<div class="todo_list_item_remove" @click="removeItem">' +
+       '</li>',
 
     data() {
         return {
@@ -34,8 +51,21 @@ Vue.component('todo-item', {
         };
     },
     methods: {
+        onInput: debounce(function() {
+            this.updateItem();
+        }, 500),
+
+        updateItem: function() {
+            axios.put('/todo/' + this.todo.id+'?description='+this.todo.description)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (response) {
+                    console.log(response);
+                })
+        },
         removeItem: function () {
-            var that = this;
+            let that = this;
 
             this.loading = true;
 

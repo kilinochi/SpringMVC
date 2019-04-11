@@ -38,9 +38,13 @@ public class WebController {
         return dao.getToDo(id);
     }
 
+    /*
+    * curl -X PUT -i localhost:8080/todо/1 -d "description=Apple"
+    * */
+
     @PutMapping("{id}")
-    public void updateTodo(@PathVariable long id, @RequestParam String data){
-        dao.update(id,data);
+    public void updateTodo(@PathVariable long id, @RequestParam String description){
+        dao.update(id,description);
     }
 
     @GetMapping
