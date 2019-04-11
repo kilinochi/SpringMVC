@@ -177,7 +177,6 @@ function filterUnChecked() {
     })
 }
 
-
 function hideItem(item) {
     if (!item.classList.contains("hidden")){
         item.classList.add("hidden");
