@@ -3,8 +3,6 @@ package ru.Technopolis.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +22,13 @@ import ru.Technopolis.model.Todo;
 @RestController
 @RequestMapping("/todo")
 public class TodoRestController {
+
     private TodoDAOImpl dao;
-    private HttpHeaders headers;
 
     @Autowired
     public TodoRestController(TodoDAOImpl dao) {
         this.dao = dao;
-        this.headers = new HttpHeaders();
-        this.headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
-
 
     @GetMapping()
     public @ResponseBody
@@ -50,27 +45,27 @@ public class TodoRestController {
     @GetMapping("/{todoId}")
     public ResponseEntity<?> get(@PathVariable long todoId){
         return dao.get(todoId)
-                .map(t -> new ResponseEntity<>(t, headers, HttpStatus.OK))
+                .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id = " + todoId));
     }
 
-    @PostMapping(value = "/add", params = {"text"})
+    @PostMapping(value = "/add")
     @ResponseBody
-    public Todo save(@RequestParam String text){
+    public Todo save(@RequestBody String text){
         return dao.save(text);
     }
 
     @PutMapping(value = "/update")
     public ResponseEntity<?> update(@RequestBody Todo todo){
         return dao.update(todo)
-                .map(t -> new ResponseEntity<>(t, headers, HttpStatus.OK))
+                .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id = " + todo.getId()));
     }
 
     @PutMapping(value = "/mark", params = {"ready"})
     public ResponseEntity<?> markAllAs(@RequestParam boolean ready){
         if (dao.markAllAs(ready)) {
-            return new ResponseEntity<>(headers, HttpStatus.OK);
+            return ResponseEntity.ok().build();
         }
         throw new ResourceNotFoundException("Unable to update data");
     }
@@ -78,14 +73,14 @@ public class TodoRestController {
     @DeleteMapping("/delete/{todoId}")
     public ResponseEntity<?> delete(@PathVariable long todoId){
         return dao.delete(todoId)
-                .map(t -> new ResponseEntity<>(headers, HttpStatus.OK))
+                .map(t -> ResponseEntity.ok().build())
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id = " + todoId));
     }
 
     @DeleteMapping("/delete-completed")
     public ResponseEntity<?> deleteCompleted(){
         if (dao.deleteCompleted()) {
-            return new ResponseEntity<>(headers, HttpStatus.OK);
+            return ResponseEntity.ok().build();
         }
         throw new ResourceNotFoundException("Unable to update data");
     }

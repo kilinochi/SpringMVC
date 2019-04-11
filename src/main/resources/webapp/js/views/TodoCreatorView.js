@@ -6,18 +6,24 @@ export class TodoCreatorView {
     constructor(model, controller){
         this.model = model;
         this.controller = controller;
-        this.allMarkedAs = this.controller.countActive() === 0;
         this.elements = template.todoCreator();
 
         model
-            .on(events.UPDATE_LIST_TODO, (todos) => {
-                this.allMarkedAs = this.controller.countActive() === 0;
-                if (todos.length === 0){
-                    this.hideFullInterface();
-                }
-            });
+             .on(events.REMOVE_TODO, () => {
+                 if (this.controller.getList().length === 0){
+                     this.hideFullInterface();
+                 }
+             })
+             .on(events.CLEAR_COMPLETED, () => {
+                 if (this.controller.getList().length === 0){
+                     this.hideFullInterface();
+                 }
+             })
+             .on(events.COUNT_ACTIVE_TODO, (cnt) => {
+                 this.allMarkedAs = cnt === 0;
+             });
 
-        if (model.getList().length !== 0){
+        if (controller.getList().length !== 0){
             this.showFullInterface();
         }
 
@@ -32,7 +38,7 @@ export class TodoCreatorView {
                 e.preventDefault();
                 const text = this.elements.textInput.value.trim();
                 this.elements.textInput.value = '';
-                const noElements = model.getList().length === 0;
+                const noElements = controller.getList().length === 0;
                 if (text !== '') {
                     this.controller.addTodo(text);
                     if (noElements) {
@@ -47,7 +53,6 @@ export class TodoCreatorView {
         const todosList = new TodosListView(this.model, this.controller);
         this.elements.root.parentNode.appendChild(todosList.getRoot());
         this.elements.root.parentNode.appendChild(todosList.getToolBar());
-        this.allMarkedAs = this.controller.countActive() === 0;
     };
 
     hideFullInterface = () => {
@@ -55,6 +60,5 @@ export class TodoCreatorView {
         const toolBar = this.elements.root.parentNode.querySelector('.todos-toolbar');
         this.elements.root.parentNode.removeChild(listTodos);
         this.elements.root.parentNode.removeChild(toolBar);
-        this.allMarkedAs = this.controller.countActive() === 0;
     };
 }

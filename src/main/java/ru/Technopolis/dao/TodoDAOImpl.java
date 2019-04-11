@@ -1,6 +1,7 @@
 package ru.Technopolis.dao;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class TodoDAOImpl implements TodoDAO<Todo> {
         return todoMap
                 .values()
                 .stream()
+                .sorted(Comparator.comparingLong(Todo::getId))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 

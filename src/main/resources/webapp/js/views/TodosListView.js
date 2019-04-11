@@ -7,17 +7,18 @@ export default class TodosListView {
         this.model = model;
         this.filter = this.filterAll;
         this.controller = controller;
-        this.children = model.getList().map(todo => new TodoView(todo, controller));
+        this.children = controller.getList().map(todo => new TodoView(todo, controller));
         this.elements = template.listOf(this.children);
-        this.updateUnreadyCounter();
+        this.updateUnreadyCounter(controller.getActiveTodos());
 
     model
         .on(events.NEW_TODO, (todo) => this.addTodo(todo))
-        .on(events.EDIT_TODO, (todo) => this.updateUnreadyCounter())
+        .on(events.EDIT_TODO, (todo) => this.editTodo(todo))
         .on(events.REMOVE_TODO, (todo) => this.removeTodo(todo))
         .on(events.CLEAR_COMPLETED, () => this.clearCompleted())
         .on(events.MARK_ALL_TODO, (ready) => this.markAllAs(ready))
-        .on(events.STOP_EDITING_ALL_TODO, () => this.stopEditingAllTodos());
+        .on(events.STOP_EDITING_ALL_TODO, () => this.stopEditingAllTodos())
+        .on(events.COUNT_ACTIVE_TODO, (cnt) => this.updateUnreadyCounter(cnt));
 
     this.elements.toolBar.querySelector('.filters_all').addEventListener('click', () => {
         this.filter = this.filterAll;
@@ -89,22 +90,27 @@ export default class TodosListView {
         }
         this.children.push(newTodoView);
         this.filter();
-        this.updateUnreadyCounter();
+        this.controller.countActive();
         this.stopEditingAllTodos();
+    };
+
+    editTodo = (todo) => {
+        this.filter();
+        this.controller.countActive();
     };
 
     removeTodo = (todo) => {
         const removedIndex = this.children.map(t => t.model.id).indexOf(todo.id);
         this.children[removedIndex].removeFromList();
         this.children.splice(removedIndex, 1);
-        this.updateUnreadyCounter();
+        this.controller.countActive();
         this.stopEditingAllTodos();
     };
 
     markAllAs = (ready) => {
         this.children.forEach(todo => todo.markAsReady(ready));
         this.filter();
-        this.updateUnreadyCounter();
+        this.controller.countActive();
         this.stopEditingAllTodos();
     };
 
@@ -117,13 +123,11 @@ export default class TodosListView {
         this.children = this.children.filter(todo => !todo.model.ready);
     };
 
-    updateUnreadyCounter = () => {
-        this.controller.countActive().then((numActiveTodos) => {
-            const unreadyCounter = this.elements.toolBar
-                    .querySelector('.todos-toolbar_unready-counter');
-            unreadyCounter.textContent = '';
-            unreadyCounter.appendChild(document.createTextNode(`${numActiveTodos} items left`));
-        });
+    updateUnreadyCounter = (cnt) => {
+        const unreadyCounter = this.elements.toolBar
+                .querySelector('.todos-toolbar_unready-counter');
+        unreadyCounter.textContent = '';
+        unreadyCounter.appendChild(document.createTextNode(`${cnt} items left`));
     };
 
     stopEditingAllTodos = () => {

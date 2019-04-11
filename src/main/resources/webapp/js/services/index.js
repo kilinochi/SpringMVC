@@ -13,7 +13,7 @@ function parseJSON(text) {
     return text ? JSON.parse(text) : {}
 }
 
-function wrapFetch(url, options, contentType = 'application/json') {
+function wrapFetch(url, options, contentType = 'application/json; charset=utf-8') {
     const headers = {};
     if (contentType !== null) {
         headers['Content-Type'] = contentType;
@@ -34,8 +34,9 @@ function getTodos() {
 }
 
 function addTodo(text) {
-    return wrapFetch(`${apiUrl}/todo/add?text=${text}`, {
+    return wrapFetch(`${apiUrl}/todo/add`,{
         method: 'POST',
+        body: text,
     });
 }
 

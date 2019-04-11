@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextWebpackPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import babelLoaderOptions from './babel-loader.webpack.config';
 import beautify from 'json-beautify';
@@ -47,7 +48,7 @@ export default {
     output: {
         path: outputPath,
         filename: `js/[name].js`,
-        publicPath: './',
+        publicPath: '/',
     },
 
     mode: BUILD_ENV,
@@ -67,8 +68,6 @@ export default {
     plugins: [
         new CaseSensitivePathsPlugin(),
 
-        // For compatibility with old loaders
-        // https://webpack.js.org/guides/migrating/#loaderoptionsplugin-context
         new webpack.LoaderOptionsPlugin({
             minimize: !DEV_MODE,
             debug: DEV_MODE,
@@ -76,12 +75,10 @@ export default {
 
         new webpack.DefinePlugin({
             DEV_MODE,
-
             'process.env.NODE_ENV': JSON.stringify(BUILD_ENV),
             'process.env.BROWSER': true,
         }),
 
-        // clean dist
         new CleanWebpackPlugin(
             [ outputPath ],
         ),
@@ -90,6 +87,13 @@ export default {
             disable: DEV_MODE,
             filename: `css/[name].css`,
         }),
+
+        new CopyWebpackPlugin([
+            {
+                from: path.join(rootPath, 'webapp/images'),
+                to: './images'
+            },
+        ]),
 
         // // index.html
         // new HtmlWebpackPlugin({
@@ -114,29 +118,17 @@ export default {
             new webpack.HotModuleReplacementPlugin(),
 
         ] : [
-
-            // for scope hoisting
             new webpack.optimize.ModuleConcatenationPlugin(),
-
         ],
 
     ],
 
     module: {
         rules: [
-
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                loader: 'file-loader',
-                options: {
-                    name: 'img/[hash].[ext]',
-                },
-            },
-
-            // transform styles
             {
                 test: /\.scss$/,
                 exclude: /node_modules/,
+                include: path.join(rootPath, 'webapp'),
                 use: ExtractTextWebpackPlugin.extract({
                     fallback: 'style-loader',
                     use: [
@@ -144,6 +136,7 @@ export default {
                             loader: 'css-loader',
                             options: {
                                 sourceMap: DEV_MODE,
+                                url: false
                             }
                         },
                         {
@@ -158,7 +151,7 @@ export default {
                             }
                         },
                         {
-                            loader: 'resolve-url-loader'
+                            loader: 'resolve-url-loader',
                         },
                         {
                             loader: 'sass-loader',
@@ -170,10 +163,19 @@ export default {
                 }),
             },
 
-            // transforms for react and some new features of js
+            {
+                test: /\.(jpe?g|png|gif|svg)$/,
+                loader: 'file-loader',
+                options: {
+                    name: 'images/[hash].[ext]',
+                    emitFile: false,
+                },
+            },
+
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
+                include: path.join(rootPath, 'webapp'),
                 use: {
                     loader: 'babel-loader',
                     options: babelLoaderOptions(DEV_MODE),
@@ -186,7 +188,6 @@ export default {
         aggregateTimeout: 100,
     },
 
-    // Don't attempt to continue if there are any errors.
     bail: !DEV_MODE,
 
     cache: DEV_MODE,

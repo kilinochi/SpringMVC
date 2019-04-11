@@ -12,6 +12,7 @@ const events = {
     MARK_ALL_TODO: 'MARK_ALL_TODO',
     STOP_EDITING_ALL_TODO: 'STOP_EDITING_ALL_TODO',
     CLEAR_COMPLETED: 'CLEAR_COMPLETED',
+    COUNT_ACTIVE_TODO: 'COUNT_ACTIVE_TODO',
 };
 
 const apiUrl = "http://localhost:8080";

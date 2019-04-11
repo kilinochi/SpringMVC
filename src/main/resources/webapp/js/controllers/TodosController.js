@@ -3,6 +3,10 @@ export default class TodosController {
         this.model = model;
     }
 
+    getList = () => this.model.getList();
+
+    getActiveTodos= () => this.model.getActiveTodos();
+
     addTodo = (text) => {
         this.model.addTodo(text);
     };

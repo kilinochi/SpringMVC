@@ -5,15 +5,18 @@ import { events } from "../constants";
 export default class TodosListModel extends Dispatcher {
     constructor(){
         super();
-        this.updateListTodos()
+        this.todos = [];
+        this.activeTodos = 0;
+        this.updateListTodos();
+        this.countActive();
     }
 
-    getList = () => {
-        return this.todos === undefined ? [] : this.todos;
-    };
+    getList = () => this.todos;
+
+    getActiveTodos = () => this.activeTodos;
 
     updateListTodos = () => {
-        todosService.getTodos().then((tds) => {
+        return todosService.getTodos().then((tds) => {
             this.todos = tds;
             this.dispatch(events.UPDATE_LIST_TODO, tds);
         });
@@ -21,29 +24,33 @@ export default class TodosListModel extends Dispatcher {
 
     addTodo = (text) => {
         todosService.addTodo(text).then((todo) => {
-            this.updateListTodos();
-            this.dispatch(events.NEW_TODO, todo);
+            this.updateListTodos().then(() => {
+                this.dispatch(events.NEW_TODO, todo);
+            });
         });
     };
 
     editTodo = (todo) => {
         todosService.editTodo(todo).then((todo) => {
-            this.updateListTodos();
-            this.dispatch(events.EDIT_TODO, todo);
+            this.updateListTodos().then(() => {
+                this.dispatch(events.EDIT_TODO, todo);
+            });
         });
     };
 
     removeTodo = (todo) => {
         todosService.removeTodo(todo).then(() => {
-            this.updateListTodos();
-            this.dispatch(events.REMOVE_TODO, todo);
+            this.updateListTodos().then(() => {
+                this.dispatch(events.REMOVE_TODO, todo);
+            });
         });
     };
 
     markAllAs = (ready) => {
         todosService.markAllAs(ready).then(() => {
-            this.updateListTodos();
-            this.dispatch(events.MARK_ALL_TODO, ready);
+            this.updateListTodos().then(() => {
+                this.dispatch(events.MARK_ALL_TODO, ready);
+            });
         });
     };
 
@@ -53,12 +60,17 @@ export default class TodosListModel extends Dispatcher {
 
     clearCompleted = () => {
         todosService.clearCompleted().then(() => {
-            this.updateListTodos();
-            this.dispatch(events.CLEAR_COMPLETED);
+            this.updateListTodos().then(() => {
+                this.dispatch(events.CLEAR_COMPLETED);
+            });
+
         });
     };
 
     countActive = () => {
-        return todosService.countActive();
+        todosService.countActive().then((cnt) => {
+            this.activeTodos = cnt;
+            this.dispatch(events.COUNT_ACTIVE_TODO, cnt);
+        })
     };
 }
