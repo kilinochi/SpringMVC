@@ -28,6 +28,9 @@ public class TodoRepository {
         if (todo.getId() == null) {
             todo.setId(counter.getAndIncrement());
         }
+        if (todo.isReady() == null) {
+            todo.setReady(false);
+        }
         storage.put(todo.getId(), todo);
     }
 

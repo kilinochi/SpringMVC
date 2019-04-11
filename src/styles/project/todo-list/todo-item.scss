@@ -1,0 +1,58 @@
+@import "../../config/globals";
+
+.todo-item {
+    display: flex;
+    border-bottom: solid 1px $c-gray-light;
+}
+
+.todo-item:hover {
+    background: $c-todos-main-bg;
+}
+
+.todo-item_complete {
+    order: 1;
+    align-self: center;
+    width: 34px;
+    height: 34px;
+    margin: 12px 11px;
+    padding: 0;
+    border-radius: 18px;
+}
+
+.todo-item_text {
+    order: 50;
+    align-self: center;
+    width: 466px;
+    height: 100%;
+    margin: 0;
+    padding: 16px 0;
+}
+
+.todo-item.__ready .todo-item_text {
+    color: $c-gray;
+    text-decoration: line-through;
+}
+
+.todo-item.__hide {
+    display: none;
+}
+
+.todo-item_remove {
+    order: 100;
+    align-self: flex-end;
+    width: 18px;
+    height: 18px;
+    margin: 21px 12px;
+    background: url('../../../images/close.png') center no-repeat;
+    opacity: 0;
+}
+
+.todo-item:hover .todo-item_remove {
+    opacity: 1;
+}
+
+.todo-item:after {
+    content: '';
+    display: block;
+    clear: both;
+}

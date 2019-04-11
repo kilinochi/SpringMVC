@@ -1,0 +1,42 @@
+@import "../../config/globals";
+
+.todo-add {
+    height: 62px;
+    border-bottom: solid 1px $c-gray-light;
+}
+
+.todo-add_select-all {
+    float: left;
+    width: 24px;
+    height: 24px;
+    margin: 18px;
+    background: url('../../../images/select-all.png') no-repeat 0 10px;
+    padding: 0;
+}
+
+.todo-add_input {
+    float: right;
+    margin-top: 15px;
+    width: 480px;
+    margin-right: 20px;
+}
+
+.todo-add_input::-webkit-input-placeholder {
+    color: $c-gray;
+    font-style: italic;
+}
+
+.todo-add_input:-ms-input-placeholder {
+    color: $c-gray;
+    font-style: italic;
+}
+
+.todo-add_input::-moz-placeholder {
+    color: $c-gray;
+    font-style: italic;
+}
+
+.todo-add_input:-moz-placeholder {
+    color: $c-gray;
+    font-style: italic;
+}

@@ -1,0 +1,19 @@
+@import "../../config/globals";
+
+.todos-bottom-shadow {
+    margin: auto;
+    background-color: $c-white;
+    height: 5px;
+    position: relative;
+    box-shadow: 0 2px 4px $c-todos-box-shadow;
+}
+
+.todos-bottom-shadow-first {
+    width: 556px;
+    z-index: 1;
+}
+
+.todos-bottom-shadow-second {
+    width: 554px;
+    z-index: 0;
+}

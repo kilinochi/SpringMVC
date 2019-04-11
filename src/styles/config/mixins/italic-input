@@ -1,0 +1,17 @@
+@mixin italic-input() {
+    .todo-add_input::-webkit-input-placeholder {
+        font-style: italic;
+    }
+
+    .todo-add_input:-ms-input-placeholder {
+        font-style: italic;
+    }
+
+    .todo-add_input::-moz-placeholder {
+        font-style: italic;
+    }
+
+    .todo-add_input:-moz-placeholder {
+        font-style: italic;
+    }
+}

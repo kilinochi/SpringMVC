@@ -1,0 +1,23 @@
+@import "../../../config/globals";
+
+.todos-filters {
+    margin-left: auto;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.todos-filter,
+.todos-action-bar_clear-completed {
+    margin: 12px 8px;
+    padding: 0;
+    font-size: $fs_little;
+    color: $c-gray-dark;
+}
+
+.todos-filter:hover,
+.todos-filter.__active {
+    margin: 8px 0;
+    border-radius: 3px;
+    padding: 3px 7px;
+    border: solid 1px $c-todos-title;
+}

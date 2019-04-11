@@ -1,0 +1,13 @@
+@import "../../config/globals";
+
+.todos-header {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.todos-header .todos-title {
+    font-size: 100px;
+    color: $c-todos-title;
+    margin: 0 auto;
+    padding: 0;
+}

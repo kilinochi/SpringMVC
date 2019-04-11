@@ -1,0 +1,25 @@
+@import "../../config/globals";
+
+.todos-action-bar {
+    height: 39px;
+    border-top: solid 1px $c-gray-light;
+    text-align: center;
+}
+
+.todos-action-bar_counter {
+    margin: 12px;
+    color: $c-gray-dark;
+    font-size: $fs_little;
+    float: left;
+    display: inline-block;
+}
+
+.todos-action-bar_clear-completed {
+    float: right;
+}
+
+.todos-action-bar:after {
+    content: '';
+    display: block;
+    clear: both;
+}

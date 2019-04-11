@@ -1,0 +1,29 @@
+.input-checkbox {
+    position: relative;
+}
+.input-checkbox_target {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.input-checkbox_visual {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.input-checkbox_target ~ .input-checkbox_visual {
+    background: none;
+    border: solid 1px $c-gray;
+}
+
+.input-checkbox_target:checked ~ .input-checkbox_visual {
+    background: url('../../../images/completed.png') center no-repeat;
+    border: solid 1px $c-green;
+}
