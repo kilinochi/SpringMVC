@@ -1,9 +1,11 @@
 # Руслан Мурзин
 
+### ToDo MVC with Spring boot and AJAX
+
 Service allows to make next requests:
 ```
-POST    /create?description=smth          - Add new description
-POST    /update?id=smth&description=smth  - Update existing description
-DELETE  /delete?id=smth                   - Delete description by id
-GET     /read                             - Get all descriptions
+GET     /                                                   - Get all todos
+POST    /todos?description=smth&completed=smth              - Add new todo item
+PUT     /todos?id=smth&description=smth&completed=smth      - Update existing todo
+DELETE  /todos?id=smth                                      - Delete todo by id
 ```
