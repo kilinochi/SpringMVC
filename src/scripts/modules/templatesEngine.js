@@ -1,9 +1,12 @@
+var parseItem = require('./parseItem');
 
 var div = document.createElement('div');
 
-function getTemplateRootNode(scriptId) {
-    var scriptTag = document.getElementById(scriptId);
-    div.innerHTML = scriptTag.innerHTML;
+var TEMPLATE_ROOT_NODE = 'todoItemTemplate';
+
+function getTemplateRootNode(nodeId) {
+    var nodeTag = document.getElementById(nodeId);
+    div.innerHTML = nodeTag.innerHTML;
     var result = div.children[0];
     div.removeChild(result);
     return result;
@@ -11,25 +14,24 @@ function getTemplateRootNode(scriptId) {
 
 var templatesEngine = {
     todoItem: function (data) {
-        var root = getTemplateRootNode('todoItemTemplate');
+        var root = getTemplateRootNode(TEMPLATE_ROOT_NODE);
+        root.setAttribute('data-id', data.id);
 
-        var ready = root.querySelector('.input-checkbox_target');
-        var removeAction = root.querySelector('.todo-item_remove');
-        var text = root.querySelector('.todo-item_text');
+        var item = parseItem(root);
 
         if (data.description) {
-            text.innerText = data.description;
+            item.description.innerText = data.description;
         }
 
         if (data.ready) {
-            ready.checked = true;
+            item.ready.checked = true;
         }
 
         return {
             root: root,
-            description: text,
-            ready: ready,
-            removeAction: removeAction
+            description: item.description,
+            ready: item.ready,
+            removeAction: item.removeAction
         };
     }
 };

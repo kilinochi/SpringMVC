@@ -6,29 +6,47 @@ var READY_MODIFICATOR = '__ready';
 var HIDDEN_MODIFICATOR = '__hide';
 
 /**
- * @param itemData
+ * @param {Object|null} data
+ * @param {Object|null} node
  * @implements {EventListener}
  * @constructor
  */
-function TodoItemConstructor(itemData) {
+function TodoItemConstructor(data, node) {
     this._initEventable();
 
-    var templateResult = templatesEngine.todoItem({
-        description: itemData.description
-    });
+    if (node === null && data === null) {
+        console.log('Error: node & data are nulls');
+        return;
+    }
 
-    this._root = templateResult.root;
-    this._markReady = templateResult.ready;
-    this._removeAction = templateResult.removeAction;
-    this._description = templateResult.description;
+    if (node === null) { // create from data
+        node = templatesEngine.todoItem({
+            id: data.id,
+            ready: data.ready,
+            description: data.description
+        });
+    }
+
+    if (data === null) { // create from existing div
+        data = {
+            id: node.root.getAttribute('data-id'),
+            ready: node.ready.checked,
+            description: node.description.innerHTML
+        }
+    }
+
+    this._root = node.root;
+    this._markReady = node.ready;
+    this._removeAction = node.removeAction;
+    this._description = node.description;
 
     this.model = {
-        id: itemData.id,
-        ready: itemData.ready || false,
-        description: itemData.description
+        id: data.id,
+        ready: data.ready || false,
+        description: data.description
     };
 
-    if (itemData.ready) {
+    if (data.ready) {
         this._setReadyModificator(true);
     }
 

@@ -1,10 +1,11 @@
 var Eventable = require('../modules/Eventable');
 var extendConstructor = require('../utils/extendConstructor');
+var papseItem = require('../modules/parseItem');
 
 var TodoItem = require('../components/TodoItem');
 
 var TODO_LIST_SELECTOR = '.todo-list';
-var itemsIdIterator = 0;
+var TODO_ITEM_SELECTOR = '.todo-item';
 
 /**
  * @extends {Eventable}
@@ -18,6 +19,9 @@ function TodoListConstructor() {
     this._items = [];
     this._todosList = document.querySelector(TODO_LIST_SELECTOR);
     this._currentFilter = 'all';
+
+    document.querySelectorAll(TODO_ITEM_SELECTOR)
+        .forEach(this.parseItem, this);
 
     this._initEventable();
 }
@@ -33,11 +37,22 @@ todoListConstructorPrototype.getItemsCount = function () {
     return this._items.length;
 };
 
+todoListConstructorPrototype.parseItem = function (root) {
+    var node = papseItem(root);
+    node.root = root;
+
+    var item = new TodoItem(null, node);
+    item.on('change', this._onItemChange, this)
+        .on('remove', this._onItemRemove, this);
+
+    this._items.push(item);
+};
+
 /**
- * @param {Object} todoItemData
+ * @param {Object} data
  * @return {TodoListConstructor}
  */
-todoListConstructorPrototype.createItem = function (todoItemData) {
+todoListConstructorPrototype.createItem = function (data) {
     var list = this;
     var req = new XMLHttpRequest();
     req.open("POST", "/todos");
@@ -45,7 +60,7 @@ todoListConstructorPrototype.createItem = function (todoItemData) {
     req.onreadystatechange = function () {
         if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
             var response = JSON.parse(req.responseText);
-            var item = new TodoItem(response);
+            var item = new TodoItem(response, null);
 
             list._items.push(item);
 
@@ -56,7 +71,7 @@ todoListConstructorPrototype.createItem = function (todoItemData) {
             list.trigger('itemAdd', item);
         }
     };
-    req.send(JSON.stringify(todoItemData));
+    req.send(JSON.stringify(data));
     return this;
 };
 

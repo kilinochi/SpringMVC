@@ -1,10 +1,17 @@
 # Todos App
 
+## Build
+* `npm run install`
+* `npm run build`
+
+## Run
+* `./gradlew bootRun`
+
 ## HTML Endpoints
 
-### `GET /`
+### `localhost:8080`
 
-Retrieve simple HTML page.
+Retrieve HTML page communicating with backed via AJAX.
 
 ## REST API Endpoints
 
