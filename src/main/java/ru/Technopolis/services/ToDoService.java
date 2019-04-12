@@ -21,7 +21,7 @@ public class ToDoService {
         return repository.save(todo);
     }
 
-    public void delete(ToDo todo) {repository.deleteById(todo.getId());}
+    public void delete(int id) {repository.deleteById(id);}
 
     public List<ToDo> getAll() {
         return StreamSupport

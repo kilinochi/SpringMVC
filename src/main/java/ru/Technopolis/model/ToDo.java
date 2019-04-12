@@ -28,6 +28,12 @@ public class ToDo implements Serializable, Comparable<ToDo>{
         this.completed = completed;
     }
 
+    public ToDo(int id, String description, boolean completed) {
+        this.id = id;
+        this.description = description;
+        this.completed = completed;
+    }
+
     public int getId() {
         return id;
     }

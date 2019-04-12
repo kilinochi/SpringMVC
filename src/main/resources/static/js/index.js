@@ -69,21 +69,14 @@ document.addEventListener("DOMContentLoaded", function () {
             var div_item = document.createElement('div');
             div_item.innerHTML = item_template.innerHTML;
             var txt = div_item.querySelector('.todos-list_item_text');
-            var markCompleted = div_item.querySelector('.custom-checkbox_target');
 
             if(data.text) {
                 txt.innerText = data.text;
             }
 
-            if (data.isCompleted) {
-                markCompleted.checked = true;
-            }
-
             var deleteLink = div_item.querySelector('.todos-list_item_remove');
             return {
                 root: div_item,
-                txt: txt,
-                markCompleted: markCompleted,
                 deleteLink: deleteLink
             };
         }
@@ -124,10 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Компонент элементов списка
-    function ListItemComponent(text, isCompleted) {
-    	var templateResult = templates.item({text: text, isCompleted: isCompleted});
+    function ListItemComponent(text) {
+    	var templateResult = templates.item({text: text});
     	this._root = templateResult.root;
-    	var checkbox = templateResult.markCompleted;
+    	var checkbox = templateResult.root.querySelector('.custom-checkbox_target');
     	checkbox.addEventListener('change', checkFilters);
     	checkbox.addEventListener('change', renewUnreadyCounter);
     	templateResult.deleteLink.addEventListener('click', this);
@@ -156,10 +149,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ListComponent.prototype = new Eventable();
     ListComponent.prototype.add = function (text) {
-    	var item = new ListItemComponent(text, false);
+    	var item = new ListItemComponent(text);
     	this._items.push(item);
     	this._root.appendChild(item.getRoot());
     	item.on('remove', this._onItemRemove, this);
+        sendCreateAJAX(text, item.getRoot().querySelector('.js-hidden-id'));
+        updateListeners();
     	renewUnreadyCounter();
     	checkFilters();
     };
@@ -183,17 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var listItems = listNode.getElementsByClassName('todos-list_item');
     var checkboxes = listNode.getElementsByClassName('custom-checkbox_target');
 
-    for(var i = 0; i < listItems.length; i++) {
-        var oldText = listItems[i].querySelector('.todos-list_item_text').innerText;
-        var oldCheckbox = listItems[i].querySelector('.custom-checkbox_target');
-        //var oldItem = new ListItemComponent(oldText, oldCheckbox.checked);
-        var oldDelLink = listItems[i].querySelector('.todos-list_item_remove');
-        //list._items.push(oldItem);
-        oldCheckbox.addEventListener('change', checkFilters);
-        oldCheckbox.addEventListener('change', renewUnreadyCounter);
-        oldDelLink.addEventListener('click', listItems[i].remove);
-        //oldItem.on('remove', list._onItemRemove, list);
-    }
+    updateListeners();
 
     //Поставить галочку на всех элементах
     var checkAll = document.querySelector('.todo-creator_check-all');
@@ -220,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         for(var i = 0; i < checkboxes.length; ) {
             if(checkboxes[i].checked === true) {
+                sendDeleteAJAX(listItems[i].querySelector('.js-hidden-id').value);
                 listItems[i].remove();
             } else {
                 i++;
@@ -304,6 +290,76 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         var toolbar_item = document.querySelector('.todos-toolbar_unready-counter');
         toolbar_item.innerText = unreadyCounter + ' items left';
+    }
+
+    //Функция развешивания событий
+    function updateListeners() {
+        var todosListItems = listNode.getElementsByClassName('todos-list_item');
+        for(var i = 0; i < todosListItems.length; i++) {
+            var oldCheckbox = todosListItems[i].querySelector('.custom-checkbox_target');
+            var oldDelLink = todosListItems[i].querySelector('.todos-list_item_remove');
+            var oldText = todosListItems[i].querySelector('.todos-list_item_text');
+            oldCheckbox.addEventListener('change', checkFilters);
+            oldCheckbox.addEventListener('change', renewUnreadyCounter);
+            oldCheckbox.addEventListener('change', function (e) {
+                e.preventDefault();
+                sendUpdateAJAX(this.parentNode.parentNode.querySelector('.js-hidden-id').value, this.parentNode.parentNode.querySelector('.todos-list_item_text').value, this.checked);
+            });
+            oldDelLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                var id = this.parentNode.querySelector('.js-hidden-id').value;
+                sendDeleteAJAX(id);
+                this.parentNode.remove();
+                renewUnreadyCounter();
+            });
+            oldText.addEventListener('change', function (e) {
+                e.preventDefault();
+                sendUpdateAJAX(this.parentNode.parentNode.querySelector('.js-hidden-id').value, this.value, this.parentNode.parentNode.querySelector('.custom-checkbox_target').checked);
+            });
+        }
+    }
+
+    //AJAX запрос добавления записи
+    function sendCreateAJAX(text, hiddenId) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open("POST", "http://localhost:5555/todos", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        var body = 'text=' + encodeURIComponent(text) + '&completed=' + encodeURIComponent(false);
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    var response = JSON.parse(httpRequest.responseText);
+                    hiddenId.value = response.id;
+                }
+            }
+        };
+        httpRequest.send(body);
+    }
+
+    //AJAX запрос изменения записи
+    function sendUpdateAJAX(id, text, isCompleted) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open("PUT", "http://localhost:5555/todos", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        var body = 'id=' + encodeURIComponent(id) + '&text=' + encodeURIComponent(text) + '&completed=' + encodeURIComponent(isCompleted);
+        httpRequest.send(body);
+    }
+
+    //AJAX запрос добавления записи
+    function sendDeleteAJAX(id) {
+        var httpRequest = new XMLHttpRequest();
+        var body = 'id=' + encodeURIComponent(id);
+        httpRequest.open("DELETE", "http://localhost:5555/todos?" + body, true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 500) {
+                    var response = JSON.parse(httpRequest.responseText);
+                    console.log(response);
+                }
+            }
+        };
+        httpRequest.send();
     }
 
     console.log('init');

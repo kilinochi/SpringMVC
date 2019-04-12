@@ -42,7 +42,7 @@
         <div class="todos-list">
 			<div class="todos-list_item" th:each="elem : ${list}">
 				<div class="custom-checkbox todos-list_item_ready-marker">
-					<input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" />
+					<input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" th:checked="${elem.completed}"/>
 					<div class="custom-checkbox_visual">
 						<div class="custom-checkbox_visual_icon"></div>
 					</div>
