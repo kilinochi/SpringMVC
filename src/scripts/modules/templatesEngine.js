@@ -17,8 +17,8 @@ var templatesEngine = {
         var removeAction = root.querySelector('.todo-item_remove');
         var text = root.querySelector('.todo-item_text');
 
-        if (data.text) {
-            text.innerText = data.text;
+        if (data.description) {
+            text.innerText = data.description;
         }
 
         if (data.ready) {
@@ -27,7 +27,7 @@ var templatesEngine = {
 
         return {
             root: root,
-            text: text,
+            description: text,
             ready: ready,
             removeAction: removeAction
         };

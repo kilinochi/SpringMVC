@@ -37,7 +37,7 @@ addTodosConstructorPrototype._addItem = function () {
     }
 
     return this.trigger('newTodo', {
-        text: todoInputValue
+        description: todoInputValue
     });
 };
 

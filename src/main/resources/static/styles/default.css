@@ -1,0 +1,315 @@
+/* Reset.css
+---------------------------------------------------------------------------------- */
+
+html,
+body {
+  font-size: 15px;
+}
+
+textarea,
+input,
+select {
+  font-size: 15px;
+}
+
+body,
+table,
+td,
+ul,
+menu,
+li,
+div,
+span,
+img,
+a,
+form,
+p,
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+body,
+textarea,
+input,
+select,
+button {
+  color: #888;
+  font-family: Helvetica, sans-serif;
+}
+
+body,
+a {
+  color: #ccc;
+}
+
+body {
+  background: #fafafa;
+}
+
+ul,
+menu {
+  list-style: none;
+}
+
+img {
+  border: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-width: 0;
+}
+
+a {
+  cursor: pointer;
+  color: #888;
+}
+
+button {
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* /Reset.css
+---------------------------------------------------------------------------------- */
+
+.input-checkbox {
+  position: relative;
+}
+
+.input-checkbox_target {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.input-checkbox_visual {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.input-checkbox_target ~ .input-checkbox_visual {
+  background: none;
+  border: solid 1px #ccc;
+}
+
+.input-checkbox_target:checked ~ .input-checkbox_visual {
+  background: url("../images/completed.png") center no-repeat;
+  border: solid 1px #5dc2af;
+}
+
+.text-input {
+  text-align: left;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 100;
+  font-size: 24px;
+  color: #888;
+  background: none;
+  overflow: hidden;
+  border: none;
+  outline: none;
+}
+
+.todo-add {
+  height: 62px;
+  border-bottom: solid 1px #e6e6e6;
+}
+
+.todo-add_select-all {
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 18px;
+  background: url("../images/select-all.png") no-repeat 0 10px;
+  padding: 0;
+}
+
+.todo-add_input {
+  float: right;
+  margin-top: 15px;
+  width: 480px;
+  margin-right: 20px;
+}
+
+.todo-add_input::-webkit-input-placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+
+.todo-add_input:-ms-input-placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+
+.todo-add_input::-moz-placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+
+.todo-add_input:-moz-placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+
+.todo-list {
+  min-height: 296px;
+}
+
+.todo-item {
+  display: flex;
+  border-bottom: solid 1px #e6e6e6;
+}
+
+.todo-item:hover {
+  background: #fafafa;
+}
+
+.todo-item_complete {
+  order: 1;
+  align-self: center;
+  width: 34px;
+  height: 34px;
+  margin: 12px 11px;
+  padding: 0;
+  border-radius: 18px;
+}
+
+.todo-item_text {
+  order: 50;
+  align-self: center;
+  width: 466px;
+  height: 100%;
+  margin: 0;
+  padding: 16px 0;
+}
+
+.todo-item.__ready .todo-item_text {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+.todo-item.__hide {
+  display: none;
+}
+
+.todo-item_remove {
+  order: 100;
+  align-self: flex-end;
+  width: 18px;
+  height: 18px;
+  margin: 21px 12px;
+  background: url("../images/close.png") center no-repeat;
+  opacity: 0;
+}
+
+.todo-item:hover .todo-item_remove {
+  opacity: 1;
+}
+
+.todo-item:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.todos-action-bar {
+  height: 39px;
+  border-top: solid 1px #e6e6e6;
+  text-align: center;
+}
+
+.todos-action-bar_counter {
+  margin: 12px;
+  color: #888;
+  font-size: 14px;
+  float: left;
+  display: inline-block;
+}
+
+.todos-action-bar_clear-completed {
+  float: right;
+}
+
+.todos-action-bar:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.todos-filters {
+  margin-left: auto;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.todos-filter,
+.todos-action-bar_clear-completed {
+  margin: 12px 8px;
+  padding: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.todos-filter:hover,
+.todos-filter.__active {
+  margin: 8px 0;
+  border-radius: 3px;
+  padding: 3px 7px;
+  border: solid 1px #ebd7d7;
+}
+
+.todos-body {
+  background: #fafafa;
+  text-align: center;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.todos-bottom-shadow {
+  margin: auto;
+  background-color: #fff;
+  height: 5px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.todos-bottom-shadow-first {
+  width: 556px;
+  z-index: 1;
+}
+
+.todos-bottom-shadow-second {
+  width: 554px;
+  z-index: 0;
+}
+
+.todos-header {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.todos-header .todos-title {
+  font-size: 100px;
+  color: #ebd7d7;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.todos-main {
+  margin: auto;
+  background-color: #fff;
+  width: 560px;
+  z-index: 2;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+/*# sourceMappingURL=default.css.map */

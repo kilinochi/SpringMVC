@@ -38,21 +38,25 @@ todoListConstructorPrototype.getItemsCount = function () {
  * @return {TodoListConstructor}
  */
 todoListConstructorPrototype.createItem = function (todoItemData) {
-    var item = new TodoItem(Object.assign(
-        {
-            id: itemsIdIterator++
-        },
-        todoItemData
-    ));
+    var list = this;
+    var req = new XMLHttpRequest();
+    req.open("POST", "/todos");
+    req.setRequestHeader("Content-Type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+            var response = JSON.parse(req.responseText);
+            var item = new TodoItem(response);
 
-    this._items.push(item);
+            list._items.push(item);
 
-    item.on('change', this._onItemChange, this)
-        .on('remove', this._onItemRemove, this)
-        .render(this._todosList);
+            item.on('change', list._onItemChange, list)
+                .on('remove', list._onItemRemove, list)
+                .render(list._todosList);
 
-    this.trigger('itemAdd', item);
-
+            list.trigger('itemAdd', item);
+        }
+    };
+    req.send(JSON.stringify(todoItemData));
     return this;
 };
 

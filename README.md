@@ -1,5 +1,11 @@
 # Todos App
 
+## HTML Endpoints
+
+### `GET /`
+
+Retrieve simple HTML page.
+
 ## REST API Endpoints
 
 ### `GET /todos`
@@ -27,6 +33,7 @@ Update Todo with specified ID. Request body should be in format:
 ```json
 {
   "id": "1",
+  "ready": true,
   "description": "Todo description"
 }
 ```
@@ -36,9 +43,3 @@ IDs from path and body should be equal.
 ### `DELETE /todos/{id}`
 
 Delete from storage Todo with specified ID.
-
-## HTML Endpoints
-
-### `GET /index`
-
-Retrieve simple HTML page.

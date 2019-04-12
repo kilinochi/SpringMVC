@@ -14,18 +14,18 @@ function TodoItemConstructor(itemData) {
     this._initEventable();
 
     var templateResult = templatesEngine.todoItem({
-        text: itemData.text
+        description: itemData.description
     });
 
     this._root = templateResult.root;
     this._markReady = templateResult.ready;
     this._removeAction = templateResult.removeAction;
-    this._text = templateResult.text;
+    this._description = templateResult.description;
 
     this.model = {
         id: itemData.id,
         ready: itemData.ready || false,
-        text: itemData.text
+        description: itemData.description
     };
 
     if (itemData.ready) {
@@ -34,7 +34,7 @@ function TodoItemConstructor(itemData) {
 
     this._markReady.addEventListener('change', this);
     this._removeAction.addEventListener('click', this);
-    this._text.addEventListener('input', this);
+    this._description.addEventListener('input', this);
 }
 
 extendConstructor(TodoItemConstructor, Eventable);
@@ -64,7 +64,7 @@ todoItemConstructorPrototype.handleEvent = function (e) {
             }
             break;
         case 'input':
-            this.setText(this._text.innerText);
+            this.setText(this._description.innerText);
             break;
     }
 };
@@ -74,10 +74,19 @@ todoItemConstructorPrototype.handleEvent = function (e) {
  * @return {TodoItemConstructor}
  */
 todoItemConstructorPrototype.setText = function (text) {
-    if (this.model.text !== text) {
-        this._text.innerHTML = text;
-        this.model.text = text;
-        this.trigger('change', this.model);
+    if (this.model.description !== text) {
+        this.model.description = text;
+        var item = this;
+        var req = new XMLHttpRequest();
+        req.open("PUT", "/todos/" + this.model.id);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.onreadystatechange = function () {
+            if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+                item.model = JSON.parse(req.responseText);
+                item.trigger('change', item.model);
+            }
+        };
+        req.send(JSON.stringify(item.model));
     }
     return this;
 };
@@ -102,10 +111,20 @@ todoItemConstructorPrototype._setReadyModificator = function (ready) {
  */
 todoItemConstructorPrototype.setReady = function (ready) {
     if (ready !== this.model.ready) {
-        this._markReady.checked = ready;
         this.model.ready = ready;
-        this._setReadyModificator(ready);
-        this.trigger('change', this.model);
+        var item = this;
+        var req = new XMLHttpRequest();
+        req.open("PUT", "/todos/" + this.model.id);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.onreadystatechange = function () {
+            if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+                item.model = JSON.parse(req.responseText);
+                item._markReady.checked = item.model.ready;
+                item._setReadyModificator(item.model.ready);
+                item.trigger('change', item.model);
+            }
+        };
+        req.send(JSON.stringify(item.model));
     }
     return this;
 };
@@ -114,8 +133,16 @@ todoItemConstructorPrototype.setReady = function (ready) {
  * @return {TodoItemConstructor}
  */
 todoItemConstructorPrototype.remove = function () {
-    this._root.parentNode.removeChild(this._root);
-    this.trigger('remove', this.model.id);
+    var item = this;
+    var req = new XMLHttpRequest();
+    req.open("DELETE", "/todos/" + this.model.id);
+    req.onreadystatechange = function () {
+        if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+            item._root.parentNode.removeChild(item._root);
+            item.trigger('remove', item.model.id);
+        }
+    };
+    req.send();
     return this;
 };
 
