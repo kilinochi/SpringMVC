@@ -12,13 +12,11 @@ public class ToDoDAO {
     private static AtomicLong counter = new AtomicLong();
 
     private List<ToDo> toDoList = Collections.synchronizedList(new ArrayList<>());
-
     public void creatSampleExample(){
         addDAO("HTML");
         addDAO("CSS");
         addDAO("JS");
         addDAO("Шкалев");
-
     }
 @Deprecated
     public ToDo create(String description) {
@@ -40,12 +38,13 @@ public class ToDoDAO {
         return true;
     }
 
-    public boolean updateDAO(long id, String description){
+    public boolean updateDAO(long id, String description, ToDo.Status status){
         int idInList = getIdInList(id);
         if (idInList == -1){
             return false;
         }
         toDoList.get(idInList).changeDescription(description);
+        toDoList.get(idInList).changeStatus(status);
         return true;
     }
 

@@ -36,7 +36,7 @@ public class Service {
     public @ResponseBody
     String create(@RequestParam String description) {
         int id = dao.addDAO(description);
-        return String.format("Item %d was created", id);
+        return dao.getDAO(id).toString();
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
@@ -45,18 +45,34 @@ public class Service {
         if (!dao.deleteDAO(id)) {
             return String.format("Item %d is missing", id);
         }
-        return String.format("Item %d was deleted", id);
+        return String.valueOf(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
-    String update(@RequestParam long id, @RequestParam String description) {
-        if (!dao.updateDAO(id, description)) {
+    String update(@RequestParam long id, @RequestParam String description, @RequestParam ToDo.Status status) {
+        if (!dao.updateDAO(id, description,status)) {
             return String.format("Item %d is missing", id);
         }
-        return String.format("Item %d description was changed", id);
+        return dao.getDAO(id).toString();
     }
+    /*@RequestMapping(value = "/update", method = RequestMethod.POST)
+    public @ResponseBody
+    String update(@RequestParam long[] id, @RequestParam String[] description, @RequestParam ToDo.Status[] status) {
+        long idTodo;
+        String descriptionTodo;
+        ToDo.Status statusTodo;
+        for (int i = 0; i < id.length; i++) {
+            idTodo = id[i];
+            descriptionTodo = description[i];
+            statusTodo = status[i];
+            if (!dao.updateDAO(idTodo, descriptionTodo,statusTodo)) {
+                return String.format("Item %d is missing", id);
+            }
+        }
 
+        return String.valueOf(id);
+    }*/
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public @ResponseBody
     String get(@RequestParam long id) {

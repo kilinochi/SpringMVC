@@ -24,25 +24,45 @@
             </div>
 
             <div class="todos-list" >
-                <div class="todos-list_item" th:each="todoItem : ${todosList}">
-                    <div class="custom-checkbox todos-list_item_ready-marker">
-                        <input type="checkbox"  class="custom-checkbox_target" aria-label="Mark todo as ready"/>
-                        <div class="custom-checkbox_visual">
-                            <div class="custom-checkbox_visual_icon">
+                <div class="thymeleafListItem" th:each="todoItem : ${todosList}">
+
+                    <div th:if="${todoItem.isCOMPLETED()}" class="todos-list_item __is-checked" >
+                        <div class="custom-checkbox todos-list_item_ready-marker" >
+                            <input type="checkbox" checked class="custom-checkbox_target" aria-label="Mark todo as ready"/>
+                            <div class="custom-checkbox_visual">
+                                <div class="custom-checkbox_visual_icon">
+                                </div>
                             </div>
+                        </div>
+
+                        <button class="todos-list_item_remove" th:id="${todoItem.getId()}" aria-label="Delete todo"></button>
+
+                        <div class="todos-list_item_text-w">
+                            <textarea class="todos-list_item_text" rows="1" th:text="${todoItem.getDescription()}">HTML</textarea>
                         </div>
                     </div>
 
-                    <button class="todos-list_item_remove" aria-label="Delete todo"></button>
+                    <div th:unless="${todoItem.isCOMPLETED()}" class="todos-list_item" >
+                        <div class="custom-checkbox todos-list_item_ready-marker" >
+                            <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready"/>
+                            <div class="custom-checkbox_visual">
+                                <div class="custom-checkbox_visual_icon">
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="todos-list_item_text-w">
-                        <textarea class="todos-list_item_text" readonly rows="1" th:text="${todoItem.getDescription()}">HTML</textarea>
+                        <button class="todos-list_item_remove" th:id="${todoItem.getId()}" aria-label="Delete todo"></button>
+
+                        <div class="todos-list_item_text-w">
+                            <textarea class="todos-list_item_text" rows="1" th:text="${todoItem.getDescription()}">HTML</textarea>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
             <div class="todos-toolbar">
-                <div class="todos-toolbar_unready-counter" > <span th:text="${counter}"></span> item left</div>
+                <div class="todos-toolbar_unready-counter" > <span class="todos-toolbar_unready-counter-count" th:text="${counter}"></span> item left</div>
 
                 <button class="todos-toolbar_clear-completed">Clear completed</button>
 
@@ -59,4 +79,7 @@
 </div>
 
 </body>
+
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+
 </html>
