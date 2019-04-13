@@ -1,0 +1,71 @@
+
+    .todos-list {
+        display: block !important;
+    }
+
+    .todos-list_item {
+        display: flex;
+        border-bottom: 1px solid #E6E6E6;
+        width: 96%;
+        padding: 16px;
+    }
+    .todos-list_item:hover{
+        z-index: -1;
+        background: rgba(0,0,0,0.03);
+        cursor: pointer;
+    }
+    .todos-list_item:first-child {
+        border-top: 1px solid #E6E6E6;
+        border-bottom: 1px solid #E6E6E6;
+    }
+    .todos-list_item:last-child {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #E6E6E6;
+    }
+        .todos-list_item_ready-marker {
+            float: left;
+            margin-right: 16px;
+            }
+
+        .todos-list_item_text-w {
+            overflow: hidden;
+            }
+
+            .todos-list_item_text {
+                font-family: 'PT Sans', sans-serif;
+                border: none    ;
+                width: 100%;
+                padding-top: 12px;
+                }
+        .todos-list_item_text:focus {
+            outline:none;
+        }
+        .todos-list_item_remove {
+            float: right;
+            width: 16px;
+            height: 16px;
+            opacity: 0;
+            transition: all 0.2s ease;
+            background: url("../../../images/close.png") ;
+            }
+        .todos-list_item_remove-action {
+            float: right;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            order: 5;
+            align-self: flex-end;
+        }
+        .todos-list_item_remove-action-fix {
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .todos-list_item:hover .todos-list_item_remove {
+            opacity: 0.8;
+        }
+        .todos-list_item_remove:hover {
+            visibility: visible;
+            opacity: 1 !important;
+        }

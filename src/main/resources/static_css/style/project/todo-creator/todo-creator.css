@@ -1,0 +1,114 @@
+
+
+.todo-creator {
+    padding: 16px 16px;
+    }
+    .filters-item_selected {
+        outline: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #000;
+        text-decoration: none;
+    }
+    .filters-item_selected:hover {
+        border: 1px solid #ccc;
+}
+    .filters-item:hover {
+        border: 1px solid #ccc;
+    }
+    .filters-item {
+        outline: none;
+        padding: 0.3em;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .todos-toolbar_clear-completed {
+        outline: none;
+        padding: 0.3em;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .todos-toolbar_filters {
+        text-align: center;
+    }
+    .todos-toolbar_unready-counter {
+        padding-left: 15px;
+        margin-right: auto;
+    }
+    .todos-toolbar_clear-completed {
+        margin-left: auto;
+        padding-right: 15px;
+    }
+    .todo-creator:after {
+        content: '';
+        display: table;
+        clear: both;
+        }
+    .todo-creator_check-all {
+        float: left;
+        margin-right: 16px;
+        margin-top: 11px;
+
+        padding: 0;
+
+        width: 24px;
+        height: 12px;
+
+        border: none;
+        outline: none;
+
+
+        background: url(../../../images/select-all.png) no-repeat 0 0;
+        }
+
+        @media (-webkit-min-device-pixel-ratio: 1.5),
+               (min-resolution: 120dpi),
+               (min-resolution: 1.5dppx) {
+            .todo-creator_check-all {
+                /*background: url(../../../images/select-all@2x.png) no-repeat 0 0;*/
+                }
+            }
+
+    .todo-creator_text-input-w {
+        overflow: hidden;
+        }
+
+        .todo-creator_text-input {
+            border: none;
+            background: none;
+            outline: none;
+            width: 100%;
+            /*box-sizing: border-box;*/
+            font-size: 24px;
+            color: #666;
+            font-weight: 300;
+            }
+
+            .todo-creator_text-input::-webkit-input-placeholder {
+                font-style: italic;
+                color: #ccc;
+                }
+
+            .todo-creator_text-input:-moz-placeholder {
+                font-style: italic;
+                color: #ccc;
+                }
+
+            .todo-creator_text-input::-moz-placeholder {
+                font-style: italic;
+                color: #ccc;
+                }
+
+            .todo-creator_text-input:-ms-input-placeholder {
+                font-style: italic;
+                color: #ccc;
+                }
