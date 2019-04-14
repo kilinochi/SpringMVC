@@ -1,0 +1,77 @@
+.todo-board {
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  position: relative;
+
+
+}
+.todo-board:before,
+.todo-board:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: -1;
+}
+.todo-board.__has-content:before,
+.todo-board.__has-content:after{
+  display:block;
+  content: '';
+}
+
+.todo-board:before,
+.todo-board:after{
+  display:none;
+  content: '';
+}
+.todo-board:before{
+  left: 8px;
+  right: 8px;
+  height: 8px;
+}
+.todo-board:after{
+  left: 4px;
+  right: 4px;
+  height: 4px;
+}
+.todo-board .todo-list,
+.todo-board .todo-toolbar{
+  display:none;
+}
+.todo-board.__has-content .todo-list,
+.todo-board.__has-content .todo-toolbar{
+  display: block;
+}
+
+/*
+.todo-board {
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.todo-board:before,
+.todo-board:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,.2);
+        z-index: -1;
+}
+
+.todo-board:before {
+        left: 8px;
+        right: 8px;
+        height: 8px;
+}
+
+.todo-board:after {
+        left:4px;
+        right: 4px;
+        height: 4px;
+}
+
+*/
+

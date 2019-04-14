@@ -1,10 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Todo MVC</title>
+    <link rel="stylesheet" href="../static/styles/default.css" type="text/css" media="all"
+          th:href="@{styles/default.css}">
+
 </head>
 <body>
-<p>Hello, world</p>
+
+<div class="main-layout">
+
+    <h1 class="todo-title">todos</h1>
+
+    <div class="todo-board __has-content">
+        <div class="todo-creator">
+            <button class="todo-creator_check_all" aria-label="Check all items as done"></button>
+            <form class="todo-creator_text-input-w">
+                <input type="text" class="todo-creator_text-input" placeholder="What needs to be done?"
+                       aria-label="Input new todos"/>
+            </form>
+        </div>
+
+
+        <div class="todo-list">
+            <div class="todo-list_item" th:each="todoItem : ${todolist}">
+
+                <div class="custom-checkbox todo-list_item_ready-marker">
+                    <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready"/>
+                    <div class="custom-checkbox_visual">
+                        <div class="custom-checkbox_visual-icon">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="todo-list_item-remove" aria-label="Delete todo" th:id="${todoItem.getId()}"></button>
+
+                <div class="todo-list_item-text-w">
+                    <textarea class="todo-list_item-text" rows="1"
+                              th:text="${todoItem.getDescription()}">HTML</textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="todo-toolbar">
+            <div class="todo-toolbar_unready-counter">3 items left</div>
+
+
+            <button class="todo-toolbar_clear-completed">Clear completed</button>
+            <div class="todo-toolbar_filters">
+                <button class="todo-toolbar_filter __All __selected" aria-label="Filter: All is selected">All</button>
+                <button class="todo-toolbar_filter __Active" aria-label="Filter: Active is not selected">Active</button>
+                <button class="todo-toolbar_filter __Completed" aria-label="Filter: Completed is not selected">
+                    Completed
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-</html>-
+
+<script type="text/javascript" th:src="@{/js/index.js}" async> </script>
+
+</html>

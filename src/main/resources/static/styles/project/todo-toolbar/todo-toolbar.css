@@ -1,0 +1,48 @@
+.todo-toolbar{
+     margin-top:1px;
+     padding:8px;
+
+ }
+     .todo-toolbar:after{
+         content:'';
+         clear: both;
+         display: table;
+     }
+     .todo-toolbar_unready-counter{
+         float:left;
+         margin-right:82px;
+         font-family: 'Helvetica Neue', Arial, sans-serif;
+         font-size: 14px;
+         font-weight: 300;
+         font-style: normal;
+         border:0;
+         background:#fff;
+
+
+     }
+     .todo-toolbar_filters{
+         overflow: hidden;
+         margin:0;
+     }
+         .todo-toolbar_filter{
+             font-family: 'Helvetica Neue', Arial, sans-serif;
+             font-size: 14px;
+             font-weight: 300;
+             font-style: normal;
+             border:0;
+             background:#fff;
+         }
+             .todo-toolbar_filter.__selected{
+                 border:1px solid #ccc;
+                 border-radius:10%;
+             }
+     .todo-toolbar_clear-completed{
+         float: right;
+         margin-left:40px;
+         font-family: 'Helvetica Neue', Arial, sans-serif;
+         font-size: 14px;
+         font-weight: 300;
+         font-style: normal;
+         border:0;
+         background:#fff;
+     }
