@@ -33,17 +33,14 @@ public class Service {
 
     @RequestMapping(value = "/update")
     public @ResponseBody
-    Todo update(@RequestParam long id, @RequestParam String description) {
-        return dao.update(id, description);
+    Todo update(@RequestParam long id, @RequestParam String description, @RequestParam boolean check) {
+        return dao.update(id, description, check);
     }
 
     @RequestMapping(value = "/delete")
     public @ResponseBody
-    String delete(@RequestParam long id) {
-        if (dao.delete(id))
-            return "DONE";
-        else
-            return "ERROR";
+    boolean delete(@RequestParam long id) {
+        return dao.delete(id);
     }
 
     @RequestMapping(value = "/get")

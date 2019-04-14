@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Todos</title>
     <link rel="stylesheet" href="style.css">
+    <script src="crud.js"></script>
 </head>
 
 <body>
@@ -17,22 +18,32 @@
     <p class="todo-header">
         Todos
     </p>
-    <form class="todo-creator" action="/create" method="post">
-        <input class="todo-creator_input" type="text" name="todos" placeholder="Just do it">
-        <input class="todo-creator_create" type="submit" value="create"/>
-    </form>
+
+    <div class="todo-creator">
+        <input class="todo-creator_text" type="text" name="todos" placeholder="Just do it">
+        <input class="todo-creator_button" type="submit" value="create" onclick="onClickCreate()"/>
+    </div>
+
     <ul class="todo-list">
-        <li class="todo-list_item" data-th-each="it : ${data}" th:text="${it.description}">
-            <input class="todo-list-item_checkbox" type="checkbox" checked>
-            <span class="todo-list-item_text">TODOafsaa afsa af af afs afaffasfafasfasfafasfaf</span>
+        <li class="todo-list_item template">
+            <input class="todo-list-item_checkbox" type="checkbox">
+            <span class="todo-list-item_text"></span>
             <input class="todo-list-item_delete" type="button" value="delete">
+        </li>
+
+        <li class="todo-list_item" data-th-each="it : ${data}" th:id="${it.id}">
+            <input class="todo-list-item_checkbox" type="checkbox" th:checked="${it.checked}"
+            onchange="onCheckedBox(this.parentElement.id)">
+            <span class="todo-list-item_text" th:text="${it.description}"></span>
+            <input class="todo-list-item_delete" type="button" value="delete"
+                   onclick="onClickDelete(this.parentElement.id)">
         </li>
     </ul>
 
     <div class="todo-filters">
-        <input class="filter-button" type="button" value="All"/>
-        <input class="filter-button" type="button" value="Checked"/>
-        <input class="filter-button" type="button" value="Unchecked"/>
+        <input class="filter-button" type="button" value="All" onclick="viewAll()"/>
+        <input class="filter-button" type="button" value="Checked" onclick="viewCheck()"/>
+        <input class="filter-button" type="button" value="Unchecked" onclick="viewNotCheck()"/>
     </div>
 </div>
 

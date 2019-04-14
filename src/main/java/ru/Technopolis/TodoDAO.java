@@ -19,10 +19,11 @@ public class TodoDAO {
         return todo;
     }
 
-    Todo update(long id, String description) {
+    Todo update(long id, String description, boolean check) {
         Todo todo = getByID(id);
         if (todo != null) {
             todo.setDescription(description);
+            todo.setChecked(check);
             return todo;
         }
         return null;
