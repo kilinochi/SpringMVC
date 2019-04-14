@@ -3,19 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Todos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!--<p th:align='center' -->
-       <!--th:title="${hello}" -->
-       <!--th:text="${hello}">-->
-        <!--Hello, world!-->
-    <!--</p>-->
+<!--<p th:align='center' -->
+<!--th:title="${hello}" -->
+<!--th:text="${hello}">-->
+<!--Hello, world!-->
+<!--</p>-->
 
-    <p>List</p>
-    <ul>
-        <li data-th-each="it : ${data}" th:text="${it.description}">TODO</li>
+<div class="todo">
+    <p class="todo-header">
+        Todos
+    </p>
+    <form class="todo-creator" action="/create" method="post">
+        <input class="todo-creator_input" type="text" name="todos" placeholder="Just do it">
+        <input class="todo-creator_create" type="submit" value="create"/>
+    </form>
+    <ul class="todo-list">
+        <li class="todo-list_item" data-th-each="it : ${data}" th:text="${it.description}">
+            <input class="todo-list-item_checkbox" type="checkbox" checked>
+            <span class="todo-list-item_text">TODOafsaa afsa af af afs afaffasfafasfasfafasfaf</span>
+            <input class="todo-list-item_delete" type="button" value="delete">
+        </li>
     </ul>
+
+    <div class="todo-filters">
+        <input class="filter-button" type="button" value="All"/>
+        <input class="filter-button" type="button" value="Checked"/>
+        <input class="filter-button" type="button" value="Unchecked"/>
+    </div>
+</div>
+
+
 </body>
 
 </html>

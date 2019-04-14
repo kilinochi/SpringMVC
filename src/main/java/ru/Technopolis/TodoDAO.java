@@ -14,7 +14,7 @@ public class TodoDAO {
 
     Todo create(String description) {
         long id = counter.incrementAndGet();
-        Todo todo = new Todo(id, description);
+        Todo todo = new Todo(id, description, false);
         todos.add(todo);
         return todo;
     }

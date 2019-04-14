@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Fascinate+Inline');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.todo {
+    position: relative;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.todo-header {
+    text-align: center;
+    font-size: 4em;
+    font-family: 'Fascinate Inline', cursive;
+}
+
+.todo-creator {
+    display: flex;
+}
+
+.todo-creator_input {
+    flex-grow: 9;
+}
+
+.todo-creator_create {
+    flex-grow: 1;
+}
+
+.todo-list_item {
+    display: flex;
+    align-items: center;
+}
+
+.todo-list-item_checkbox {
+    flex-grow: 1;
+
+}
+
+.todo-list-item_text {
+    flex-grow: 9;
+}
+
+.todo-list-item_delete {
+    flex-grow: 1;
+}
+
+.todo-filters {
+    display: flex;
+    justify-content: space-evenly;
+}
