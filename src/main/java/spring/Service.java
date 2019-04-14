@@ -32,7 +32,7 @@ public class Service {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public @ResponseBody ToDo[] add(@RequestParam String description) {
+    public @ResponseBody ToDo add(@RequestParam String description) {
         return dao.add(description);
     }
 
@@ -49,6 +49,15 @@ public class Service {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public @ResponseBody ToDo[] delete(@RequestParam int id) {
         return dao.delete(id);
+    }
+
+    @RequestMapping(value = "/changeChecked", method = RequestMethod.GET)
+    public @ResponseBody ToDo changeChecked(@RequestParam int id) {
+        return dao.changeChecked(id);
+    }
+    @RequestMapping(value = "/clearCompleted", method = RequestMethod.GET)
+    public @ResponseBody ToDo[] clearCompleted() {
+        return dao.clearCompleted();
     }
 }
 

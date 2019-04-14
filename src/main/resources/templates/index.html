@@ -14,16 +14,18 @@
     <div class="todo-board __has-content">
 
         <form class="todo-creator">
-            <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
+            <button type="button" class="todo-creator_add_button" aria-label="Add item"></button>
             <div class="todo-creator_text-input-w">
                 <input class="todo-creator_text-input" type="text"  placeholder="New todo name" aria-label="Input new todo text" />
             </div>
         </form>
 
-        <div class="todos-list" th:each="todo: ${toDoList}">
-            <div class="todos-list_item">
+        <div class="todos-list">
+
+            <div class="todos-list_item" th:each="todo: ${toDoList}">
                 <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input type="checkbox" class="custom-checkbox_target todos-list_item_checkbox" aria-label="Mark todo as ready" />
+                    <input type="checkbox" class="custom-checkbox_target todos-list_item_checkbox"
+                           th:checked="todo.checked" aria-label="Mark todo as ready" />
                     <div class="custom-checkbox_visual">
                         <div class="custom-checkbox_visual_icon"></div>
                     </div>
@@ -33,6 +35,7 @@
                     <textarea class="todos-list_item_text" rows="1" readonly th:utext="${todo.description}">HTML</textarea>
                 </div>
             </div>
+
         </div>
 
         <div class="todos-toolbar">
@@ -50,4 +53,7 @@
     </div>
 </div>
 
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+
 </body>
+</html>
