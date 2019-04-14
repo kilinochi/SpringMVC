@@ -17,12 +17,13 @@ public class ToDoDAO {
         toDoHashMap.put(id,toDo);
         return toDo;
     }
-    public ToDo update(long id, String description){
+    public ToDo update(long id, String description, boolean isChecked){
         if (!toDoHashMap.containsKey(id) || description == null){
             return null;
         }
         ToDo toDo = toDoHashMap.get(id);
         toDo.setDescription(description);
+        toDo.setIsChecked(isChecked);
         return toDo;
     }
     public ToDo delete(long id){

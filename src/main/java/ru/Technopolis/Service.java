@@ -26,27 +26,27 @@ public class Service {
         this.dao = dao;
     }
 
-    @RequestMapping( value = "/create", method = RequestMethod.POST)
-    public @ResponseBody /*Превращает в JSON*/
-    ToDo create(@RequestParam String description){
-        return dao.create(description);
+    @RequestMapping ( value = "/todo" , method = RequestMethod.GET )
+    public @ResponseBody
+    Collection<ToDo> getTodo(){
+        return dao.list();
     }
 
-    @RequestMapping( value = "/update", method = RequestMethod.PATCH)
+    @RequestMapping ( value = "/todo", method = RequestMethod.DELETE )
     public @ResponseBody
-    ToDo update(@RequestParam long id, @RequestParam String description){
-        return dao.update(id,description);
-    }
-
-    @RequestMapping( value = "/delete", method = RequestMethod.DELETE)
-    public @ResponseBody
-    ToDo delete(@RequestParam long id){
+    ToDo deleteTodo(@RequestParam long id){
         return dao.delete(id);
     }
 
-    @RequestMapping( value = "/list", method = RequestMethod.GET)
+    @RequestMapping ( value = "/todo", method = RequestMethod.POST )
     public @ResponseBody
-    Collection<ToDo> list(){
-        return dao.list();
+    ToDo createTodo(@RequestParam String description){
+        return dao.create(description);
+    }
+
+    @RequestMapping ( value = "/todo", method = RequestMethod.PUT)
+    public @ResponseBody
+    ToDo updateTodo(@RequestParam long id, @RequestParam String description, @RequestParam boolean isChecked){
+        return dao.update(id, description, isChecked);
     }
 }
