@@ -86,7 +86,7 @@ Vue.component('todo-item', {
             let that = this;
             xhr.open('DELETE', '/todo/'+that.todo.id , true);
             xhr.send(null);
-            that.$emit('deleteItem', that.todo.id);
+            that.$emit('deleteItem',that.todo.id);
         }
     }
 });
@@ -100,7 +100,7 @@ Vue.component('todo-list', {
 
     template:
         '<ul class="todo_list" id="todo-list">' +
-        '<todo-item v-for="todo in state.todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
+            '<todo-item v-for="todo in state.todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
         '</ul>',
 
     created: function () {
@@ -108,6 +108,9 @@ Vue.component('todo-list', {
     },
 
     methods: {
+        deleteItem: function(id) {
+              this.state.slice(id, 1);
+        },
         fetchTodo: function () {
             let that = this;
             let xhr = new XMLHttpRequest();
@@ -122,15 +125,6 @@ Vue.component('todo-list', {
             };
             xhr.open("GET", 'todo', true);
             xhr.send(null);
-        },
-        deleteItem: function (id) {
-            let itemIndex = this.todos.findIndex(function (todo) {
-                return todo.id === id;
-            });
-
-            if (itemIndex >= 0) {
-                this.state.todos.splice(itemIndex, 1);
-            }
         },
     }
 });
