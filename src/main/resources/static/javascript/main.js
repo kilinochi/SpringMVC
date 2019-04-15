@@ -1,20 +1,40 @@
+const state = {
+    todos: [],
+};
+
+
 let formEl = new Vue({
     el: '#todo-add-form',
     data: function () {
         return {
+            state: state,
             inputValue: '',
         }
     },
     methods: {
         postData: function () {
-            axios.post('/todo?description=' + this.inputValue)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            this.inputValue = '';
+            if(this.inputValue === '') {
+                return;
+            }
+
+            const that = this;
+            let xhr = new XMLHttpRequest();
+            let formData = new FormData();
+            formData.append("description", this.inputValue);
+            xhr.open('POST', '/todo', true);
+            xhr.send(formData);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const item = JSON.parse(xhr.responseText);
+                        that.state.todos.push(item);
+                        that.inputValue = '';
+                    }
+                } else {
+                    console.log('NOT READY YET')
+                }
+            };
         }
     }
 });
@@ -56,29 +76,18 @@ Vue.component('todo-item', {
         }, 500),
 
         updateItem: function() {
-            axios.put('/todo/' + this.todo.id+'?description='+this.todo.description)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (response) {
-                    console.log(response);
-                })
+            formData.append("description", this.todo.description);
+            xhr.open('PUT', '/todo/'+this.todo.id , true);
+            xhr.send(formData);
         },
         removeItem: function () {
             let that = this;
 
             this.loading = true;
-
-            axios.delete('/todo/' + this.todo.id)
-                .then(function (response) {
-                    that.$emit('deleteItem', that.todo.id);
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-                .finally(function () {
-                    that.loading = false;
-                });
+            xhr.open('DELETE', '/todo/'+that.todo.id , true);
+            xhr.send(null);
+            that.$emit('deleteItem', that.todo.id);
+            this.loading = false;
         }
     }
 });
@@ -86,13 +95,13 @@ Vue.component('todo-item', {
 Vue.component('todo-list', {
     data: function () {
         return {
-            todos: []
+            state: state,
         }
     },
 
     template:
         '<ul class="todo_list" id="todo-list">' +
-        '<todo-item v-for="todo in todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
+        '<todo-item v-for="todo in state.todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
         '</ul>',
 
     created: function () {
@@ -102,23 +111,26 @@ Vue.component('todo-list', {
     methods: {
         fetchTodo: function () {
             let that = this;
-
-            axios.get('/todo')
-                .then(function (response) {
-                    that.todos = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        that.state.todos = JSON.parse(xhr.responseText);
+                    }
+                } else {
+                    console.log('NOT READY YET')
+                }
+            };
+            xhr.open("GET", 'todo', true);
+            xhr.send(null);
         },
-
         deleteItem: function (id) {
-            var itemIndex = this.todos.findIndex(function (todo) {
+            let itemIndex = this.todos.findIndex(function (todo) {
                 return todo.id === id;
             });
 
             if (itemIndex >= 0) {
-                this.todos.splice(itemIndex, 1);
+                this.state.todos.splice(itemIndex, 1);
             }
         },
     }
