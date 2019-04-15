@@ -45,11 +45,7 @@ public class ToDoAjaxController {
         try {
             service.delete(id);
         } catch (RuntimeException re) {
-<<<<<<< HEAD
             System.out.println(re.getMessage());
-=======
-            //TODO:что делать в случае исключения???
->>>>>>> c18953f... HW3
         }
         return id;
     }
@@ -67,11 +63,7 @@ public class ToDoAjaxController {
         try {
             service.update(toDo);
         } catch (RuntimeException re) {
-<<<<<<< HEAD
             System.out.println(re.getMessage());
-=======
-            //TODO:что делать в случае исключения???
->>>>>>> c18953f... HW3
         }
         return toDo;
     }
