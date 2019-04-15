@@ -42,8 +42,8 @@ public class Service {
 
    @RequestMapping(value = "/update")
    public @ResponseBody
-   ToDo update(@RequestParam long id, @RequestParam String description, @RequestParam boolean checked) {
-      return dao.update(id, description, checked);
+   ToDo update(@RequestParam long id, @RequestParam String description) {
+      return dao.update(id, description);
    }
 
    @RequestMapping(value = "/delete")

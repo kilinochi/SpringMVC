@@ -26,8 +26,11 @@
                         <input type="checkbox" class="todo-item__checkbox">
                         <span class="todo-item__checkbox-mark"></span>
                     </span>
-                    <span class="todo-item__text">[text]</span>
-                    <button class="todo-item__button"></button>
+                    <span class="todo-item__text" onblur="saveTextAfterEdit(this, this.textContent, this.parentElement.id)"
+                    onkeypress="editKeyPressed(event, this)">[text]</span>
+<!--                    <textarea class="todo-item__text"></textarea>-->
+                    <button class="todo-item__edit-button" onclick="onEditClick(this.parentElement.id)"></button>
+                    <button class="todo-item__delete-button" onclick="deleteTaskById(this.parentElement.id)"></button>
                 </li>
 
                 <li class="todo-item" th:each="toDoItem: ${toDoItems}"
@@ -39,8 +42,11 @@
                                    onchange="changeCheckedState(this.parentElement.parentElement.id, this.parentElement.parentElement, this)">
                             <span class="todo-item__checkbox-mark"></span>
                         </span>
-                    <span class="todo-item__text" th:utext="${toDoItem.getDescription()}">[default]</span>
-                    <button class="todo-item__button" onclick="deleteTaskById(this.parentElement.id)"></button>
+                    <span class="todo-item__text" onkeypress="editKeyPressed(event, this)"
+                          th:utext="${toDoItem.getDescription()}" onblur="saveTextAfterEdit(this, this.textContent, this.parentElement.id)">[default]</span>
+<!--                    <textarea class="todo-item__text" th:utext="${toDoItem.getDescription()}"></textarea>-->
+                    <button class="todo-item__edit-button" onclick="onEditClick(this.parentElement.id)"></button>
+                    <button class="todo-item__delete-button" onclick="deleteTaskById(this.parentElement.id)"></button>
                 </li>
                 <li class="todo-list__emptyFiller">No more tasks! Go get some sleep!</li>
 

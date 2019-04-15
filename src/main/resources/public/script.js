@@ -31,7 +31,7 @@ function sendPostRequest(path, args, handlerMethod) {
             if (request.status === 200) {
                 handlerMethod(request);
             } else {
-                alert("Ошибка при обработке запроса")
+                alert("Ошибка при обработке запроса");
             }
         } else {
             //загрузка
@@ -111,8 +111,10 @@ function addNewTask(isChecked, description, id) {
         taskClone.classList.add('todo-item__Checked');
         checkbox.checked = true;
     }
-    var button = taskClone.getElementsByClassName('todo-item__button')[0];
-    button.onclick = deleteTaskByEvent;
+    // var deleteButton = taskClone.getElementsByClassName('todo-item__delete-button')[0];
+    // deleteButton.onclick = deleteTaskByEvent;
+    // var editButton = taskClone.getElementsByClassName('todo-item__edit-button')[0];
+    // editButton.onclick = onEditClickEvent;
     taskClone.id = id;
     checkbox.onchange = changeCheckedStateByEvent;
     var parent = document.querySelector('.todo-list > ul');
@@ -141,8 +143,9 @@ function filterAll() {
     var nodes = document.querySelectorAll(".todo-item");
     var items = Array.from(nodes);
     items.forEach(function (item) {
-        if (item.classList.contains("template"))
+        if (item.classList.contains("template")) {
             return;
+        }
         showItem(item);
     })
 }
@@ -151,8 +154,9 @@ function filterChecked() {
     var nodes = document.querySelectorAll(".todo-item");
     var items = Array.from(nodes);
     items.forEach(function (item) {
-        if (item.classList.contains("template"))
+        if (item.classList.contains("template")) {
             return;
+        }
         var checkbox = item.querySelector('.todo-item__checkbox');
         if (checkbox.checked) {
             showItem(item);
@@ -166,8 +170,9 @@ function filterUnChecked() {
     var nodes = document.querySelectorAll(".todo-item");
     var items = Array.from(nodes);
     items.forEach(function (item) {
-        if (item.classList.contains("template"))
+        if (item.classList.contains("template")) {
             return;
+        }
         var checkbox = item.querySelector('.todo-item__checkbox');
         if (!checkbox.checked) {
             showItem(item);
@@ -178,13 +183,48 @@ function filterUnChecked() {
 }
 
 function hideItem(item) {
-    if (!item.classList.contains("hidden")){
+    if (!item.classList.contains("hidden")) {
         item.classList.add("hidden");
     }
 }
 
 function showItem(item) {
-    if (item.classList.contains("hidden")){
+    if (item.classList.contains("hidden")) {
         item.classList.remove("hidden");
     }
+}
+
+function onEditClick(id) {
+    var task = document.getElementById(id);
+    var textField = task.querySelector(".todo-item__text");
+    textField.contentEditable = 'true';
+    textField.focus();
+
+    //Не знаю как задать курсор на конец текста (:I)
+
+    // var text = textField.textContent;
+    // textField.innerHTML = '';
+    // textField.innerHTML = text;
+}
+
+function sendUpdateRequest(id, text) {
+    var data = new FormData();
+    data.append("id", id);
+    data.append("description", text);
+    sendPostRequest("/update", data, handleEditRequest);
+}
+
+function handleEditRequest() {
+    //do nothing?
+}
+
+function editKeyPressed(event, textField) {
+    if (event.keyCode === 13){
+        textField.blur();
+    }
+}
+
+function saveTextAfterEdit(textField, text, id) {
+    textField.contentEditable = 'false';
+    sendUpdateRequest(id, text);
 }

@@ -28,11 +28,12 @@ public class ToDoDAO {
       return newTodo;
    }
 
-   public ToDo update(long id, String description, boolean checked) {
+   public ToDo update(long id, String description) {
       if (!values.containsKey(id)) {
          return null;
       }
-      ToDo todo = new ToDo(id, description, checked);
+      ToDo old = values.get(id);
+      ToDo todo = new ToDo(id, description, old.getChecked());
       values.replace(id, todo);
       return todo;
    }
