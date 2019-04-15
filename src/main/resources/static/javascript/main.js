@@ -109,7 +109,7 @@ Vue.component('todo-list', {
 
     methods: {
         deleteItem: function (id) {
-            var itemIndex = this.state.findIndex(function (todo) {
+            var itemIndex = this.state.todos.findIndex(function (todo) {
                 return todo.id === id;
             });
 
