@@ -3,6 +3,11 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: "Courier New", "Arial", sans-serif;
+    }
+
+body {
+    background-color: dodgerblue;
     }
 
 ul {
@@ -12,6 +17,7 @@ ul {
 .todo {
     position: relative;
     width: 60%;
+
     margin-left: auto;
     margin-right: auto;
     }
@@ -27,41 +33,111 @@ ul {
     }
 
 .todo-creator_text {
-    flex-grow: 9;
+    flex: 9 1 90%;
+    border: 0;
+    padding: 5px;
+    font-size: 1.2em;
+    background: white;
+    font-family: "Courier New", "Arial", sans-serif;
     }
 
 .todo-creator_button {
-    flex-grow: 1;
+    flex: 1 9 10%;
+    border: none;
+    background-color: black;
+    color: white;
+    }
+.todo-creator_button:hover {
+    background-color: lightblue;
+    }
+.todo-creator_button:active {
+    background-color: dodgerblue;
+    }
+
+.todo-list {
+    max-height: 500px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    }
+
+.todo-list:hover {
+    overflow: auto;
     }
 
 .todo-list_item {
     display: flex;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    /*background-color: white;*/
+    height: auto;
     }
 
-.todo-list_item:last-child {
-    margin-bottom: 0;
+.todo-list:first-child {
+    margin-top: 0;
     }
 
 .todo-list-item_checkbox {
-    flex: 0 0 10%;
+    flex: 1 9 10%;
+    border-radius: 0;
+    height: 28px;
+    align-self: center;
+    background-color: transparent;
     }
 
 .todo-list-item_text {
-    flex: 0 0 80%;
+    flex: 8 2 80%;
     resize: none;
-    max-height: 400px;
-    overflow: auto;
+    min-height: auto;
+    word-break: break-word;
+    max-height: 200px;
+    padding: 5px;
+    overflow: hidden;
     border: none;
+    background-color: white;
+    }
+
+.todo-list-item_text:focus,
+.todo-list-item_text:hover {
+    overflow: auto;
+    overflow-x: hidden;
     }
 
 .todo-list-item_delete {
-    flex: 0 0 10%;
+    flex: 1 9 10%;
+    opacity: 0;
+    border: none;
+    background-color: black;
+    color: white;
+    }
+.todo-list-item_delete:hover {
+    background-color: lightblue;
+    }
+.todo-list-item_delete:active {
+    background-color: dodgerblue;
+    }
+
+.todo-list_item:hover > .todo-list-item_delete,
+.todo-list-item_delete:focus {
+    opacity: 1;
     }
 
 .todo-filters {
     display: flex;
     justify-content: space-evenly;
+    }
+
+.filter-button {
+    border: 0;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    }
+
+.filter-button:hover {
+    background-color: lightblue;
+    }
+.filter-button:active {
+    background-color: dodgerblue;
     }
 
 .template {

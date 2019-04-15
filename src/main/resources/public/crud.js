@@ -57,13 +57,7 @@ function addNewTask(request) {
     var newItem = item.cloneNode(true);
 
     newItem.id = responseData.id;
-    newItem.className = "todo-list_item";
-    newItem.addEventListener('mouseover', function (evt) {
-       showButtonDelete(this)
-    });
-    newItem.addEventListener('mouseout', function (evt) {
-       hideButtonDelete(this)
-    });
+    newItem.classList.remove("template");
 
     var checkbox = newItem.getElementsByClassName("todo-list-item_checkbox")[0];
     checkbox.checked = responseData.checked;
@@ -72,10 +66,7 @@ function addNewTask(request) {
     });
 
     var inputText = newItem.getElementsByClassName("todo-list-item_text")[0];
-    inputText.value = responseData.description;
-    inputText.addEventListener('focus', function (evt) {
-        showButtonDelete(evt.target.parentElement);
-    });
+    inputText.textContent = responseData.description;
     inputText.addEventListener('blur', function (evt) {
         onChangeDescription(evt.target.parentElement.id)
     });
@@ -83,9 +74,6 @@ function addNewTask(request) {
     var  btnDelete = newItem.getElementsByClassName("todo-list-item_delete")[0];
     btnDelete.addEventListener('click', function (evt) {
         onClickDelete(evt.target.parentElement.id)
-    });
-    btnDelete.addEventListener('blur', function (evt) {
-        hideButtonDelete(evt.target.parentElement)
     });
 
     var parent = document.getElementsByClassName("todo-list")[0];
@@ -121,24 +109,14 @@ function onChangeDescription(id) {
     var task = document.getElementById(id);
     var data = new FormData();
     data.append("id", id);
-    data.append("description", task.getElementsByClassName("todo-list-item_text")[0].value);
+    data.append("description", task.getElementsByClassName("todo-list-item_text")[0].textContent);
     data.append("check", task.getElementsByClassName("todo-list-item_checkbox")[0].checked);
     sendPost("/update", data, function (request) {
         var responseData = eval("(" + request.responseText + ")");
         var changedTask = document.getElementById(responseData.id);
-        changedTask.getElementsByClassName("todo-list-item_text")[0].value = responseData.description;
+        changedTask.getElementsByClassName("todo-list-item_text")[0].textContent = responseData.description;
         console.log("Changed!");
     })
-}
-
-function showButtonDelete(item) {
-    var btnDelete = item.getElementsByClassName("todo-list-item_delete")[0];
-    showItem(btnDelete)
-}
-
-function hideButtonDelete(item) {
-    var btnDelete = item.getElementsByClassName("todo-list-item_delete")[0];
-    hideItem(btnDelete, "invisible");
 }
 
 function viewAll() {
