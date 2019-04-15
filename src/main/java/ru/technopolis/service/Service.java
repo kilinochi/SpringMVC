@@ -1,15 +1,15 @@
-package ru.Technopolis.service;
+package ru.technopolis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ru.Technopolis.model.ToDo;
-import ru.Technopolis.model.ToDoDAO;
+import ru.technopolis.model.ToDo;
+import ru.technopolis.model.ToDoDAO;
+
 
 @Controller
 public class Service {
@@ -33,6 +33,12 @@ public class Service {
         return dao.delete(id);
     }
 
+    @RequestMapping(value = "/delete_mark", method = RequestMethod.DELETE)
+    public @ResponseBody
+    String deleteMarked() {
+        return dao.deleteMark();
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     ToDo create(String description) {
@@ -51,4 +57,9 @@ public class Service {
         return dao.read();
     }
 
+    @RequestMapping(value = "/mark", method = RequestMethod.PUT)
+    public @ResponseBody
+    void setMark(long id, boolean mark) {
+        dao.setMark(id, mark);
+    }
 }

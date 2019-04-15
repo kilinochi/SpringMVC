@@ -1,7 +1,4 @@
-package ru.Technopolis.model;
-
-
-import java.util.Random;
+package ru.technopolis.model;
 
 public class ToDo {
     private final long id;
@@ -11,7 +8,7 @@ public class ToDo {
     public ToDo(long id, String description) {
         this.id = id;
         this.description = description;
-        mark = new Random().nextBoolean();
+        mark = false;
     }
 
     public long getId() {
