@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Todo MVC</title>
+    <title>Spring MVC</title>
     <link rel="stylesheet" href="styles/default.css" />
+    <script src="scripts/actions.js"></script>
 </head>
 <body>
+
 
 <div class="main-layout">
 
@@ -13,73 +15,35 @@
 
     <div class="todo-board __has-content">
 
-        <form class="todo-creator">
+        <form class="todo-creator" method="post" action="/create">
             <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
             <div class="todo-creator_text-input-w">
-                <input class="todo-creator_text-input" type="text"  placeholder="New todo name" aria-label="Input new todo text" />
+                <input class="todo-creator_text-input" type="text" name="description" placeholder="New todo name" aria-label="Input new todo text" />
             </div>
         </form>
 
         <div class="todos-list">
             <div class="todos-list_item">
 
-                <div class="todos-list_item_1">
+                <div class="todos-list_item_1" th:each="toDo: ${toDoDao.getToDoList()}" th:id="${toDo.getId()}">
                 <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" />
+                    <input type="checkbox" th:checked="${toDo.isChecked()}" class="custom-checkbox_target" aria-label="Mark todo as ready"
+                    onchange="changeCheckbox(this.parentElement.parentElement.id, this.parentElement.parentElement, this)"/>
                     <div class="custom-checkbox_visual">
                         <div class="custom-checkbox_visual_icon"></div>
                     </div>
                 </div>
-                <button class="todos-list_item_remove" aria-label="Delete todo"></button>
+                    <button class="todos-list_item_remove" aria-label="Delete todo"
+                    onclick="deleteToDo(this.parentElement.id)"></button>
                 <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" rows="1" readonly aria-label="Todo item">HTML</textarea>
-                </div>
-                </div>
-
-                <div class="todos-list_item_2">
-                <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input type="checkbox" checked class="custom-checkbox_target" aria-label="Mark todo as ready" />
-                    <div class="custom-checkbox_visual">
-                        <div class="custom-checkbox_visual_icon"></div>
-                    </div>
-                </div>
-                <button class="todos-list_item_remove" aria-label="Delete todo"></button>
-                <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" rows="1" readonly aria-label="Todo item">CSS</textarea>
-                </div>
-                </div>
-
-                <div class="todos-list_item_3">
-                <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" />
-                    <div class="custom-checkbox_visual">
-                        <div class="custom-checkbox_visual_icon"></div>
-                    </div>
-                </div>
-                <button class="todos-list_item_remove" aria-label="Delete todo"></button>
-                <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" rows="1" readonly aria-label="Todo item">JS</textarea>
-                </div>
-                </div>
-
-
-                <div class="todos-list_item_4">
-                <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" />
-                    <div class="custom-checkbox_visual">
-                        <div class="custom-checkbox_visual_icon"></div>
-                    </div>
-                </div>
-                <button class="todos-list_item_remove" aria-label="Delete todo"></button>
-                <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" rows="1" readonly aria-label="Todo item">JS tools</textarea>
+                    <textarea class="todos-list_item_text" th:text="${toDo.getDescription()}" rows="1" readonly aria-label="Todo item">HTML</textarea>
                 </div>
                 </div>
 
         </div>
 
         <div class="todos-toolbar">
-            <div class="todos-toolbar_unready-counter" aria-label="Items are left">3 items left</div>
+            <div class="todos-toolbar_unready-counter" on th:text="${toDoDao.countUnchecked() + ' items left'}" aria-label="Items are left"></div>
 
             <div class="filters todos-toolbar_filters">
                 <button class="filters-item __selected" aria-label="Filter: All, is selected">All</button>
@@ -87,7 +51,9 @@
                 <button class="filters-item" aria-label="Filter: Completed">Completed</button>
             </div>
 
-            <button class="todos-toolbar_clear-completed">Clear completed</button>
+            <form method="post" action="/deleteAllChecked">
+                <button class="todos-toolbar_clear-completed">Clear completed</button>
+            </form>
 
         </div>
 
@@ -95,3 +61,4 @@
 </div>
 </div>
 </body>
+</html>

@@ -2,10 +2,8 @@ package ru.Technopolis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.Technopolis.model.ToDo;
 import ru.Technopolis.model.ToDoDAO;
 
@@ -18,10 +16,12 @@ import java.util.ListIterator;
 public class Service {
 
     private ToDoDAO dao;
-    private List<ToDo> ToDoList = new ArrayList<>();
 
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) {
+        //model.addAttribute("hello", "welcome to the page");
+        //model.addAttribute("toDoList", dao.getToDoList());
+        model.addAttribute("toDoDao", dao);
         return "index";
     }
 
@@ -30,62 +30,47 @@ public class Service {
         this.dao = dao;
     }
 
-    @RequestMapping( value = "/create", method = {RequestMethod.POST, RequestMethod.GET})
+
+    @RequestMapping( value = "/create", method = RequestMethod.POST)
     public @ResponseBody /*Превращает в JSON*/
     boolean create(@RequestParam String description) {
-        try {
-            ToDoList.add(dao.create(description));
-        }
-        catch (Exception e) {
-            return false;
-        }
-
-        return true;
+        return dao.create(description);
     }
 
     @RequestMapping(value = "/update", method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     boolean update(@RequestParam long id, @RequestParam String description) {
-        ListIterator it = ToDoList.listIterator();
-        while (it.hasNext()) {
-            if (((ToDo)it.next()).getId() == id) {
-                it.set(dao.create(description));
-                return true;
-            }
-        }
-        return false;
+        return dao.update(id, description);
     }
 
-    @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
+    @RequestMapping(value = "/delete", method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
     boolean delete(@RequestParam long id) {
-        Iterator it = ToDoList.iterator();
-        while (it.hasNext()) {
-            if (((ToDo)it.next()).getId() == id) {
-                it.remove();
-                return true;
-            }
-        }
-        return false;
+        return dao.delete(id);
     }
 
     @RequestMapping(value = "/deleteDesc", method = {RequestMethod.DELETE, RequestMethod.GET})
     public @ResponseBody
     boolean delete(@RequestParam String description) {
-        Iterator it = ToDoList.iterator();
-        while (it.hasNext()) {
-            if (((ToDo)it.next()).getDescription().equals(description)) {
-                it.remove();
-                return true;
-            }
-        }
-        return false;
+        return dao.delete(description);
+    }
+
+    @RequestMapping(value = "/deleteAllChecked", method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    boolean delete() {
+        return dao.deleteAllChecked();
     }
 
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public @ResponseBody
     ToDo[] get() {
-        return ToDoList.toArray(new ToDo[ToDoList.size()]);
+        return dao.getToDoList();
+    }
+
+    @RequestMapping(value = "/changeState", method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    boolean changeState(@RequestParam long id, @RequestParam boolean stateCheckbox) {
+        return dao.changeCheckbox(id, stateCheckbox);
     }
 }
