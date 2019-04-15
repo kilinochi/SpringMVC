@@ -108,8 +108,14 @@ Vue.component('todo-list', {
     },
 
     methods: {
-        deleteItem: function(id) {
-              this.state.slice(id, 1);
+        deleteItem: function (id) {
+            var itemIndex = this.todos.findIndex(function (todo) {
+                return todo.id === id;
+            });
+
+            if (itemIndex >= 0) {
+                this.todos.splice(itemIndex, 1);
+            }
         },
         fetchTodo: function () {
             let that = this;
