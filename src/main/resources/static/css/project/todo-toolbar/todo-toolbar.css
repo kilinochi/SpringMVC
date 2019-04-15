@@ -1,0 +1,28 @@
+
+.todo-toolbar {
+    display:flex;
+    padding:10px;
+    margin-top:50px;
+    border-top:#DCDCDC solid 1px;
+    }
+        .todo-toolbar_unready-counter{
+            color:#808080;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 12px;
+            position:relative;
+            top:4px;
+            }
+
+        .todo-toolbar_filters{
+            margin:auto;
+        }
+
+        .todo-toolbar_clear-completed{
+            float:right;
+            border: none;
+            outline:none;
+            background:none;
+            color:#808080;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 12px;
+        }

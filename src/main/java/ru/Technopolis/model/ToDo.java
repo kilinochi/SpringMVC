@@ -1,18 +1,29 @@
 package ru.Technopolis.model;
 
 
-public class ToDo {
+import java.io.Serializable;
+
+public class ToDo implements Serializable {
 
     private long id;
     private String description;
+    private boolean isDone;
 
-    public ToDo(){
-
+    public ToDo() {
     }
 
-    public ToDo(long id, String description) {
+    public ToDo(long id, String description, boolean isDone) {
         this.id = id;
         this.description = description;
+        this.isDone = isDone;
+    }
+
+    public boolean getIsDone() {
+        return isDone;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
     }
 
     public long getId() {
