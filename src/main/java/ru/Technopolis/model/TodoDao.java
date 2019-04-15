@@ -50,14 +50,16 @@ public class TodoDao {
     }
 
     /**
-     * Update a todo_item by id
+     * Updates todo_item by id using NOT NULL fields in request/
      *
      * @return updated todo_item or null if an item with this id doesn't not exist
      */
     public Todo update(long id, TodoRequest request) {
         Todo todo = todos.getOrDefault(id, null);
         if (todo != null) {
-            todo.setDescription(request.getDescription());
+            if (request.getDescription() != null) {
+                todo.setDescription(request.getDescription());
+            }
             todo.setCompleted(request.isChecked());
         }
         return todo;
@@ -72,5 +74,12 @@ public class TodoDao {
         Todo todo = getById(id);
         todos.remove(id);
         return todo;
+    }
+
+    public Collection<Todo> markAllAsDone() {
+        for (Todo todo : todos.values()) {
+            todo.setCompleted(true);
+        }
+        return todos.values();
     }
 }

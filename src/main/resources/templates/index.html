@@ -1,9 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>TODO MVC</title>
     <link rel="stylesheet" href="styles/index.css">
+
+
+    <script type="text/html" id="todoItemTemplate">
+        <div class="todos-list_item {checked ? __checked :  }">
+            <div class="custom-checkbox todos-list_item_ready-marker">
+                <input type="checkbox" class="custom-checkbox_target jsTodoCheckbox" {checked ? checked :  } aria-label="Mark todo as ready" />
+                <div class="custom-checkbox_visual">
+                    <div class="custom-checkbox_visual_icon"></div>
+                </div>
+            </div>
+            <div class="remove-button todos-list_item_remove">
+                <button class="remove-button_target jsTodoRemove" aria-label="Delete todo"></button>
+                <div class="remove-button_icon"></div>
+            </div>
+            <div class="todos-list_item_text-w">
+                <div class="todos-list_item_text">{text}</div>
+            </div>
+        </div>
+    </script>
+
 </head>
 <body>
 
@@ -14,31 +34,16 @@
 
     <div class="todo-board __has-content">
 
-        <form class="todo-creator">
-            <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
-            <div class="todo-creator_text-input-w">
-                <input class="todo-creator_text-input" type="text" placeholder="What needs to be done?"
+        <div class="todo-creator">
+            <button class="todo-creator_check-all jsTodoCheckAllAsDone" aria-label="Check all items as done"></button>
+            <form class="todo-creator_text-input-w">
+                <input class="todo-creator_text-input jsTodoText" type="text" placeholder="What needs to be done?"
                        aria-label="Input new todo name"/>
-            </div>
-
-        </form>
+            </form>
+        </div>
 
         <div class="todos-list">
-            <div th:each="todo: ${todos}" th:class="${todo.completed ? 'todos-list_item __checked' : 'todos-list_item'}">
-                <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready" th:checked="${todo.completed}"/>
-                    <div class="custom-checkbox_visual">
-                        <div class="custom-checkbox_visual_icon"></div>
-                    </div>
-                </div>
-                <div class="remove-button todos-list_item_remove">
-                    <button class="remove-button_target" aria-label="Delete todo"></button>
-                    <div class="remove-button_icon"></div>
-                </div>
-                <div class="todos-list_item_text-w">
-                    <div class="todos-list_item_text" th:text="${todo.description}">HTML</div>
-                </div>
-            </div>
+            <!-- JS generated -->
         </div>
 
         <div class="todos-toolbar">
@@ -54,6 +59,8 @@
     </div>
 
 </div>
+
+<script type="module" src="js/index.js"></script>
 
 </body>
 </html>

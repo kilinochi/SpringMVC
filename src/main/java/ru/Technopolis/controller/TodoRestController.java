@@ -41,6 +41,11 @@ public class TodoRestController {
         return new ResponseEntity<>(todoDAO.create(request), HttpStatus.CREATED);
     }
 
+    @PutMapping()
+    public Collection<Todo> markAllAsDone() {
+        return todoDAO.markAllAsDone();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Todo> updateTodo(@PathVariable("id") long id, @RequestBody TodoRequest request) {
         Todo todo = todoDAO.update(id, request);
