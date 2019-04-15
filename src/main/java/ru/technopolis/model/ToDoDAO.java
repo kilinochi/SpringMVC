@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class ToDoDAO {
     private List<ToDo> toDos = Collections.synchronizedList(new ArrayList<>());
-    private AtomicLong id = new AtomicLong(0);
+    private static AtomicLong id = new AtomicLong(0);
 
     public ToDoDAO() {
         toDos.add(new ToDo(id.getAndIncrement(), "a"));
