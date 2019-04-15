@@ -57,14 +57,35 @@ function addNewTask(request) {
     var newItem = item.cloneNode(true);
 
     newItem.id = responseData.id;
-    newItem.getElementsByClassName("todo-list-item_checkbox")[0].checked = responseData.checked;
-    newItem.getElementsByClassName("todo-list-item_checkbox")[0].addEventListener('change', function (evt) {
+    newItem.className = "todo-list_item";
+    newItem.addEventListener('mouseover', function (evt) {
+       showButtonDelete(this)
+    });
+    newItem.addEventListener('mouseout', function (evt) {
+       hideButtonDelete(this)
+    });
+
+    var checkbox = newItem.getElementsByClassName("todo-list-item_checkbox")[0];
+    checkbox.checked = responseData.checked;
+    checkbox.addEventListener('change', function (evt) {
         onCheckedBox(evt.target.parentElement.id)
     });
-    newItem.getElementsByClassName("todo-list-item_text")[0].textContent = responseData.description;
-    newItem.className = "todo-list_item";
-    newItem.getElementsByClassName("todo-list-item_delete")[0].addEventListener('click', function (evt) {
+
+    var inputText = newItem.getElementsByClassName("todo-list-item_text")[0];
+    inputText.value = responseData.description;
+    inputText.addEventListener('focus', function (evt) {
+        showButtonDelete(evt.target.parentElement);
+    });
+    inputText.addEventListener('blur', function (evt) {
+        onChangeDescription(evt.target.parentElement.id)
+    });
+
+    var  btnDelete = newItem.getElementsByClassName("todo-list-item_delete")[0];
+    btnDelete.addEventListener('click', function (evt) {
         onClickDelete(evt.target.parentElement.id)
+    });
+    btnDelete.addEventListener('blur', function (evt) {
+        hideButtonDelete(evt.target.parentElement)
     });
 
     var parent = document.getElementsByClassName("todo-list")[0];
@@ -90,9 +111,34 @@ function onCheckedBox(id) {
     data.append("check", isChecked);
     sendPost("/update", data, function (request) {
         var responseData = eval("(" + request.responseText + ")");
-        taskToChecked.getElementsByClassName("todo-list-item_checkbox")[0].checked = responseData.checked;
+        var task = document.getElementById(responseData.id);
+        task.getElementsByClassName("todo-list-item_checkbox")[0].checked = responseData.checked;
         console.log("Checked!");
     });
+}
+
+function onChangeDescription(id) {
+    var task = document.getElementById(id);
+    var data = new FormData();
+    data.append("id", id);
+    data.append("description", task.getElementsByClassName("todo-list-item_text")[0].value);
+    data.append("check", task.getElementsByClassName("todo-list-item_checkbox")[0].checked);
+    sendPost("/update", data, function (request) {
+        var responseData = eval("(" + request.responseText + ")");
+        var changedTask = document.getElementById(responseData.id);
+        changedTask.getElementsByClassName("todo-list-item_text")[0].value = responseData.description;
+        console.log("Changed!");
+    })
+}
+
+function showButtonDelete(item) {
+    var btnDelete = item.getElementsByClassName("todo-list-item_delete")[0];
+    showItem(btnDelete)
+}
+
+function hideButtonDelete(item) {
+    var btnDelete = item.getElementsByClassName("todo-list-item_delete")[0];
+    hideItem(btnDelete, "invisible");
 }
 
 function viewAll() {
@@ -116,9 +162,9 @@ function viewCheck() {
             return;
         }
         if (item.getElementsByClassName("todo-list-item_checkbox")[0].checked) {
-            showItem(item);
+            showItem(item, "none");
         } else {
-            hideItem(item);
+            hideItem(item, "none");
         }
     })
 }
@@ -132,22 +178,32 @@ function viewNotCheck() {
             return;
         }
         if (!item.getElementsByClassName("todo-list-item_checkbox")[0].checked) {
-            showItem(item);
+            showItem(item, "none");
         } else {
-            hideItem(item);
+            hideItem(item, "none");
         }
     })
 }
 
-function hideItem(item) {
-    if (!item.classList.contains("hidden")) {
-        item.classList.add("hidden");
+function hideItem(item, typeVisibility) {
+    if (typeVisibility === "none") {
+        if (!item.classList.contains("hidden")) {
+            item.classList.add("hidden");
+        }
     }
+    if (typeVisibility === "invisible"){
+        if (!item.classList.contains("invisible")) {
+            item.classList.add("invisible");
+        }
+    } 
 }
 
 function showItem(item) {
     if (item.classList.contains("hidden")) {
         item.classList.remove("hidden");
     }
+    if (item.classList.contains("invisible")) {
+        item.classList.remove("invisible");
+    } 
 }
 

@@ -27,16 +27,21 @@
     <ul class="todo-list">
         <li class="todo-list_item template">
             <input class="todo-list-item_checkbox" type="checkbox">
-            <span class="todo-list-item_text"></span>
-            <input class="todo-list-item_delete" type="button" value="delete">
+            <textarea class="todo-list-item_text"></textarea>
+            <input class="todo-list-item_delete invisible" type="button" value="delete">
         </li>
 
-        <li class="todo-list_item" data-th-each="it : ${data}" th:id="${it.id}">
+        <li class="todo-list_item" data-th-each="it : ${data}" th:id="${it.id}"
+            onmouseover="showButtonDelete(this)"
+            onmouseout="hideButtonDelete(this)">
             <input class="todo-list-item_checkbox" type="checkbox" th:checked="${it.checked}"
-            onchange="onCheckedBox(this.parentElement.id)">
-            <span class="todo-list-item_text" th:text="${it.description}"></span>
-            <input class="todo-list-item_delete" type="button" value="delete"
-                   onclick="onClickDelete(this.parentElement.id)">
+                   onchange="onCheckedBox(this.parentElement.id)">
+            <textarea class="todo-list-item_text" th:text="${it.description}"
+                      onfocus="showButtonDelete(this.parentElement)"
+                      onblur="onChangeDescription(this.parentElement.id)"></textarea>
+            <input class=" todo-list-item_delete invisible" type="button" value="delete"
+                   onclick="onClickDelete(this.parentElement.id)"
+                   onblur="hideButtonDelete(this.parentElement)">
         </li>
     </ul>
 

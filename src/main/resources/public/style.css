@@ -5,6 +5,10 @@
     margin: 0;
     }
 
+ul {
+    list-style: none;
+    }
+
 .todo {
     position: relative;
     width: 60%;
@@ -12,14 +16,10 @@
     margin-right: auto;
     }
 
-ul {
-    list-style: none;
-    }
-
 .todo-header {
     text-align: center;
     font-size: 4em;
-    font-family: 'Fascinate Inline', cursive;
+    font-family: 'Fascinate Inline', 'Arial', cursive;
     }
 
 .todo-creator {
@@ -36,6 +36,11 @@ ul {
 
 .todo-list_item {
     display: flex;
+    margin-bottom: 10px;
+    }
+
+.todo-list_item:last-child {
+    margin-bottom: 0;
     }
 
 .todo-list-item_checkbox {
@@ -44,6 +49,10 @@ ul {
 
 .todo-list-item_text {
     flex: 0 0 80%;
+    resize: none;
+    max-height: 400px;
+    overflow: auto;
+    border: none;
     }
 
 .todo-list-item_delete {
@@ -61,4 +70,8 @@ ul {
 
 .hidden {
     display: none;
+    }
+
+.invisible {
+    visibility: hidden;
     }
