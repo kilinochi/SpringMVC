@@ -10,7 +10,7 @@ import ru.Technopolis.dao.ToDoDAOImpl;
 import ru.Technopolis.model.ToDo;
 
 @Component
-public class ToDoServiceImpl{
+public class ToDoServiceImpl {
 
     private static AtomicLong counter = new AtomicLong();
     private ToDoDAOImpl dao;

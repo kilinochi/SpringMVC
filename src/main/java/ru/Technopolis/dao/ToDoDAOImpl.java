@@ -30,6 +30,6 @@ public class ToDoDAOImpl {
     }
 
     public void deleteCompleted() {
-        toDos.entrySet().removeIf(todo->todo.getValue().getIsDone());
+        toDos.entrySet().removeIf(todo -> todo.getValue().getIsDone());
     }
 }
