@@ -9,11 +9,19 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class ToDoDAO {
-    private static AtomicLong counter = new AtomicLong();
+    private static AtomicLong counter = new AtomicLong(0);
 
-    private Map<Long, ToDo> todos = new ConcurrentHashMap<Long, ToDo>();
+    private Map<Long, ToDo> todos = new ConcurrentHashMap<>();
 
-    public ToDo create(String description){
+    public ToDoDAO() {
+        final String[] names = new String[]{"Milk", "Apple", "Orange"};
+        for (String name : names) {
+            long id = counter.getAndIncrement();
+            todos.put(id, new ToDo(id, name));
+        }
+    }
+
+    public ToDo create(String description) {
         long id = counter.incrementAndGet();
         ToDo toDo = new ToDo(id, description);
         todos.put(toDo.getId(), toDo);

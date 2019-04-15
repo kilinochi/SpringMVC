@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://ww.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/reset.css" media="all">
@@ -8,7 +8,6 @@
           rel="stylesheet">
     <link href="css/main.css" media="all" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>TodoList</title>
 </head>
 <div id="#app">
@@ -22,7 +21,12 @@
                 <input v-model="inputValue" type="text" placeholder="What needs to be done?" class="todo_form_input">
             </form>
             <div class="todo_list_wrapper" id="todo-wrapper">
-
+                <ul class="todo_list" id="todo-list" th:if="${DAO_DATA != null && DAO_DATA.length > 0}">
+                    <li class="todo_list_item" th:each="item : ${DAO_DATA}">
+                        <input class="todo_list_item_name" th:text="item.description" value="{text}"/>
+                        <div class="todo_list_item_remove"></div>
+                    </li>
+                </ul>
             </div>
             <div class="todo_toolbar">
                 <div class="todo_toolbar_count" id="todo-count"></div>

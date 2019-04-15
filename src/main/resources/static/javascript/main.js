@@ -23,7 +23,6 @@ let formEl = new Vue({
             formData.append("description", this.inputValue);
             xhr.open('POST', '/todo', true);
             xhr.send(formData);
-
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -76,18 +75,18 @@ Vue.component('todo-item', {
         }, 500),
 
         updateItem: function() {
+            let formData = new FormData();
+            let xhr = new XMLHttpRequest();
             formData.append("description", this.todo.description);
             xhr.open('PUT', '/todo/'+this.todo.id , true);
             xhr.send(formData);
         },
         removeItem: function () {
+            let xhr = new XMLHttpRequest();
             let that = this;
-
-            this.loading = true;
             xhr.open('DELETE', '/todo/'+that.todo.id , true);
             xhr.send(null);
             that.$emit('deleteItem', that.todo.id);
-            this.loading = false;
         }
     }
 });
