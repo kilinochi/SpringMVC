@@ -389,7 +389,7 @@ header {
     }
 
     .todo-item {
-        background-color: rgba(209, 182, 163, 0.6);;
+        background-color: rgba(230, 224, 219, 0.54);;
     }
 
     .todo-toolbar {
@@ -406,10 +406,23 @@ header {
     .todo-item__delete-button {
         visibility: visible;
         margin: 20px 20px;
+        opacity: 1;
         transform: scale(1.8) rotate(45deg);
     }
 
-    .todo-item__delete-button:hover {
+    .todo-item__edit-button {
+        visibility: visible;
+        margin: 20px 20px;
+        opacity: 1;
+        transform: scale(1.8);
+    }
+
+    .todo-item__edit-button:hover {
+        margin: 20px 20px;
+    }
+
+    .todo-item__delete-button:hover
+    {
         margin: 20px 20px;
         transform: scale(1.8) rotate(45deg);
     }
