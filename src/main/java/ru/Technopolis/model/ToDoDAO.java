@@ -2,14 +2,43 @@ package ru.Technopolis.model;
 
 import org.springframework.stereotype.Component;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component /*Кладем в контейнер */
 public class ToDoDAO {
     private static AtomicLong counter = new AtomicLong();
+    private static ConcurrentMap<Long,ToDo> toDoMap = new ConcurrentHashMap<>();
+
+    private ToDoDAO() {
+        create("HTML");
+        create("PHP");
+        create("Java");
+        System.out.println("Create ConcurrentMap");
+    }
 
     public ToDo create(String description){
-        long id = counter.incrementAndGet();
-        return new ToDo(id,description);
+        ToDo todo = new ToDo(counter.incrementAndGet(), description);
+        toDoMap.put(todo.getId(), todo);
+        return todo;
     }
+
+    public ToDo update(Long id, String description) {
+        return toDoMap.replace(id, new ToDo(id, description));
+    }
+
+    public ToDo get(Long id) {
+        return toDoMap.get(id);
+    }
+
+    public ToDo delete(Long id) {
+        return toDoMap.remove(id);
+    }
+
+    public Collection<ToDo> getToDoList() {
+        return toDoMap.values();
+    }
+
 }
