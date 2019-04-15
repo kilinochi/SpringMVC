@@ -366,10 +366,28 @@ header {
     background-color: #7cc9ff;
 }
 
-@media screen and (max-aspect-ratio: 1/1) {
+.watermark {
+    font-family: "Courier New", sans-serif;
+    user-select: none;
+    font-size: 0.8em;
+    color: black;
+    opacity: 0.3;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+@media screen and (max-aspect-ratio: 1/1), handheld {
 
     body {
         font-size: 1.5em;
+        background-color: #7cc9ff;
+
+        -webkit-animation: none;
+        -moz-animation: none;
+        -o-animation: none;
+        animation: none;
+
     }
 
     header {
@@ -445,6 +463,10 @@ header {
 
     .todo-creator__addButton:hover {
         transform: scale(1.8);
+    }
+
+    .watermark {
+        bottom: 0;
     }
 
 }

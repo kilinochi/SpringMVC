@@ -122,10 +122,6 @@ function addNewTask(isChecked, description, id) {
     parent.insertBefore(taskClone, beforeElement);
 }
 
-function initDeleteEvent(element) {
-    element.onclick = deleteTaskByEvent;
-}
-
 function handleAddButtonClick() {
     var inputField = document.querySelector('.todo-creator__input');
     var description = inputField.value;
