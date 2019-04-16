@@ -23,7 +23,7 @@
             <div class="todo_list_wrapper" id="todo-wrapper">
                 <ul class="todo_list" id="todo-list" th:if="${DAO_DATA != null && DAO_DATA.length > 0}">
                     <li class="todo_list_item" th:each="item : ${DAO_DATA}">
-                        <input class="todo_list_item_name" th:text="item.description" value="{text}"/>
+                        <input class="todo_list_item_name" th:value="${item.description}"/>
                         <div class="todo_list_item_remove"></div>
                     </li>
                 </ul>
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <script src="javascript/main.js" type="text/javascript"></script>
+   <script src="javascript/main.js" type="text/javascript"></script>
     </body>
 </div>
 </html>
