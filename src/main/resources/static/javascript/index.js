@@ -205,4 +205,16 @@ checkAll.addEventListener('mouseup', function(){
     counter.textContent = active + ' items left';
 })
 
-sendAjax('GET', basePath + "readAll", null, handleReadAll);
+var todoItems = todoList.querySelectorAll('.todo-list_item');
+todoItems.forEach(function(todoItem){
+    todoItem.addEventListener('change',function(){
+        var todoText = todoItem.querySelector('.todo-list_item_text');
+        var todoReady = todoItem.querySelector('.custom-checkbox_target');
+        sendAjax('PUT', basePath + "update/" + todoItem.id, JSON.stringify({id: todoItem.id, description: todoText.value, isDone: todoReady.checked}), handleUpdate);
+    });
+    todoItem.querySelector('.todo-list_item_remove').addEventListener('click',function(e){
+        sendAjax('DELETE', basePath + "delete/" + todoItem.id, null, handleDelete);
+    });
+})
+
+//sendAjax('GET', basePath + "readAll", null, handleReadAll);

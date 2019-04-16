@@ -11,7 +11,7 @@
 
     <h1 class="todo-title">Todos</h1>
 
-    <div class="todo-board __without-content">
+    <div class="todo-board">
 
         <form class="todo-creator">
             <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
@@ -21,7 +21,20 @@
             </div>
         </form>
 
-        <div class="todo-list"></div>
+        <div class="todo-list">
+            <div class="todo-list_item" th:each="item : ${data}" th:id="${item.getId()}">
+                <div class="custom-checkbox todo-list_item_ready-marker">
+                    <input type="checkbox" th:checked="${item.getIsDone()}" class="custom-checkbox_target" aria-label="Mark todo as ready"/>
+                    <div class="custom-checkbox_visual">
+                        <div class="custom-checkbox_visual_icon"></div>
+                    </div>
+                </div>
+                <button class="todo-list_item_remove" aria-label="Delete todo"></button>
+                <div class="todo-list_item_text-w">
+                    <textarea class="todo-list_item_text" th:text="${item.getDescription()}"></textarea>
+                </div>
+            </div>
+        </div>
 
         <div class="todo-toolbar">
             <div class="todo-toolbar_unready-counter">0 items left</div>
