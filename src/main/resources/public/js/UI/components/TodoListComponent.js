@@ -48,7 +48,7 @@ export class TodoListComponent {
         var list = this._list;
         console.log(item.id);
         var request = new XMLHttpRequest();
-        request.open('GET', '/delete?id=' + item.id, true);
+        request.open('DELETE', '/delete?id=' + item.id, true);
         request.addEventListener('readystatechange', function () {
             if ((request.readyState === 4) && (request.status === 200)) {
                 item.parentNode.removeChild(item);
@@ -73,14 +73,16 @@ export class TodoListComponent {
         var list = this._list;
         var component = this;
         var request = new XMLHttpRequest();
-        request.open('GET', '/create?description=' + todoName, true);
+        request.open('POST', '/create', true);
         request.addEventListener('readystatechange', function () {
             if ((request.readyState === 4) && (request.status === 200)) {
                 component.addTodo(todoName, request.responseText);
                 list.trigger('itemAdd');
             }
         });
-        request.send();
+        var frm = new FormData();
+        frm.append('description', todoName);
+        request.send(frm);
     }
 
 
@@ -120,13 +122,19 @@ export class TodoListComponent {
     updateItem(id, description, checked) {
         console.log(id + " " + description + " " + checked);
         var request = new XMLHttpRequest();
-        request.open('GET', '/update?id=' + id + (description != null ? "&description=" + description : "") + "&checked=" + checked, true);
+        request.open('POST', '/update', true);
         request.addEventListener('readystatechange', function () {
             if ((request.readyState === 4) && (request.status === 200)) {
                 console.log("checked");
             }
         });
-        request.send();
+        var frm = new FormData();
+        frm.append('id', id);
+        if (description != null) {
+            frm.append('description', description);
+        }
+        frm.append('checked', checked);
+        request.send(frm);
     }
 
 

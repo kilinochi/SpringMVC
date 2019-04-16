@@ -25,7 +25,7 @@ public class Service {
         return "index";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<String> create(@RequestParam String description) {
         if (description.trim().length() == 0)
@@ -39,18 +39,18 @@ public class Service {
         return ResponseEntity.ok(dao.getToDos());
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<ToDo> update(@RequestParam String id, String description, @RequestParam boolean checked) {
-        if (description != null && description.trim().length() == 0 || id.length() == 0)
-            return ResponseEntity.badRequest().build();
+//        if (description != null && description.trim().length() == 0 || id.length() == 0)
+//            return ResponseEntity.badRequest().build();
         ToDo toDo = dao.update(Long.parseLong(id), description, checked);
         if (toDo == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(toDo);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
     ResponseEntity<Void> delete(@RequestParam String id) {
         if (id.length() == 0)
