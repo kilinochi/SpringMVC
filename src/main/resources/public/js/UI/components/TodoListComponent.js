@@ -138,5 +138,28 @@ export class TodoListComponent {
     }
 
 
+    initItems() {
+        var removeItems = this._root.querySelectorAll('.todos-list_item_remove');
+        var checkItems = this._root.querySelectorAll('.custom-checkbox_target');
+        var parent = this;
+        var editTexts = this._root.querySelectorAll('.todos-list_item_text');
+        removeItems.forEach(function (value) {
+            value.addEventListener('click', function () {
+                parent.removeTodo(this.closest('.todos-list_item'));
+            });
+        });
+        checkItems.forEach(function (value) {
+            value.addEventListener('click', function () {
+                parent.editState(this.closest('.todos-list_item'));
+            });
+        });
+        editTexts.forEach(function (value) {
+            value.addEventListener('input', function () {
+                parent.updateItem(this.closest('.todos-list_item').id, value.innerHTML, this.closest('.todos-list_item').classList.contains(COMPLETED_VALUE));
+            })
+        });
+
+
+    }
 }
 

@@ -3,6 +3,7 @@ package ru.technopolis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,8 @@ public class Service {
     }
 
     @RequestMapping(value = "/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("todoList", dao.getToDos());
         return "index";
     }
 
@@ -42,8 +44,6 @@ public class Service {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<ToDo> update(@RequestParam String id, String description, @RequestParam boolean checked) {
-//        if (description != null && description.trim().length() == 0 || id.length() == 0)
-//            return ResponseEntity.badRequest().build();
         ToDo toDo = dao.update(Long.parseLong(id), description, checked);
         if (toDo == null)
             return ResponseEntity.notFound().build();
