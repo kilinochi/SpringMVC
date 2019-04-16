@@ -15,7 +15,7 @@
     <div class="todo-board __has-content">
 
         <div class="todo-creator" >
-            <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
+            <button class="todo-creator_check-all" aria-label="Check all items as done" onclick="CreateProd()"></button>
             <div class="todo-creator_text-input-w">
                 <input class="todo-creator_text-input" type="text"  placeholder="What needs to be done?" aria-label="Input new todo text"  />
             </div>
@@ -32,7 +32,7 @@
 
                 <div class = "todos-list_item_remove-action">
                     <div class = "todos-list_item_remove-action-fix">
-                        <buttom class="todos-list_item_remove" aria-label="Delete todo"></buttom>
+                        <buttom class="todos-list_item_remove" aria-label="Delete todo" th:onclick="'DeleteProd('+${prod.getId()}+')'"></buttom>
                     </div>
                 </div>
                 <div class="todos-list_item_text-w">
