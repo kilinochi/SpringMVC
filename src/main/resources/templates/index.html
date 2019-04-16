@@ -1,34 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Todo MVC</title>
+
     <link rel="stylesheet" th:href="@{/css/default.css}"/>
+    <script type="module" th:src="@{/js/index.js}"></script>
+
+
+
 </head>
 <body>
 
-<div class="main-layout">
+<script type="text/html" id="todoItemTemplate">
+    <div class="todos-list_item">
 
-    <h1 class="todo-title">Todos</h1>
-
-    <div class="todo-board __has-content">
-
-        <form class="todo-creator">
-            <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
-            <div class="todo-creator_text-input-w">
-                <input class="todo-creator_text-input" type="text" placeholder="What needs to be done?"
-                       aria-label="Input new todo text"/>
-            </div>
-        </form>
-
-        <div class="todos-list">
-            <div class="todos-list_item"
-                 th:each="it : ${data}"
-                 th:if="${data != null and data.size() > 0}"
-                 >
-
-                <div class=" custom-checkbox todos-list_item_ready-marker
-            ">
+        <div class="custom-checkbox todos-list_item_ready-marker">
             <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready"/>
             <div class="custom-checkbox_visual">
                 <div class="custom-checkbox_visual_icon"></div>
@@ -43,25 +30,43 @@
         </div>
 
         <div class="todos-list_item_text-w">
-            <textarea rows="1" class="todos-list_item_text" th:text="${it.getDescription()}">HTML</textarea>
+            <div contenteditable="true" class="todos-list_item_text">{text}</div>
+            <!--<textarea rows="1" class="todos-list_item_text">{text}</textarea>-->
         </div>
     </div>
-</div>
+</script>
 
-<div class="todos-toolbar">
-    <div class="todos-toolbar_unready-counter">3 items left</div>
-    <button class="todos-toolbar_clear-completed">Clear completed</button>
+<div class="main-layout">
 
-    <div class="filters todos-toolbar_filters">
-        <button class="filters-item __selected" aria-label="Filter: All, is selected">All</button>
-        <button class="filters-item" aria-label="Filter: Active">Active</button>
-        <button class="filters-item" aria-label="Filter: Completed">Completed</button>
+    <h1 class="todo-title">Todos</h1>
+
+    <div class="todo-board __has-content">
+
+        <form class="todo-creator">
+            <button class="todo-creator_check-all jsTodoCheckAllAsDone" aria-label="Check all items as done"></button>
+            <div class="todo-creator_text-input-w">
+                <input class="todo-creator_text-input jsTodoText" type="text" placeholder="What needs to be done?"
+                       aria-label="Input new todo text"/>
+            </div>
+        </form>
+
+        <div class="todos-list">
+        </div>
+
+        <div class="todos-toolbar">
+            <div class="todos-toolbar_unready-counter jsUnreadyCounter">0 items left</div>
+            <button class="todos-toolbar_clear-completed jsClearCompleted">Clear completed</button>
+
+            <div class="filters todos-toolbar_filters jsFilters">
+                <button class="filters-item __selected" aria-label="Filter: All, is selected">All</button>
+                <button class="filters-item" aria-label="Filter: Active">Active</button>
+                <button class="filters-item" aria-label="Filter: Completed">Completed</button>
+            </div>
+
+
+        </div>
+
     </div>
-
-
-</div>
-
-</div>
 </div>
 
 </body>
