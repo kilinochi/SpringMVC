@@ -1,5 +1,6 @@
 import {createFromTemplate} from '../../utils/templatesManager.js';
 import {Eventable} from "../../lib/Eventable.js";
+import {request} from "../../TodoService.js";
 
 
 export class TodoListComponent extends Eventable {
@@ -9,11 +10,11 @@ export class TodoListComponent extends Eventable {
         this._root = root;
     }
 
-    addTodo(todoText) {
+    addTodo(todoObj) {
         const newItemHTML = createFromTemplate(
             'todoItemTemplate',
             {
-                text: todoText,
+                text: todoObj.description,
             }
         );
         console.log(newItemHTML);
@@ -21,8 +22,17 @@ export class TodoListComponent extends Eventable {
         this._root.appendChild(newItemHTML);
         this.trigger('checkedCountChanged');
 
-        newItemHTML.querySelector('.custom-button_target').addEventListener('click', () => this.removeTodo(newItemHTML));
-        newItemHTML.querySelector('.custom-checkbox_target').addEventListener('change', () => this.trigger('checkedCountChanged'));
+        newItemHTML.setAttribute('id', todoObj.id);
+
+        var checkBox = newItemHTML.querySelector('.custom-checkbox_target');
+        checkBox.checked = todoObj.completed;
+
+        newItemHTML.querySelector('.custom-button_target').addEventListener('click', () => request("POST", "/delete?id=" + newItemHTML.id, () => this.removeTodo(newItemHTML)));
+        checkBox.addEventListener('change', () => 
+        	request("POST", 
+        		'/update?id=' + newItemHTML.id + 
+        		'&description=' + newItemHTML.querySelector('.todos-list_item_text').innerHTML +
+        		'&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged')));
     }
 
     calcUncompleted() {
@@ -37,6 +47,16 @@ export class TodoListComponent extends Eventable {
         return count;
     }
 
+    handleCreateResponse(todoObj) {
+    	this.addTodo(todoObj);
+    }
+
+    handleReadResponse(todoArray) {
+    	for (let i = 0; i < todoArray.length; i++) {
+            this.addTodo(todoArray[i]);
+        }
+    }
+
     removeTodo(item) {
         this._root.removeChild(item);
         this.trigger('checkedCountChanged');
@@ -47,17 +67,19 @@ export class TodoListComponent extends Eventable {
         for (let i = 0; i < listItems.length; i++) {
             const checkBox = listItems[i].querySelector('.custom-checkbox_target');
             if (checkBox.checked) {
-                this.removeTodo(listItems[i]);
+                request("POST", "/delete?id=" + listItems[i].id, () => this.removeTodo(listItems[i]));
             }
         }
     }
 
     markAllAsDone() {
-        const listItems = this._root.querySelectorAll('.todos-list_item');
-        for (let i = 0; i < listItems.length; i++) {
-            listItems[i].querySelector('.custom-checkbox_target').checked = true;
-        }
-        this.trigger('checkedCountChanged');
+        request("POST", '/checkAll', () => { 
+        	const listItems = this._root.querySelectorAll('.todos-list_item');
+	        for (let i = 0; i < listItems.length; i++) {
+	            listItems[i].querySelector('.custom-checkbox_target').checked = true;
+	        }
+	        this.trigger('checkedCountChanged');
+	    });
     }
 
     applyFilter(currentFilter) {

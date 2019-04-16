@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 @Component
 public class ToDoDAO {
@@ -26,11 +25,15 @@ public class ToDoDAO {
         return new ArrayList<>(toDoMap.values());
     }
 
-    public ToDo update(long id, String description) {
-        return toDoMap.replace(id, new ToDo(id, description));
+    public ToDo update(long id, String description, boolean completed) {
+        return toDoMap.replace(id, new ToDo(id, description, completed));
     }
 
     public ToDo delete(long id) {
         return toDoMap.remove(id);
+    }
+    
+    public void checkAll() {
+        toDoMap.values().forEach(v -> v.setCompleted(true));
     }
 }

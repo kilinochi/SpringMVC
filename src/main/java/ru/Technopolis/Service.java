@@ -11,6 +11,8 @@ import ru.Technopolis.model.ToDo;
 import ru.Technopolis.model.ToDoDAO;
 
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class Service {
@@ -28,7 +30,7 @@ public class Service {
         return "index";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ToDo create(@RequestParam String description) {
         return dao.create(description);
@@ -40,16 +42,22 @@ public class Service {
         return dao.getToDoList();
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public ToDo update(@RequestParam long id, @RequestParam String description) {
-        return dao.update(id, description);
+    public ToDo update(@RequestParam long id, @RequestParam String description, @RequestParam boolean completed) {
+        return dao.update(id, description, completed);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public ToDo delete(@RequestParam long id) {
         return dao.delete(id);
+    }
+    
+    @RequestMapping(value = "/checkAll", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void checkAll() {
+        dao.checkAll();
     }
 
 

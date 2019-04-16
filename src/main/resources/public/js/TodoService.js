@@ -1,15 +1,17 @@
-export function request(url, method, callback) {
+export function request(method, url, handle) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log('responseText:' + xhr.responseText);
-            try {
-                var data = JSON.parse(xhr.responseText);
-            } catch (err) {
-                console.log(err.message + " in " + xhr.responseText);
-                return;
+            if (xhr.responseText) {
+                console.log('responseText:' + xhr.responseText);
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                } catch (err) {
+                    console.log(err.message + " in " + xhr.responseText);
+                    return;
+                }
             }
-            callback(data);
+            handle(data);
         }
     };
 
