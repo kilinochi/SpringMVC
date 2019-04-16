@@ -13,8 +13,6 @@ const todoCreatorComponent = new TodoCreatorComponent(todoCreatorElement);
 const todoToolbarElement = document.querySelector('.todos-toolbar');
 const todoToolbarComponent = new TodoToolbarComponent(todoToolbarElement);
 
-const url = 'http://localhost:8080';
-
 let currentFilter = 'All';
 
 todoCreatorComponent.on('todoAdded', text => {
