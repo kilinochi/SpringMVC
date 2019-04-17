@@ -1,12 +1,9 @@
 'use strict';
 
-var baseUrl ='http://localhost:8080';
-
 var xhr = new XMLHttpRequest();
 
-function getResponse(urlEnd) {
-    var url = baseUrl + urlEnd;
-    xhr.open('GET', url, false);
+function getResponse(url, method) {
+    xhr.open(method, url, false);
     xhr.send();
     if (xhr.status !== 200) {
         console.error('Error:', xhr.status);
@@ -46,7 +43,7 @@ function onClickAddButton() {
         textInput.value = '';
         return null;
     }
-    var response = getResponse('/add?description=' + textInput.value);
+    var response = getResponse('/add?description=' + textInput.value, 'POST');
     textInput.value = '';
     if (response && selectedFilter !== 'completed') {
         idList[idList.length] = response.id;
@@ -61,7 +58,7 @@ function onClickAddButton() {
             creator.after(list);
         }
     }
-    response = getResponse('/getList');
+    response = getResponse('/getList', 'GET');
     itemsLeft(response);
 }
 
@@ -91,24 +88,24 @@ function itemsLeft(list) {
 }
 
 function onChangeChecked(index) {
-    var response = getResponse('/changeChecked?id=' + idList[index]);
+    var response = getResponse('/changeChecked?id=' + idList[index], 'PUT');
     var checkedItem = document.getElementsByClassName('todos-list_item')[index];
     if (selectedFilter === 'all') {
         checkedItem.replaceWith(getItem(response.id, response.description, response.checked));
     } else {
-        response = getResponse('/getList');
+        response = getResponse('/getList', 'GET');
         idList = [];
         refreshList(response);
     }
 }
 
 function onClickDelete(index) {
-    var response = getResponse('/delete?id=' + idList[index]);
+    var response = getResponse('/delete?id=' + idList[index], 'DELETE');
     refreshList(response);
 }
 
 function onClickClearCompleted() {
-    var response = getResponse('/clearCompleted');
+    var response = getResponse('/clearCompleted', 'DELETE');
     refreshList(response);
 }
 
@@ -125,7 +122,7 @@ function onClickFilter(filter, num) {
     filterButtons[0].setAttribute('class', getClass(0));
     filterButtons[1].setAttribute('class', getClass(1));
     filterButtons[2].setAttribute('class', getClass(2));
-    var response = getResponse('/getList');
+    var response = getResponse('/getList', 'GET');
     idList = [];
     refreshList(response);
 }
@@ -194,7 +191,7 @@ function constructor() {
         onClickFilter('completed', 2);
     });
     onClickFilter('all', 0);
-    var response = getResponse('/getList');
+    var response = getResponse('/getList', 'GET');
     refreshList(response);
 }
 
