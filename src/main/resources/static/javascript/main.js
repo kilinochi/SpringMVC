@@ -1,5 +1,5 @@
 const state = {
-    todos: [],
+    todos: window.__TODOS_DATA,
 };
 
 
@@ -61,7 +61,7 @@ Vue.component('todo-item', {
     template:
         '<li class="todo_list_item">'
            + '<input class="todo_list_item_name" @input="onInput" v-model="todo.description"/>'
-           + '<div class="todo_list_item_remove" @click="removeItem">' +
+           + '<div class="todo_list_item_remove" @click="removeItem"></div>' +
        '</li>',
 
     data() {
@@ -103,10 +103,6 @@ Vue.component('todo-list', {
             '<todo-item v-for="todo in state.todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
         '</ul>',
 
-    created: function () {
-        this.fetchTodo();
-    },
-
     methods: {
         deleteItem: function (id) {
             var itemIndex = this.state.todos.findIndex(function (todo) {
@@ -116,27 +112,13 @@ Vue.component('todo-list', {
             if (itemIndex >= 0) {
                 this.state.todos.splice(itemIndex, 1);
             }
-        },
-        fetchTodo: function () {
-            let that = this;
-            let xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        that.state.todos = JSON.parse(xhr.responseText);
-                    }
-                } else {
-                    console.log('NOT READY YET')
-                }
-            };
-            xhr.open("GET", 'todo', true);
-            xhr.send(null);
-        },
+        }
     }
 });
 
 
-let wrapper = new Vue({
-    el: '#todo-wrapper',
+let app = new Vue({
     template: '<todo-list/>',
 });
+
+app.$mount('#todo-wrapper',);

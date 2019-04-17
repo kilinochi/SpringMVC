@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class ToDoDAO {
-    private static AtomicLong counter = new AtomicLong(0);
+    private static AtomicLong counter = new AtomicLong(1);
 
     private Map<Long, ToDo> todos = new ConcurrentHashMap<>();
 
