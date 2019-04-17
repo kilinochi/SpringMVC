@@ -10,18 +10,20 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class ToDoDAO {
     private final AtomicLong counter = new AtomicLong();
-    private final Map<Long, String> todos = new LinkedHashMap<>();
+    private final Map<Long, ToDo> todos = new LinkedHashMap<>();
 
     void add(String description) {
-        todos.put(counter.incrementAndGet(), description);
+        long id = counter.incrementAndGet();
+        todos.put(id, new ToDo(id, description, false));
     }
 
-    Map<Long, String> getTodos() {
+    Map<Long, ToDo> getTodos() {
         return todos;
     }
 
     void modify(long id, String newDescription) {
-        todos.replace(id, newDescription);
+        boolean isDone = todos.get(id).isDone();
+        todos.replace(id, new ToDo(id, newDescription, isDone));
     }
 
     void delete(long id) {

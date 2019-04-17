@@ -456,9 +456,10 @@ class View extends Observable {
     }
 }
 
-const todoView = new View();
-const todoModel = new Model(todoView);
-const todoController = new Controller();
+//------------------
+    const todoView = new View();
+    const todoModel = new Model(todoView);
+    const todoController = new Controller();
+    todoView.addObserver(todoController);
+    todoController.addObserver(todoModel);
 
-todoView.addObserver(todoController);
-todoController.addObserver(todoModel);
