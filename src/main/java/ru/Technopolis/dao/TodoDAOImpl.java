@@ -20,6 +20,12 @@ public class TodoDAOImpl implements TodoDAO<Todo> {
     private ConcurrentMap<Long, Todo> todoMap = new ConcurrentHashMap<>();
     private final AtomicLong counter = new AtomicLong();
 
+    private TodoDAOImpl() {
+        save("Java");
+        save("Spring");
+        save("CSS");
+    }
+
     @Override
     public Optional<Todo> get(long id) {
         return Optional.ofNullable(todoMap.get(id));

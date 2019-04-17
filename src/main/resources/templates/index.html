@@ -13,7 +13,48 @@
     <body>
       <div class="main-layout">
         <h1 class="todo-title">todos</h1>
-        <div class="todo-board"></div>
+        <div class="todo-board">
+            <div class="todo-board">
+
+                <form class="todo-creator">
+                    <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
+                    <div class="todo-creator_text-input-w">
+                        <input class="todo-creator_text-input" type="text" placeholder="What needs to be done?" aria-label="Input new todo text"></div>
+                </form>
+
+                <div class="todos-list" >
+                    <div class="todos-list_item"  style="display: block;" th:each="todo : ${todos}" th:id="'todo_' + ${todo.getId()}" th:classappend="${todo.getReady()} ? '__completed' : ''">
+                        <div class="todos-list_item_view">
+                            <div class="custom-checkbox todos-list_item_view_ready-marker">
+                                <input class="custom-checkbox_target" type="checkbox" aria-label="Mark todo as ready" th:checked="${todo.getReady()}">
+                                <div class="custom-checkbox_visual">
+                                    <div class="custom-checkbox_visual_icon"></div>
+                                </div>
+                            </div>
+                            <div class="remove-btn todos-list_item_view_remove">
+                                <button class="remove-btn_target" aria-label="Delete todo"></button>
+                                <div class="remove-btn_visual">
+                                    <div class="remove-btn_visual_icon"></div>
+                                </div>
+                            </div>
+                            <label class="todos-list_item_view_text" th:text="${todo.getText()}"></label>
+                        </div>
+                        <input class="todos-list_item_todo-edit" type="text" aria-label="Edit todo" th:value="${todo.getText()}">
+                    </div>
+                </div>
+
+                <div class="todos-toolbar">
+                    <div class="todos-toolbar_unready-counter" th:text="${itemsLeft} + ' items left'"></div>
+                    <button class="todos-toolbar_clear-completed" aria-label="Clear completed">Clear completed</button>
+                    <div class="filters todos-toolbar_filters">
+                        <button class="filters_all todos-toolbar_filter __selected" aria-label="Filter: All, is selected">All</button>
+                        <button class="filters_active todos-toolbar_filter" aria-label="Filter: Active">Active</button>
+                        <button class="filters_completed todos-toolbar_filter" aria-label="Filter: Completed">Completed</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
       </div>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
     </body>

@@ -6,7 +6,7 @@ export default class TodoView  {
     constructor(data, controller){
         this.model = new TodoModel(data);
         this.controller = controller;
-        this.elements = template.listItem(data);
+        this.elements = template.listItem(this.model);
 
         this.elements.readyMarker.addEventListener('click', () => {
             this.model.ready = !this.model.ready;

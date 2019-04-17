@@ -3,58 +3,68 @@ import { modifiers } from '../constants';
 class Template {
 
     todoCreator = () => {
-        const main = document.getElementsByClassName('todo-board')[0];
+        let todoCreator = document.getElementsByClassName('todo-creator')[0];
+        let checkAllBtn = document.getElementsByClassName('todo-creator_check-all')[0];
+        let textInput = document.getElementsByClassName('todo-creator_text-input')[0];
 
-        const todoCreator = document.createElement('form');
-        todoCreator.className = 'todo-creator';
-        main.appendChild(todoCreator);
+        if (todoCreator === undefined) {
+            const main = document.getElementsByClassName('todo-board')[0];
 
-        const checkAllBtn = document.createElement('button');
-        checkAllBtn.className = 'todo-creator_check-all';
-        checkAllBtn.setAttribute('aria-label', 'Check all items as done');
-        todoCreator.appendChild(checkAllBtn);
+            todoCreator = document.createElement('form');
+            todoCreator.className = 'todo-creator';
+            main.appendChild(todoCreator);
 
-        const textInputW = document.createElement('div');
-        textInputW.className = 'todo-creator_text-input-w';
+            checkAllBtn = document.createElement('button');
+            checkAllBtn.className = 'todo-creator_check-all';
+            checkAllBtn.setAttribute('aria-label', 'Check all items as done');
+            todoCreator.appendChild(checkAllBtn);
 
-        const textInput = document.createElement('input');
-        textInput.className = 'todo-creator_text-input';
-        textInput.type = 'text';
-        textInput.placeholder = 'What needs to be done?';
-        textInput.setAttribute('aria-label', 'Input new todo text');
+            const textInputW = document.createElement('div');
+            textInputW.className = 'todo-creator_text-input-w';
 
-        textInputW.appendChild(textInput);
-        todoCreator.appendChild(textInputW);
+            textInput = document.createElement('input');
+            textInput.className = 'todo-creator_text-input';
+            textInput.type = 'text';
+            textInput.placeholder = 'What needs to be done?';
+            textInput.setAttribute('aria-label', 'Input new todo text');
 
+            textInputW.appendChild(textInput);
+            todoCreator.appendChild(textInputW);
+        }
         return { root: todoCreator, checkAllBtn, textInput };
     };
 
     listOf = (items) => {
-        const list = document.createElement('div');
-        list.className = 'todos-list';
-        items.forEach(item => list.appendChild(item.getRoot()));
+        let list = document.getElementsByClassName('todos-list')[0];
+        if (list === undefined) {
+            list = document.createElement('div');
+            list.className = 'todos-list';
+            items.forEach(item => list.appendChild(item.getRoot()));
+        }
         const toolBar = this.toolBar(items.length);
         return { root: list, toolBar: toolBar };
     };
 
     toolBar = (itemsLeft) => {
-        const toolBar = document.createElement('div');
-        toolBar.className = 'todos-toolbar';
+        let toolBar = document.getElementsByClassName('todos-toolbar')[0];
+        if (toolBar === undefined) {
+            toolBar = document.createElement('div');
+            toolBar.className = 'todos-toolbar';
 
-        const unreadyCounter = document.createElement('div');
-        unreadyCounter.className = 'todos-toolbar_unready-counter';
-        unreadyCounter.appendChild(document.createTextNode(`${itemsLeft} items left`));
-        toolBar.appendChild(unreadyCounter);
+            const unreadyCounter = document.createElement('div');
+            unreadyCounter.className = 'todos-toolbar_unready-counter';
+            unreadyCounter.appendChild(document.createTextNode(`${itemsLeft} items left`));
+            toolBar.appendChild(unreadyCounter);
 
-        const clearCompletedBtn = document.createElement('button');
-        clearCompletedBtn.className = 'todos-toolbar_clear-completed';
-        clearCompletedBtn.setAttribute('aria-label', 'Clear completed');
-        clearCompletedBtn.appendChild(document.createTextNode('Clear completed'));
-        toolBar.appendChild(clearCompletedBtn);
+            const clearCompletedBtn = document.createElement('button');
+            clearCompletedBtn.className = 'todos-toolbar_clear-completed';
+            clearCompletedBtn.setAttribute('aria-label', 'Clear completed');
+            clearCompletedBtn.appendChild(document.createTextNode('Clear completed'));
+            toolBar.appendChild(clearCompletedBtn);
 
-        const filters = this.filters();
-        toolBar.appendChild(filters);
-
+            const filters = this.filters();
+            toolBar.appendChild(filters);
+        }
         return toolBar;
     };
 
@@ -84,24 +94,38 @@ class Template {
     };
 
     listItem = (data) => {
-        const listItem = document.createElement('div');
-        listItem.className = `todos-list_item ${data.ready ? modifiers.COMPLETED_MODIFIER : ''}`;
+        let listItem = document.getElementById(`todo_${data.id}`);
+        let readyMarker;
+        let removeBtn;
+        let viewText;
+        let textInput;
 
-        const listItemView = document.createElement('div');
-        listItemView.className = `todos-list_item_view`;
+        if (listItem === null) {
+            listItem = document.createElement('div');
+            listItem.className = `todos-list_item ${data.ready ? modifiers.COMPLETED_MODIFIER : ''}`;
+            listItem.id = `todo_${data.id}`;
 
-        const readyMarker = this.readyMarker(data.ready);
-        listItemView.appendChild(readyMarker);
+            const listItemView = document.createElement('div');
+            listItemView.className = `todos-list_item_view`;
 
-        const removeBtn = this.removeBtn();
-        listItemView.appendChild(removeBtn);
+            readyMarker = this.readyMarker(data.ready);
+            listItemView.appendChild(readyMarker);
 
-        const viewText = this.viewText(data.text);
-        listItemView.appendChild(viewText);
-        listItem.appendChild(listItemView);
+            removeBtn = this.removeBtn();
+            listItemView.appendChild(removeBtn);
 
-        const textInput = this.textInput(data.text);
-        listItem.appendChild(textInput);
+            viewText = this.viewText(data.text);
+            listItemView.appendChild(viewText);
+            listItem.appendChild(listItemView);
+
+            textInput = this.textInput(data.text);
+            listItem.appendChild(textInput);
+        } else {
+            readyMarker = listItem.getElementsByClassName('custom-checkbox todos-list_item_view_ready-marker')[0];
+            removeBtn = listItem.getElementsByClassName('remove-btn todos-list_item_view_remove')[0];
+            viewText = listItem.getElementsByClassName('todos-list_item_view_text')[0];
+            textInput = listItem.getElementsByClassName('todos-list_item_todo-edit')[0];
+        }
 
         return {
           root: listItem,
