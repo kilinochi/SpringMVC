@@ -24,6 +24,9 @@ let formEl = new Vue({
             xhr.open('POST', '/todo', true);
             xhr.send(formData);
             xhr.onreadystatechange = function () {
+                /**
+                 * already GET METHOD
+                 * */
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         const item = JSON.parse(xhr.responseText);
@@ -102,7 +105,7 @@ Vue.component('todo-list', {
         '<ul class="todo_list" id="todo-list">' +
             '<todo-item v-for="todo in state.todos" @deleteItem="deleteItem" v-bind:todo="todo" :key="todo.id"></todo-item>' +
         '</ul>',
-    
+
     methods: {
         deleteItem: function (id) {
             var itemIndex = this.state.todos.findIndex(function (todo) {
@@ -112,21 +115,6 @@ Vue.component('todo-list', {
             if (itemIndex >= 0) {
                 this.state.todos.splice(itemIndex, 1);
             }
-        },
-        fetchTodo: function () {
-            let that = this;
-            let xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        that.state.todos = JSON.parse(xhr.responseText);
-                    }
-                } else {
-                    console.log('NOT READY YET')
-                }
-            };
-            xhr.open("GET", 'todo', true);
-            xhr.send(null);
         },
     }
 });
