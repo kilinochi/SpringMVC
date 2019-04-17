@@ -10,6 +10,14 @@ export class TodoListComponent extends Eventable {
         this._root = root;
     }
 
+    prepareTodos() {
+        const listItems = this._root.querySelectorAll('.todos-list_item');
+        for (let i = 0; i < listItems.length; i++) {
+            this.attachListeners(listItems[i]);
+        }
+        this.trigger('checkedCountChanged');
+    }
+
     addTodo(todoObj) {
         const newItemHTML = createFromTemplate(
             'todoItemTemplate',
@@ -27,12 +35,20 @@ export class TodoListComponent extends Eventable {
         var checkBox = newItemHTML.querySelector('.custom-checkbox_target');
         checkBox.checked = todoObj.completed;
 
-        newItemHTML.querySelector('.custom-button_target').addEventListener('click', () => request("POST", "/delete?id=" + newItemHTML.id, () => this.removeTodo(newItemHTML)));
-        checkBox.addEventListener('change', () => 
-        	request("POST", 
-        		'/update?id=' + newItemHTML.id + 
-        		'&description=' + newItemHTML.querySelector('.todos-list_item_text').innerHTML +
-        		'&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged')));
+        this.attachListeners(newItemHTML);
+    }
+
+    attachListeners(todoItem) {
+        var checkBox = todoItem.querySelector('.custom-checkbox_target');
+
+        todoItem.querySelector('.custom-button_target').addEventListener('click', () =>
+            request("POST", "/delete?id=" + todoItem.id, () => this.removeTodo(todoItem)));
+
+        checkBox.addEventListener('change', () =>
+            request("POST",
+                '/update?id=' + todoItem.id +
+                '&description=' + todoItem.querySelector('.todos-list_item_text').innerHTML +
+                '&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged')));
     }
 
     calcUncompleted() {
@@ -48,13 +64,7 @@ export class TodoListComponent extends Eventable {
     }
 
     handleCreateResponse(todoObj) {
-    	this.addTodo(todoObj);
-    }
-
-    handleReadResponse(todoArray) {
-    	for (let i = 0; i < todoArray.length; i++) {
-            this.addTodo(todoArray[i]);
-        }
+        this.addTodo(todoObj);
     }
 
     removeTodo(item) {
@@ -73,13 +83,13 @@ export class TodoListComponent extends Eventable {
     }
 
     markAllAsDone() {
-        request("POST", '/checkAll', () => { 
-        	const listItems = this._root.querySelectorAll('.todos-list_item');
-	        for (let i = 0; i < listItems.length; i++) {
-	            listItems[i].querySelector('.custom-checkbox_target').checked = true;
-	        }
-	        this.trigger('checkedCountChanged');
-	    });
+        request("POST", '/checkAll', () => {
+            const listItems = this._root.querySelectorAll('.todos-list_item');
+            for (let i = 0; i < listItems.length; i++) {
+                listItems[i].querySelector('.custom-checkbox_target').checked = true;
+            }
+            this.trigger('checkedCountChanged');
+        });
     }
 
     applyFilter(currentFilter) {

@@ -40,10 +40,6 @@ todoToolbarComponent.on('filterUpdated', (filter) => {
     todoListComponent.applyFilter(currentFilter);
 });
 
-function readTodos() {
-    request("GET", "/read", (todoArray) => todoListComponent.handleReadResponse(todoArray));
-}
-
-readTodos();
+todoListComponent.prepareTodos();
 
 console.log('init');
