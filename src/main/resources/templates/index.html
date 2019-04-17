@@ -21,10 +21,11 @@
             </div>
         </div>
 
-        <div class="todos-list">
-            <div class="todos-list_item" th:each="prod : ${name}" th:id="${prod.getId()}">
+        <div class="todos-list" >
+
+            <div class="todos-list_item" th:each="prod : ${name}" th:id="${prod.getId()}"  th:title="${prod.getDescription()}">
                 <div class="todos-list_item_ready-marker">
-                    <input type="checkbox" class="custom-checkbox_target_t"}/>
+                    <input type="checkbox" class="custom-checkbox_target_t" th:checked=" ${prod.getHidden()}" th:onclick="'UpdateProd('+${prod.getId()}+')'"/>
                     <div class="custom-checkbox_visual" hidden>
                         <div class="custom-checkbox_visual_icon"></div>
                     </div>
@@ -32,22 +33,23 @@
 
                 <div class = "todos-list_item_remove-action">
                     <div class = "todos-list_item_remove-action-fix">
-                        <buttom class="todos-list_item_remove" aria-label="Delete todo" th:onclick="'DeleteProd('+${prod.getId()}+')'"></buttom>
+                        <buttom class="todos-list_item_remove" aria-label="Delete todo" th:onclick="'DeleteProd('+${prod.getId()}+')'" />
                     </div>
                 </div>
                 <div class="todos-list_item_text-w">
                     <div class="todos-list_item_text">
-                        <span  class="todos-list_item_text" th:text="${prod.getDescription()}">default</span>
+                        <span  class="todos-list_item_text" th:onclick="'GetProd('+${prod.getId()}+')'" th:text="${prod.getDescription()}" >default</span>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="todos-toolbar">
             <div class="todos-toolbar_unready-counter">3 items left</div>
 
             <div class="todos-toolbar_filters">
-                <button class="filters-item" aria-label="Filter: All, is selected"  onclick="ShowAll()" >All</button>
+                <button class="filters-item" aria-label="Filter: All, is selected" onclick="ShowAll()" >All</button>
                 <button class="filters-item" aria-label="Filter: Active" onclick="ShowOffBox()">Completed</button>
                 <button class="filters-item" aria-label="Filter: Completed" onclick="ShowOnBox()" >Active</button>
             </div>

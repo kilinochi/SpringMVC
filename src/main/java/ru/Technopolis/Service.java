@@ -38,8 +38,8 @@ public class Service {
 
     @RequestMapping( value = "/update", method = RequestMethod.GET)
     public @ResponseBody
-    ToDo update(@RequestParam Long id,String desc){
-        return dao.update(id,desc);
+    ToDo update(@RequestParam Long id,Boolean hidden){
+        return dao.update(id,hidden);
     }
 
     @RequestMapping( value = "/name", method = RequestMethod.GET)
@@ -61,4 +61,3 @@ public class Service {
     }
 
 }
-

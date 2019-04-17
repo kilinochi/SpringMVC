@@ -20,13 +20,14 @@ public class ToDoDAO {
     }
 
     public ToDo create(String description){
-        ToDo todo = new ToDo(counter.incrementAndGet(), description);
+        ToDo todo = new ToDo(counter.incrementAndGet(), description,false);
         toDoMap.put(todo.getId(), todo);
         return todo;
     }
 
-    public ToDo update(Long id, String description) {
-        return toDoMap.replace(id, new ToDo(id, description));
+    public ToDo update(Long id, boolean hidden) {
+        String desc = toDoMap.get(id).getDescription();
+        return toDoMap.replace(id, new ToDo(id, desc, hidden));
     }
 
     public ToDo get(Long id) {
@@ -40,5 +41,4 @@ public class ToDoDAO {
     public Collection<ToDo> getToDoList() {
         return toDoMap.values();
     }
-
 }

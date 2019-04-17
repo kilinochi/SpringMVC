@@ -15,80 +15,56 @@ function SendRequest(r_method, r_path, r_args, r_handler) {
     if (!Request) return;
     Request.onreadystatechange = function()
     {
-        //Если обмен данными завершен
-        if (Request.readyState == 4)
-        {
-            //Передаем управление обработчику пользователя
-            //r_handler(Request);
-        }
+        if (Request.readyState == 4) r_handler(Request);
     }
-    //Проверяем, если требуется сделать GET-запрос
-    if (r_method.toLowerCase() == "get" && r_args.length > 0)
-        r_path += "?" + r_args;
-    //Инициализируем соединение
+    if (r_method.toLowerCase() == "get" && r_args.length > 0) r_path += "?" + r_args;
     Request.open(r_method, r_path, true);
     if (r_method.toLowerCase() == "post")
     {
-        //Если это POST-запрос
-        //Устанавливаем заголовок
         Request.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
-        //Посылаем запрос
         Request.send(r_args);
     }
-    else
-    {
-        //Если это GET-запрос
-        //Посылаем нуль-запрос
-        Request.send(null);
-    }
-}
-function CreateProdById(str) {
-    var data = new FormData();
-    data.append("str", str);
-    SendRequest("GET","/create", data, creteRequestHandler());
-    var prot = document.getElementById(id);
-    prot.parentElement.removeChild(prot);
+    else Request.send(null);
 }
 
-function UpdateProdById(id,str) {
-    var data = new FormData();
-    data.append("id", id);
-    SendRequest("GET","/update", data, updateRequestHandler());
-    var prot = document.getElementById(id);
-    prot.parentElement.removeChild(prot);
+function ListProd() {
+    SendRequest("GET","/list", "",ListRequest);
 }
 
-function NameProdById(id) {
-    var data = new FormData();
-    data.append("id", id);
-    SendRequest("GET","/name", data, nameRequestHandler());
-    var prod = document.getElementById(id);
-    prod.parentElement.removeChild(prod);
+function ListRequest(request) {
+    return;
 }
 
-function DeleteProdById(id) {
-    var data = new FormData();
-    data.append("id", id);
-    SendRequest("GET","/delete", data, deletionRequestHandler());
-    var prod = document.getElementById(id);
-    prod.parentElement.removeChild(prod);
-}
-
-function listProdById() {
-    SendRequest("GET","/list", "", listRequestHandler());
-    var prod = document.getElementById(id);
-    prod.parentElement.removeChild(prod);
-}
-function DeleteProd(id) {
+function DeleteProd(id){
+    var desc =  document.getElementById(id);
     console.log("Delete Prod %d",id);
-
+    var resultActionUser = confirm("Delete Product "+desc.title+"?");
+    if (!resultActionUser) return;
     var data = new FormData();
     data.append("id", id);
     id="id="+id;
-    SendRequest("GET","/delete",id, "");
-    location.reload ();
+    SendRequest("GET","/delete",id,DeleteRequest);
 }
 
+function DeleteRequest(request) {
+    var responseData = eval("(" + request.responseText + ")");
+    var id = responseData.id;
+    var prod = document.getElementById(id);
+    prod.parentElement.removeChild(prod);
+}
+
+function GetProd(id) {
+    console.log("GetProd %s", id);
+    id="id="+id;
+    SendRequest("GET","/name",id,GetRequest);
+}
+
+function GetRequest(request) {
+    var responseData = eval("(" + request.responseText + ")");
+    var id = responseData.id;
+    var name = responseData.description;
+    alert("Product id:"+id+"\nProduct name:"+name);
+}
 
 function CreateProd() {
     var nodes = document.querySelector(".todo-creator_text-input");
@@ -97,13 +73,30 @@ function CreateProd() {
     nodes.value = "";
     console.log("Create %s", str);
     str="desc="+str;
-    SendRequest("GET","/create",str, "");
+    SendRequest("GET","/create",str, DefRequest);
     location.reload ();
+}
+function UpdateProd(id) {
+    var elem = document.getElementById(id).querySelector('.custom-checkbox_target_t');
+    var hidden = elem.checked;
+    var query="id="+id+"&hidden="+hidden;
+    console.log("UpdateProd "+query);
+    SendRequest("GET","/update",query,DefRequest);
+}
+
+function UpdateRequest(request) {
+    var responseData = eval("(" + request.responseText + ")");
+    var id = responseData.id;
+    var name = responseData.description;
+    var hidden = responseData.hidden;
+}
+
+function DefRequest(request) {
+    return;
 }
 
 function ShowAll() {
-    var nodes = document.querySelectorAll(".todos-list_item");
-    var items = Array.from(nodes);
+    var items = Array.from(document.querySelectorAll(".todos-list_item"));
     items.forEach(function (item) {
         console.log("Show All");
         item.style.display = '';
@@ -111,8 +104,7 @@ function ShowAll() {
 }
 
 function ShowOnBox() {
-    var nodes = document.querySelectorAll(".todos-list_item");
-    var items = Array.from(nodes);
+    var items = Array.from(document.querySelectorAll(".todos-list_item"));
     items.forEach(function (item) {
         var checkbox = item.querySelector('.custom-checkbox_target_t');
         if (!checkbox.checked) {
@@ -126,8 +118,7 @@ function ShowOnBox() {
 }
 
 function ShowOffBox() {
-    var nodes = document.querySelectorAll(".todos-list_item");
-    var items = Array.from(nodes);
+    var items = Array.from(document.querySelectorAll(".todos-list_item"));
     items.forEach(function (item) {
         console.log("ShowOnBox 1");
         var checkbox = item.querySelector('.custom-checkbox_target_t');
@@ -148,6 +139,7 @@ function OffBox() {
         if (checkbox.checked) {
             console.log("OffCheckBox");
             checkbox.checked=false;
+            UpdateProd(item.id);
         }
     })
 }
