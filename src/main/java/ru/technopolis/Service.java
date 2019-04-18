@@ -30,20 +30,19 @@ public class Service {
         return "index";
     }
 //------------
-    //@RequestMapping(value = "/create", method = RequestMethod.POST)
-    @RequestMapping(value = "/create")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Long> create(@RequestParam String description) {
         long id = dao.add(description);
         return ResponseEntity.ok(id);
     }
 
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Void> delete(@RequestParam String id) {
         dao.delete(Long.parseLong(id));
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/clear_completed")
+    @RequestMapping(value = "/clear_completed", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Void> clearCompleted() {
         List<Long> list = new ArrayList<>();
         for (Map.Entry<Long, ToDo> entry : dao.getTodos().entrySet()) {
@@ -57,19 +56,19 @@ public class Service {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/check")
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Void> check(@RequestParam String id) {
         dao.changeChecking(Long.parseLong(id));
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/check_all")
+    @RequestMapping(value = "/check_all", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Void> checkAll() {
         dao.applyChecking(true);
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/uncheck_all")
+    @RequestMapping(value = "/uncheck_all", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Void> uncheckAll() {
         dao.applyChecking(false);
         return ResponseEntity.ok().build();
