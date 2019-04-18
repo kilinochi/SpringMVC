@@ -31,6 +31,29 @@ var idList = [];
 
 var selectedFilter = 'all';
 
+var itemCount;
+
+function counter(num) {
+    var number = num;
+    itemsLeft();
+
+    function itemsLeft() {
+        var unreadyCounter = document.getElementsByClassName('todos-toolbar_unready-counter')[0];
+        unreadyCounter.innerText = (7 - number) + ' items left';
+    }
+
+    return {
+        add: function () {
+            number++;
+            itemsLeft();
+        },
+        sub: function() {
+            number--;
+            itemsLeft();
+        }
+    }
+}
+
 function onClickAddButton() {
     var textInput = document.getElementsByClassName('todo-creator_text-input')[0];
     if (!textInput.value) {
@@ -58,8 +81,7 @@ function onClickAddButton() {
             creator.after(list);
         }
     }
-    response = getResponse('/getList', 'GET');
-    itemsLeft(response);
+    itemCount.add();
 }
 
 function getItem(id, description, checked) {
@@ -71,42 +93,41 @@ function getItem(id, description, checked) {
     var htmlItem = document.createElement('div');
     htmlItem.innerHTML = item;
     var checkbox = htmlItem.getElementsByClassName('custom-checkbox_target')[0];
-    checkbox.addEventListener('change', function () {
-        onChangeChecked(idList.indexOf(id));
-    });
+    checkbox.addEventListener('change', onChangeChecked(idList.indexOf(id)));
     var deleteButton = htmlItem.getElementsByClassName('todos-list_item_remove')[0];
-    deleteButton.addEventListener('click', function () {
-        onClickDelete(idList.indexOf(id));
-    });
+    deleteButton.addEventListener('click', onClickDelete(idList.indexOf(id)));
     return htmlItem.firstChild;
 }
 
-function itemsLeft(list) {
-    var unreadyCounter = document.getElementsByClassName('todos-toolbar_unready-counter')[0];
-    var items = list ? list : document.getElementsByClassName('todos-list_item');
-    unreadyCounter.innerText = (7 - items.length) + ' items left';
-}
-
-function onChangeChecked(index) {
-    var response = getResponse('/changeChecked?id=' + idList[index], 'PUT');
-    var checkedItem = document.getElementsByClassName('todos-list_item')[index];
-    if (selectedFilter === 'all') {
-        checkedItem.replaceWith(getItem(response.id, response.description, response.checked));
-    } else {
-        response = getResponse('/getList', 'GET');
-        idList = [];
-        refreshList(response);
+function onChangeChecked(i) {
+    var index = i;
+    return function () {
+        var response = getResponse('/changeChecked?id=' + idList[index], 'PUT');
+        var checkedItem = document.getElementsByClassName('todos-list_item')[index];
+        if (selectedFilter === 'all') {
+            checkedItem.replaceWith(getItem(response.id, response.description, response.checked));
+        } else {
+            response = getResponse('/getList', 'GET');
+            idList = [];
+            refreshList(response);
+        }
     }
 }
 
-function onClickDelete(index) {
-    var response = getResponse('/delete?id=' + idList[index], 'DELETE');
-    refreshList(response);
+function onClickDelete(i) {
+    var index = i;
+    return function () {
+        var response = getResponse('/delete?id=' + idList[index], 'DELETE');
+        refreshList(response);
+        itemCount.sub();
+    }
 }
 
 function onClickClearCompleted() {
     var response = getResponse('/clearCompleted', 'DELETE');
+    idList = [];
     refreshList(response);
+    itemCount = counter(response.length);
 }
 
 function onClickFilter(filter, num) {
@@ -153,8 +174,6 @@ function refreshList(items) {
             list.appendChild(getItem(item.id, item.description, item.checked));
         }
     });
-
-    itemsLeft(items);
 }
 
 // -------------------Constructor-------------------
@@ -170,13 +189,12 @@ function constructor() {
     addButton.addEventListener('click', onClickAddButton);
     var checkboxes = document.getElementsByClassName('custom-checkbox_target');
     var deleteButtons = document.getElementsByClassName('todos-list_item_remove');
+    itemCount = counter(checkboxes.length);
+    idList = [];
     for (var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].addEventListener('change', function () {
-            onChangeChecked(i);
-        });
-        deleteButtons[i].addEventListener('click', function () {
-            onClickDelete(i);
-        });
+        idList[i] = i;
+        checkboxes[i].addEventListener('change', onChangeChecked(i));
+        deleteButtons[i].addEventListener('click', onClickDelete(idList.indexOf(i)));
     }
     var clearCompletedButton = document.getElementsByClassName('todos-toolbar_clear-completed')[0];
     clearCompletedButton.addEventListener('click', onClickClearCompleted);
@@ -191,8 +209,6 @@ function constructor() {
         onClickFilter('completed', 2);
     });
     onClickFilter('all', 0);
-    var response = getResponse('/getList', 'GET');
-    refreshList(response);
 }
 
-constructor();
+window.onload = constructor;

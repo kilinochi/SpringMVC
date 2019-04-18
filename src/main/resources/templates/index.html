@@ -26,13 +26,14 @@
                 <div class="custom-checkbox todos-list_item_ready-marker">
                     <input type="checkbox" class="custom-checkbox_target todos-list_item_checkbox"
                            th:checked="todo.checked" aria-label="Mark todo as ready" />
-                    <div class="custom-checkbox_visual">
-                        <div class="custom-checkbox_visual_icon"></div>
+                    <div th:attr="class='custom-checkbox_visual' + (${todo.checked} ? '_check' : '')">
+                        <div th:attr="class='custom-checkbox_visual_icon' + (${todo.checked} ? '_check' : '')"></div>
                     </div>
                 </div>
                 <button class="todos-list_item_remove" aria-label="Delete todo"></button>
                 <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" rows="1" readonly th:utext="${todo.description}">HTML</textarea>
+                    <textarea th:attr="class='todos-list_item_text' + (${todo.checked} ? ' __checked' : '')" rows="1"
+                              readonly th:utext="${todo.description}">HTML</textarea>
                 </div>
             </div>
 
