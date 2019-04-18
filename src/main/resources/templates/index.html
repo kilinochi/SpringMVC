@@ -15,15 +15,37 @@
 
     <div class="todo-board __has-content">
 
-        <form class="todo-creator" method="post" action="/create">
+        <!--<form class="todo-creator" method="post" action="/create">-->
             <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
-            <div class="todo-creator_text-input-w">
-                <input class="todo-creator_text-input" type="text" name="description" placeholder="New todo name" aria-label="Input new todo text" />
+            <div class="todo-creator_text-input-w" >
+                <input class="todo-creator_text-input" required type="text" name="description" placeholder="New todo name" aria-label="Input new todo text"
+                onkeypress="if (event.keyCode == 13) {addNewToDo(this)} else false"/>
             </div>
-        </form>
+        <!--</form>-->
 
         <div class="todos-list">
+
+
+
             <div class="todos-list_item">
+
+                <div class="todos-list_item_2">
+                    <div class="custom-checkbox todos-list_item_ready-marker">
+                        <input type="checkbox" class="custom-checkbox_target" aria-label="Mark todo as ready"
+                               onchange="changeCheckbox(this.parentElement.parentElement.id, this.parentElement.parentElement, this)"/>
+                        <div class="custom-checkbox_visual">
+                            <div class="custom-checkbox_visual_icon"></div>
+                        </div>
+                    </div>
+                    <button class="todos-list_item_remove" aria-label="Delete todo" onclick="deleteToDo(this.parentElement.id)"></button>
+                    <button class="todos-list_item_edit" aria-label="Edit todo" onclick="clickOnEditButton(this.parentElement.id)"></button>
+                    <div class="todos-list_item_text-w">
+                        <!--<textarea class="todos-list_item_text" rows="1" readonly aria-label="Todo item"></textarea>-->
+                        <span class="todos-list_item_text" onblur="saveChangingAfterEdit(this, this.parentElement.parentElement.id)" aria-label="Todo item"></span>
+                    </div>
+                </div>
+
+
 
                 <div class="todos-list_item_1" th:each="toDo: ${toDoDao.getToDoList()}" th:id="${toDo.getId()}">
                 <div class="custom-checkbox todos-list_item_ready-marker">
@@ -33,17 +55,21 @@
                         <div class="custom-checkbox_visual_icon"></div>
                     </div>
                 </div>
-                    <button class="todos-list_item_remove" aria-label="Delete todo"
-                    onclick="deleteToDo(this.parentElement.id)"></button>
+                    <button class="todos-list_item_remove" aria-label="Delete todo" onclick="deleteToDo(this.parentElement.id)"></button>
+                    <button class="todos-list_item_edit" aria-label="Edit todo" onclick="clickOnEditButton(this.parentElement.id)"></button>
                 <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" th:text="${toDo.getDescription()}" rows="1" readonly aria-label="Todo item">HTML</textarea>
+                    <!--<textarea class="todos-list_item_text" th:text="${toDo.getDescription()}" rows="1" readonly aria-label="Todo item"></textarea>-->
+                    <span class="todos-list_item_text" onblur="saveChangingAfterEdit(this, this.parentElement.parentElement.id)"
+                          th:text="${toDo.getDescription()}" aria-label="Todo item"></span>
                 </div>
                 </div>
+
+                <div class="end-of-item-list"></div>
 
         </div>
 
         <div class="todos-toolbar">
-            <div class="todos-toolbar_unready-counter" on th:text="${toDoDao.countUnchecked() + ' items left'}" aria-label="Items are left"></div>
+            <div class="todos-toolbar_unready-counter" th:text="${toDoDao.countUnchecked() + ' items left'}" aria-label="Items are left"></div>
 
             <div class="filters todos-toolbar_filters">
                 <button class="filters-item __selected" aria-label="Filter: All, is selected">All</button>
@@ -51,9 +77,7 @@
                 <button class="filters-item" aria-label="Filter: Completed">Completed</button>
             </div>
 
-            <form method="post" action="/deleteAllChecked">
-                <button class="todos-toolbar_clear-completed">Clear completed</button>
-            </form>
+            <button class="todos-toolbar_clear-completed">Clear completed</button>
 
         </div>
 
