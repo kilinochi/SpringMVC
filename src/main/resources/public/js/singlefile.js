@@ -18,7 +18,6 @@ function createFromTemplate(templateId, templateData) {
 }
 
 class Observable {
-
     constructor() {
         this._observers = [];
     }
@@ -41,7 +40,6 @@ class Observable {
 }
 
 class Controller extends Observable {
-
     constructor() {
         super();
 
@@ -62,6 +60,8 @@ class Controller extends Observable {
 
         this._clearCompletedButton = document.querySelector(".todos-toolbar_clear-completed");
         this._clearCompletedButton.addEventListener("click", this.clearCompletedButtonListener.bind(this));
+
+        this.addListenersToAllTodos();
     }
 
     textInputListener(e) {
@@ -90,6 +90,13 @@ class Controller extends Observable {
     }
 
     clearCompletedButtonListener(e) {
+        let httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            //empty callback
+        };
+        httpRequest.open("POST", "/clear_completed", true);
+        let formData = new FormData();
+        httpRequest.send(formData);
         this.notifyAll("request to clear completed", "");
     }
 
@@ -118,22 +125,64 @@ class Controller extends Observable {
         e.preventDefault();
         let trg = e.target;
         let task = trg.closest(".todos-list_item");
+        let id = task.getAttribute("id");
+        let httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            //empty callback
+        };
+        httpRequest.open("POST", "/delete", true);
+        let formData = new FormData();
+        formData.append("id", id);
+        httpRequest.send(formData);
         this.notifyAll("deletion request", task);
     }
 
     checkboxListener(e) {
         let trg = e.target;
+        let task = trg.closest(".todos-list_item");
+        let id = task.getAttribute("id");
+
+        let httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            //empty callback
+        };
+        httpRequest.open("POST", "/check", true);
+        let formData = new FormData();
+        formData.append("id", id);
+        httpRequest.send(formData);
         this.notifyAll("checkbox touched", trg);
+    }
+
+    addListenersToAllTodos() {
+        let todosList = document.querySelector(".todos-list");
+        let deleteButtons = todosList.querySelectorAll(".custom-delete-button");
+        let checkboxes = todosList.querySelectorAll('.custom-checkbox_target');
+        for (let i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener("click", this.deleteButtonListener.bind(this));
+            checkboxes[i].addEventListener('click', this.checkboxListener.bind(this));
+        }
     }
 }
 
 class Model {
-
     constructor(view) {
-        this._tasksTotal = 0;
+        let todosList = document.querySelector(".todos-list");
+        let checkboxes = todosList.querySelectorAll('.custom-checkbox_target');
+        this._tasksTotal = checkboxes.length;
         this._doneTasksTotal = 0;
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                this._doneTasksTotal++;
+            }
+        }
         this._view = view;
         this._mode = "all";
+
+        if (this._tasksTotal !== 0) {
+            this._view.expandBoard();
+            this._view.updateAmountOfUndoneTasks(this._tasksTotal - this._doneTasksTotal);
+        }
     }
 
     /*
@@ -233,10 +282,26 @@ class Model {
             this._doneTasksTotal = this._tasksTotal;
             this._view.makeAllItemsDone();
             this.renderAmountOfUnreadyTasks();
+
+            let httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function () {
+                //empty callback
+            };
+            httpRequest.open("POST", "/check_all", true);
+            let formData = new FormData();
+            httpRequest.send(formData);
         } else {
             this._doneTasksTotal = 0;
             this.renderAmountOfUnreadyTasks();
             this._view.makeAllItemsUndone();
+
+            let httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function () {
+                //empty callback
+            };
+            httpRequest.open("POST", "/uncheck_all", true);
+            let formData = new FormData();
+            httpRequest.send(formData);
         }
         switch (this._mode) {
             case "all":
@@ -298,6 +363,8 @@ class View extends Observable {
         this._allButton = document.querySelector(".filters-item-all");
         this._completedButton = document.querySelector(".filters-item-completed");
         this._activeButton = document.querySelector(".filters-item-active");
+
+        this.makeItemsDoneOnInit();
     }
 
     /*
@@ -305,12 +372,29 @@ class View extends Observable {
     * @param {boolean} isVisible
     * */
     addTodo(text, isVisible) {
+        let id;
+
+        let httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                id = httpRequest.responseText;
+            }
+        };
+
+        httpRequest.open("POST", "/create", false);
+        let formData = new FormData();
+        formData.append("description", text);
+        httpRequest.send(formData);
+
         const newItemHTML = createFromTemplate(
             'listItem',
             {
                 text: text,
             }
         );
+
+        newItemHTML.setAttribute("id", id);
+
         if (isVisible) {
             this.setVisible(newItemHTML);
         } else {
@@ -319,6 +403,9 @@ class View extends Observable {
         this._todoListElement.appendChild(newItemHTML);
         this._todoCreator.reset();
         this.notifyAll("todo added", "");
+
+
+
     }
 
     /*
@@ -371,6 +458,16 @@ class View extends Observable {
         for (let i = 0; i < checkboxes.length; i++) {
             if (!checkboxes[i].checked) {
                 checkboxes[i].checked = true;
+                let item = checkboxes[i].closest(".todos-list_item");
+                this.makeItemDone(item);
+            }
+        }
+    }
+
+    makeItemsDoneOnInit() {
+        const checkboxes = document.querySelectorAll(".custom-checkbox_target");
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
                 let item = checkboxes[i].closest(".todos-list_item");
                 this.makeItemDone(item);
             }
