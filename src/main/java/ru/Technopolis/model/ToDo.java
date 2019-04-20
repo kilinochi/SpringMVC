@@ -3,16 +3,22 @@ package ru.Technopolis.model;
 
 public class ToDo {
 
-    private final long id;
+    private Long id;
     private String description;
+    private boolean done;
 
-    public ToDo(long id, String description) {
+    public ToDo(long id, String description, boolean isDone) {
         this.id = id;
         this.description = description;
+        this.done = isDone;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -23,10 +29,12 @@ public class ToDo {
         this.description = description;
     }
 
-    public String toString() {
-        return "ToDo item: id = "
-                + id
-                + ", description = "
-                + description;
+    public Boolean isDone() {
+        return done;
     }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
 }
