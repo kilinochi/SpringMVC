@@ -60,16 +60,22 @@ function counter(num) {
 
 function onClickAddButton() {
     var textInput = document.getElementsByClassName('todo-creator_text-input')[0];
-    if (!textInput.value) {
-        console.warn('Empty textInput');
-        return null;
-    }
     var items = document.getElementsByClassName('todos-list_item');
     if (items.length >= 7) {
         console.warn('Free space is over');
+        textInput.setAttribute('placeholder', 'Max items');
+        textInput.setAttribute('class', 'todo-creator_text-input __not-valid');
         textInput.value = '';
         return null;
     }
+    if (!textInput.value) {
+        console.warn('Empty textInput');
+        textInput.setAttribute('placeholder', 'Empty description');
+        textInput.setAttribute('class', 'todo-creator_text-input __not-valid');
+        return null;
+    }
+    textInput.setAttribute('placeholder', 'New todo name');
+    textInput.setAttribute('class', 'todo-creator_text-input');
     var response = getResponse('/add?description=' + textInput.value, 'POST');
     textInput.value = '';
     if (response && selectedFilter !== 'completed') {
