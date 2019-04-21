@@ -33,13 +33,13 @@ public class ToDoDAO {
         return toDoList.get(id);
     }
 
-    public ToDo[] delete(int id) {
-        toDoList.remove(id);
+    public ToDo delete(int id) {
+        ToDo deletedTodo = toDoList.remove(id);
         int i = 0;
         for (ToDo todo: toDoList) {
             todo.setId(i++);
         }
-        return getList();
+        return deletedTodo;
     }
 
     public ToDo[] clearCompleted() {

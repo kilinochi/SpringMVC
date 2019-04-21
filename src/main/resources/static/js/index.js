@@ -29,6 +29,10 @@ var itemTemplate = '<div class="todos-list_item">'
 
 var idList = [];
 
+var funcList = [];
+
+var checkedList = [];
+
 var selectedFilter = 'all';
 
 var itemCount;
@@ -92,40 +96,58 @@ function getItem(id, description, checked) {
     item = item.replace(/%DESCRIPTION%/, description);
     var htmlItem = document.createElement('div');
     htmlItem.innerHTML = item;
+    funcList[idList.indexOf(id)] = {
+        changeFunc: onChangeChecked(id),
+        deleteFunc: onClickDelete(id)
+    };
     var checkbox = htmlItem.getElementsByClassName('custom-checkbox_target')[0];
-    checkbox.addEventListener('change', onChangeChecked(idList.indexOf(id)));
+    checkbox.addEventListener('change', funcList[idList.indexOf(id)].changeFunc);
     var deleteButton = htmlItem.getElementsByClassName('todos-list_item_remove')[0];
-    deleteButton.addEventListener('click', onClickDelete(idList.indexOf(id)));
+    deleteButton.addEventListener('click', funcList[idList.indexOf(id)].deleteFunc);
     return htmlItem.firstChild;
 }
 
 function onChangeChecked(i) {
-    var index = i;
+    var id = i;
     return function () {
-        var response = getResponse('/changeChecked?id=' + idList[index], 'PUT');
-        var checkedItem = document.getElementsByClassName('todos-list_item')[index];
+        var response = getResponse('/changeChecked?id=' + id, 'PUT');
+        var checkedItem = document.getElementsByClassName('todos-list_item')[idList.indexOf(response.id)];
+        if (checkedList.indexOf(response.id) === -1) {
+            checkedList.push(response.id);
+
+        }
+
         if (selectedFilter === 'all') {
             checkedItem.replaceWith(getItem(response.id, response.description, response.checked));
         } else {
-            response = getResponse('/getList', 'GET');
-            idList = [];
-            refreshList(response);
+            checkedItem.remove();
+            funcList.splice(idList.indexOf(response.id), 1);
+            idList.splice(idList.indexOf(response.id), 1);
         }
     }
 }
 
 function onClickDelete(i) {
-    var index = i;
+    var id = i;
+
     return function () {
-        var response = getResponse('/delete?id=' + idList[index], 'DELETE');
-        refreshList(response);
+        var response = getResponse('/delete?id=' + id, 'DELETE');
+        var index = idList.indexOf(response.id);
+        deleteEventListeners();
+        if (checkedList.indexOf(response.id) !== -1) {
+            checkedList.splice(checkedList.indexOf(response.id), 1);
+        }
+        var deletedItem = document.getElementsByClassName('todos-list_item')[index];
+        deletedItem.remove();
         itemCount.sub();
+        setEventListeners(true);
     }
 }
 
 function onClickClearCompleted() {
     var response = getResponse('/clearCompleted', 'DELETE');
     idList = [];
+    checkedList = [];
     refreshList(response);
     itemCount = counter(response.length);
 }
@@ -176,6 +198,52 @@ function refreshList(items) {
     });
 }
 
+function deleteEventListeners() {
+    var checkboxes = document.getElementsByClassName('custom-checkbox_target');
+    var deleteButtons = document.getElementsByClassName('todos-list_item_remove');
+    for (var i = 0, j = 0; i < checkboxes.length; i++, j++) {
+        var index;
+        while (idList.indexOf(j) === -1 && j < 10) {
+            j++;
+        }
+        index = idList.indexOf(j);
+        checkboxes[i].removeEventListener('change', funcList[index].changeFunc);
+        deleteButtons[i].removeEventListener('click', funcList[index].deleteFunc);
+    }
+    funcList = [];
+    idList = [];
+}
+
+function setEventListeners() {
+    var checkboxes = document.getElementsByClassName('custom-checkbox_target');
+    var deleteButtons = document.getElementsByClassName('todos-list_item_remove');
+    for (var i = 0, id = 0; i < checkboxes.length; i++, id++) {
+        switch (selectedFilter) {
+        case 'active':
+            while (checkedList.indexOf(id) !== -1) {
+                id++;
+            }
+            break;
+        case 'completed':
+            while (checkedList.indexOf(id) === -1) {
+                id++;
+            }
+            break;
+        default:
+            break;
+        }
+        idList[i] = id;
+        funcList[i] = {
+            changeFunc: onChangeChecked(id),
+            deleteFunc: onClickDelete(id)
+        };
+        checkboxes[i].addEventListener('change', funcList[i].changeFunc);
+        deleteButtons[i].addEventListener('click', funcList[i].deleteFunc);
+    }
+
+    return checkboxes.length;
+}
+
 // -------------------Constructor-------------------
 function constructor() {
     document.addEventListener('keydown', function (ev) {
@@ -187,15 +255,7 @@ function constructor() {
 
     var addButton = document.getElementsByClassName('todo-creator_add_button')[0];
     addButton.addEventListener('click', onClickAddButton);
-    var checkboxes = document.getElementsByClassName('custom-checkbox_target');
-    var deleteButtons = document.getElementsByClassName('todos-list_item_remove');
-    itemCount = counter(checkboxes.length);
-    idList = [];
-    for (var i = 0; i < checkboxes.length; i++) {
-        idList[i] = i;
-        checkboxes[i].addEventListener('change', onChangeChecked(i));
-        deleteButtons[i].addEventListener('click', onClickDelete(idList.indexOf(i)));
-    }
+    itemCount = counter(setEventListeners());
     var clearCompletedButton = document.getElementsByClassName('todos-toolbar_clear-completed')[0];
     clearCompletedButton.addEventListener('click', onClickClearCompleted);
     var filterButtons = document.getElementsByClassName('filters-item');

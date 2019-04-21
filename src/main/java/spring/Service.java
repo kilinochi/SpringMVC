@@ -47,7 +47,7 @@ public class Service {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public @ResponseBody ToDo[] delete(@RequestParam int id) {
+    public @ResponseBody ToDo delete(@RequestParam int id) {
         return dao.delete(id);
     }
 
