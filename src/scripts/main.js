@@ -14,7 +14,9 @@ function init() {
     var todoActionsBar = new TodoActionsBar();
 
     addTodos.on('newTodo', function (todoData) {
-        todoList.createItem(todoData);
+        todoList.createItem(todoData, function () {
+            addTodos.setInputValid(false);
+        });
     }).on('markAsReadyAll', function () {
         todoList.markAsReadyAll();
     });

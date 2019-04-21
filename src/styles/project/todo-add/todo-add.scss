@@ -5,6 +5,10 @@
     border-bottom: solid 1px $c-gray-light;
 }
 
+.todo-add.__invalid {
+    background-color: $c-todos-add-invalid;
+}
+
 .todo-add_select-all {
     float: left;
     width: 24px;

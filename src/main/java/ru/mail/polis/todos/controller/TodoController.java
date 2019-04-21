@@ -34,6 +34,9 @@ public class TodoController {
 
     @PostMapping
     public ResponseEntity<Todo> create(@RequestBody Todo todo) {
+        if (todo.getDescription() == null || todo.getDescription().equals("")) {
+            return ResponseEntity.badRequest().build();
+        }
         repository.save(todo);
         return ResponseEntity.ok(todo);
     }

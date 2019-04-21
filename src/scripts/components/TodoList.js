@@ -50,25 +50,30 @@ todoListConstructorPrototype.parseItem = function (root) {
 
 /**
  * @param {Object} data
+ * @param {Function} onError
  * @return {TodoListConstructor}
  */
-todoListConstructorPrototype.createItem = function (data) {
+todoListConstructorPrototype.createItem = function (data, onError) {
     var list = this;
     var req = new XMLHttpRequest();
     req.open("POST", "/todos");
     req.setRequestHeader("Content-Type", "application/json");
     req.onreadystatechange = function () {
-        if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
-            var response = JSON.parse(req.responseText);
-            var item = new TodoItem(response, null);
+        if (req.readyState === XMLHttpRequest.DONE) {
+            if (req.status === 200) {
+                var response = JSON.parse(req.responseText);
+                var item = new TodoItem(response, null);
 
-            list._items.push(item);
+                list._items.push(item);
 
-            item.on('change', list._onItemChange, list)
-                .on('remove', list._onItemRemove, list)
-                .render(list._todosList);
+                item.on('change', list._onItemChange, list)
+                    .on('remove', list._onItemRemove, list)
+                    .render(list._todosList);
 
-            list.trigger('itemAdd', item);
+                list.trigger('itemAdd', item);
+            } else if (req.status === 400) {
+                onError();
+            }
         }
     };
     req.send(JSON.stringify(data));

@@ -1,10 +1,6 @@
 # Todos App
 
-## Build
-* `npm run install`
-* `npm run build`
-
-## Run
+## Build & Run
 * `./gradlew bootRun`
 
 ## HTML Endpoints

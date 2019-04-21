@@ -1,10 +1,9 @@
 package ru.mail.polis.todos.model;
 
 public class Todo {
-
-    private Long    id;
+    private Long id;
+    private String description;
     private Boolean ready;
-    private String  description;
 
     public Long getId() {
         return id;
@@ -14,19 +13,19 @@ public class Todo {
         this.id = id;
     }
 
-    public Boolean isReady() {
-        return ready;
-    }
-
-    public void setReady(Boolean ready) {
-        this.ready = ready;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(Boolean ready) {
+        this.ready = ready;
     }
 }
