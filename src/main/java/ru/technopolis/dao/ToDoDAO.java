@@ -32,12 +32,12 @@ public class ToDoDAO {
         return todos.get(id);
     }
 
-    public void delete(long id) {
-        todos.remove(id);
+    public ToDo delete(long id) {
+        return todos.remove(id);
     }
 
-    public void update(long id, String data) {
-        todos.replace(id, new ToDo(id, data));
+    public ToDo update(long id, String data) {
+        return todos.replace(id, new ToDo(id, data));
     }
 
     public ToDo[] getList() {

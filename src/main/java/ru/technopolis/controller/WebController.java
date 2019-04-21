@@ -29,8 +29,8 @@ public class WebController {
      * curl -X DELETE -i localhost:8080/todо/1
      * */
     @DeleteMapping("{id}")
-    public void delete(@PathVariable long id) {
-        dao.delete(id);
+    public ToDo delete(@PathVariable long id) {
+        return dao.delete(id);
     }
 
     @GetMapping("{id}")
@@ -43,8 +43,8 @@ public class WebController {
     * */
 
     @PutMapping("{id}")
-    public void updateTodo(@PathVariable long id, @RequestParam String description){
-        dao.update(id,description);
+    public ToDo updateTodo(@PathVariable long id, @RequestParam String description){
+        return dao.update(id,description);
     }
 
     @GetMapping

@@ -1,3 +1,6 @@
+let unAcceptsymbols = new RegExp(/[\/\\\-+<>=*@#$%^&]/);
+
+
 const state = {
     todos: window.__TODOS_DATA,
 };
@@ -13,7 +16,7 @@ let formEl = new Vue({
     },
     methods: {
         postData: function () {
-            if(this.inputValue === '') {
+            if(this.inputValue === '' || unAcceptsymbols.test(this.inputValue)) {
                 return;
             }
 

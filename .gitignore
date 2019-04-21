@@ -7,3 +7,7 @@ package-lock.json
 package.json
 yarn.lock
 webpack.config.js
+settings.gradle
+gradlew.bat
+gradlew
+gradle/*
