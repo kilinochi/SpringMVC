@@ -40,6 +40,11 @@
     border: none;
     resize: none;
     max-height: 32px;
+    border-radius: 5px;
+}
+
+.todos-list_item_text.__incorrect {
+    border: 1px solid indianred;
 }
 
 .todos-list_item_remove {

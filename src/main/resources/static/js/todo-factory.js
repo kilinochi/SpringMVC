@@ -39,6 +39,7 @@ function addTodo(value, id) {
         let textArea = document.createElement('textarea');
         textArea.classList.add("todos-list_item_text");
         textArea.value = value;
+        addTextBlurEL(textArea);
         itemText.appendChild(textArea);
         return itemText;
     });

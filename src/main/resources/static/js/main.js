@@ -16,25 +16,27 @@ document.addEventListener('DOMContentLoaded', function () {
     showHideToolbar();
 
     todoInputField.addEventListener('keydown', function (evt) {
-        if ((evt.keyCode === 13) && (todoInputField.value !== '')) {
+        if ((evt.keyCode === 13) && (todoInputField.value.trim() !== "")) {
             evt.preventDefault();
             request(API_CREATE, 'POST', JSON.stringify({
                 description: todoInputField.value
             }), function (response) {
-                addTodo(todoInputField.value.toString(), response.id);
-                updateListByFilter();
-                changeCounter(1);
-                allCounter += 1;
-                showHideToolbar();
-                todoInputField.value = '';
+                if (response !== null) {
+                    addTodo(response.description, response.id);
+                    updateListByFilter();
+                    changeCounter(1);
+                    allCounter += 1;
+                    showHideToolbar();
+                    todoInputField.value = '';
+                }
             });
         }
     });
 
     checkAll.addEventListener('click', function (evt) {
         evt.preventDefault();
-        var todoItems = todosList.children;
-        for (var i = 0; i < todoItems.length; i++) {
+        let todoItems = todosList.children;
+        for (let i = 0; i < todoItems.length; i++) {
             if (!todoItems[i].classList.contains('__done')) {
                 makeItemDone(todoItems[i]);
             }
@@ -46,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         clearCompleted();
     });
 
-    for (var i = 0; i < filters.length; i++) {
+    for (let i = 0; i < filters.length; i++) {
         filters[i].addEventListener('click', function (evt) {
             currentFilter.classList.remove('__selected');
             currentFilter = evt.target;

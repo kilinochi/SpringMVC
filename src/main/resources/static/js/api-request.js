@@ -6,8 +6,12 @@ function request(url, method, body, callback) {
         if (connection.status !== 200) {
             console.error("Something went wrong");
         } else {
-            let response = JSON.parse(connection.responseText);
-            callback(response);
+            if (connection.responseText !== "") {
+                let response = JSON.parse(connection.responseText);
+                callback(response);
+            } else {
+                callback(null);
+            }
         }
     };
 

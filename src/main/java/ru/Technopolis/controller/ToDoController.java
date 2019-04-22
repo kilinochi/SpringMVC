@@ -45,7 +45,7 @@ public class ToDoController {
 
     @RequestMapping(path = "/update", method = RequestMethod.PUT)
     @ResponseBody
-    public boolean update(@RequestBody String body) {
+    public ToDo update(@RequestBody String body) {
         ToDo item = Serializer.getInstance().fromJson(body, ToDo.class);
         return dao.update(item);
     }
