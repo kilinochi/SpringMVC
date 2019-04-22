@@ -50,6 +50,10 @@ const httpRequest = new XMLHttpRequest();
 httpRequest.onreadystatechange = function(){
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200){
+            const todoList = document.querySelector('.todos-list');
+            while (todoList.hasChildNodes()) {
+                todoList.removeChild(todoList.lastChild);
+            }
             const response = JSON.parse(httpRequest.responseText);
             for (var i = 0; i < response.length; i++) {
                 todoListComponent.addTodo(response[i].id, response[i].description, response[i].completed);
