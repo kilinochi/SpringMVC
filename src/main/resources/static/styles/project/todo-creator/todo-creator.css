@@ -48,6 +48,10 @@
       color: #666;
       }
 
+    .todo-creator_text-input:invalid {
+      box-shadow:none;
+      }
+
     .todo-creator_text-input::-webkit-input-placeholder {
       font-style: italic;
       color: #ccc;

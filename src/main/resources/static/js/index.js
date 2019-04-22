@@ -63,3 +63,14 @@ httpRequest.onreadystatechange = function(){
 }
 httpRequest.open("GET", "http://localhost:8080/api/todos/", true);
 httpRequest.send();
+
+// Validation
+const todoInput = document.querySelector('.jsTodoText');
+
+todoInput.addEventListener("input", function (event) {
+  if (todoInput.validity.patternMismatch ) {
+    todoInput.setCustomValidity("Please, input valid text (only characters, numbers and punctuation)");
+  } else {
+    todoInput.setCustomValidity("");
+  }
+});
