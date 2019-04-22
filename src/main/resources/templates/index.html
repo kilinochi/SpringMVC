@@ -25,7 +25,7 @@
             <button class="todo-creator_check-all jsTodoCheckAllAsDone" aria-label="Check all items as done"></button>
             <div class="todo-creator_text-input-w">
                 <input class="todo-creator_text-input jsTodoText" type="text" placeholder="What needs to be done?"
-                       aria-label="Input new todo text" required/>
+                       aria-label="Input new todo text" required pattern="[A-Za-z0-9]" maxlength="100"/>
             </div>
         </form>
 
@@ -40,11 +40,10 @@
                     </div>
                 </div>
                 <button class="todos-list_item_remove" aria-label="Delete todo"></button>
-                <div class="todos-list_item_text-w">
-                    <div contenteditable="true" class="todos-list_item_text" th:text="${todoItem.getDescription()}">
-                        {text}
-                    </div>
-                </div>
+                <form class="todos-list_item_text-w">
+                    <input type="text" class="todos-list_item_text" th:value="${todoItem.getDescription()}" required
+                           pattern="[A-Za-z0-9]+" maxlength="100">
+                </form>
             </div>
         </div>
 
@@ -57,9 +56,10 @@
                     </div>
                 </div>
                 <button class="todos-list_item_remove" aria-label="Delete todo"></button>
-                <div class="todos-list_item_text-w">
-                    <div contenteditable="true" class="todos-list_item_text">{text}</div>
-                </div>
+                <form class="todos-list_item_text-w">
+                    <input type="text" class="todos-list_item_text" id="editText" required pattern="[A-Za-z0-9]+"
+                           maxlength="100" value="{text}"/>
+                </form>
             </div>
         </script>
 

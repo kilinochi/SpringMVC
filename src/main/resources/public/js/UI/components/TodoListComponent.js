@@ -111,13 +111,15 @@ export class TodoListComponent {
             parent.editState(this.closest('.todos-list_item'));
         });
 
-        editText.addEventListener('input', function () {
-            parent.updateItem(id, editText.innerHTML, this.closest('.todos-list_item').classList.contains(COMPLETED_VALUE));
-        })
+        editText.parentElement.addEventListener('submit', function (d) {
+            d.preventDefault();
+            parent.updateItem(this.closest('.todos-list_item').id, editText.value, this.closest('.todos-list_item').classList.contains(COMPLETED_VALUE));
+        });
 
         this.checkVisibility(this._root.lastChild);
         return this._root.lastChild;
     }
+
 
     updateItem(id, description, checked) {
         console.log(id + " " + description + " " + checked);
@@ -154,9 +156,10 @@ export class TodoListComponent {
             });
         });
         editTexts.forEach(function (value) {
-            value.addEventListener('input', function () {
-                parent.updateItem(this.closest('.todos-list_item').id, value.innerHTML, this.closest('.todos-list_item').classList.contains(COMPLETED_VALUE));
-            })
+            value.parentElement.addEventListener('submit', function (d) {
+                d.preventDefault();
+                parent.updateItem(this.closest('.todos-list_item').id, value.value, this.closest('.todos-list_item').classList.contains(COMPLETED_VALUE));
+            });
         });
 
 
