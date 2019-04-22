@@ -111,12 +111,12 @@ class Template {
             readyMarker = this.readyMarker(data.ready);
             listItemView.appendChild(readyMarker);
 
-            removeBtn = this.removeBtn();
-            listItemView.appendChild(removeBtn);
-
             viewText = this.viewText(data.text);
             listItemView.appendChild(viewText);
             listItem.appendChild(listItemView);
+
+            removeBtn = this.removeBtn();
+            listItemView.appendChild(removeBtn);
 
             textInput = this.textInput(data.text);
             listItem.appendChild(textInput);

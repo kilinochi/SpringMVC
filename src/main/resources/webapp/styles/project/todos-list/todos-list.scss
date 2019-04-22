@@ -1,31 +1,29 @@
 
 .todos-list {
-  
+  display: flex;
+  flex-direction: column;
 }
 
 .todos-list_item {
   font-size: 24px;
   border-top: 1px solid #ededed;
   }
-  .todos-list_item:after {
-    content: '';
-    clear: both;
-    display: table;
-    }
+
   .todos-list_item.__editing {
     border-bottom: none;
 	  padding: 0;
   }
 
   .todos-list_item_view {
-  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     }
     .todos-list_item.__editing .todos-list_item_view {
       display: none;
       }
 
     .todos-list_item_view_ready-marker {
-      float: left;
       }
 
     .todos-list_item_view_text-w {
@@ -35,6 +33,7 @@
 
       .todos-list_item_view_text {
           word-break: break-all;
+          width: 100%;
           padding: 15px 15px 15px 15px;
           display: block;
           line-height: 1.2;
@@ -47,7 +46,6 @@
             }
 
     .todos-list_item_view_remove {
-      float: right;
       margin-left: 16px;
       visibility: hidden;
       }
