@@ -37,14 +37,17 @@
     color: #666;
     line-height: 30px;
     font-weight: 200;
-    border: none;
+    outline: none;
+    border: 1px solid transparent;
+    transition-property: border;
+    transition-duration: 0.5s;
     resize: none;
     max-height: 32px;
     border-radius: 5px;
 }
 
 .todos-list_item_text.__incorrect {
-    border: 1px solid indianred;
+    border: 1px solid red;
 }
 
 .todos-list_item_remove {

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showHideToolbar();
 
     todoInputField.addEventListener('keydown', function (evt) {
-        if ((evt.keyCode === 13) && (todoInputField.value.trim() !== "")) {
+        if ((evt.keyCode === 13) && (todoInputField.validity.valid)) {
             evt.preventDefault();
             request(API_CREATE, 'POST', JSON.stringify({
                 description: todoInputField.value

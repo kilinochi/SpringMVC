@@ -16,7 +16,7 @@ public class ToDoDAO {
     private ConcurrentHashMap<Long, ToDo> todos = new ConcurrentHashMap<>();
 
     public ToDo create(String description) {
-        if (description.trim().isEmpty()) {
+        if ((description.trim().isEmpty()) || (description.trim().length() > 32)) {
             return null;
         }
         long id = counter.incrementAndGet();
@@ -44,7 +44,8 @@ public class ToDoDAO {
     public ToDo update(ToDo item) {
         if (todos.containsKey(item.getId())) {
             if (item.getDescription() != null) {
-                if (item.getDescription().trim().isEmpty()) {
+                if ((item.getDescription().trim().isEmpty()) ||
+                        (item.getDescription().trim().length() > 32)) {
                     return null;
                 } else {
                     todos.get(item.getId()).setDescription(item.getDescription().trim());

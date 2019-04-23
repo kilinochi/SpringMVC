@@ -151,20 +151,26 @@ function addRemoveBtnEL(removeBtn) {
 
 function addTextBlurEL(textField) {
     textField.addEventListener('blur', function (ev) {
-        request(API_UPDATE, 'PUT', JSON.stringify({
-            id: ev.target.closest(".todos-list_item").getAttribute('id'),
-            description: ev.target.value
-        }), function (response) {
-            if (response === null) {
-                if (!ev.target.classList.contains('__incorrect')) {
-                    ev.target.classList.add('__incorrect');
+        if (ev.target.validity.valid) {
+            request(API_UPDATE, 'PUT', JSON.stringify({
+                id: ev.target.closest(".todos-list_item").getAttribute('id'),
+                description: ev.target.value
+            }), function (response) {
+                if (response === null) {
+                    if (!ev.target.classList.contains('__incorrect')) {
+                        ev.target.classList.add('__incorrect');
+                    }
+                } else {
+                    if (ev.target.classList.contains('__incorrect')) {
+                        ev.target.classList.remove('__incorrect');
+                    }
+                    ev.target.value = response.description;
                 }
-            } else {
-                if (ev.target.classList.contains('__incorrect')) {
-                    ev.target.classList.remove('__incorrect');
-                }
-                ev.target.value = response.description;
+            });
+        } else {
+            if (!ev.target.classList.contains('__incorrect')) {
+                ev.target.classList.add('__incorrect');
             }
-        });
+        }
     });
 }
