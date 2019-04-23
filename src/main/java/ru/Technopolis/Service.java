@@ -30,7 +30,7 @@ public class Service {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<String> create(@RequestParam String description) {
-        if (description.trim().length() == 0)
+        if (description == null || description.trim().length() == 0 || description.length() > 100)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(String.valueOf(dao.create(description).getId()));
     }
@@ -44,6 +44,9 @@ public class Service {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<ToDo> update(@RequestParam String id, String description, @RequestParam boolean checked) {
+        if (description != null && (description.trim().length() == 0 || description.length() > 100
+                || id == null))
+            return ResponseEntity.badRequest().build();
         ToDo toDo = dao.update(Long.parseLong(id), description, checked);
         if (toDo == null)
             return ResponseEntity.notFound().build();
@@ -53,7 +56,7 @@ public class Service {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
     ResponseEntity<Void> delete(@RequestParam String id) {
-        if (id.length() == 0)
+        if (id.length() == 0 || id == null)
             return ResponseEntity.badRequest().build();
         ToDo toDo = dao.delete(Long.parseLong(id));
         if (toDo == null)
