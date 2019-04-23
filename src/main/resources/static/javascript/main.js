@@ -17,6 +17,7 @@ let formEl = new Vue({
     methods: {
         postData: function () {
             if(this.inputValue === '' || unAcceptsymbols.test(this.inputValue)) {
+                this.inputValue = '';
                 return;
             }
 
@@ -83,7 +84,9 @@ Vue.component('todo-item', {
         updateItem: function() {
             let formData = new FormData();
             let xhr = new XMLHttpRequest();
-            formData.append("description", this.todo.description);
+            if(this.todo.description !== '' || !unAcceptsymbols.test(this.todo.description)) {
+                formData.append("description", this.todo.description);
+            }
             xhr.open('PUT', '/todo/'+this.todo.id , true);
             xhr.send(formData);
         },
