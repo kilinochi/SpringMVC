@@ -1,4 +1,4 @@
-let unAcceptsymbols = new RegExp(/[\/\\\-+<>=*@#$%^&]/);
+let unAcceptSymbols = new RegExp(/[\/\\\-+<>=*@#$%^&]/);
 
 
 const state = {
@@ -16,7 +16,7 @@ let formEl = new Vue({
     },
     methods: {
         postData: function () {
-            if(this.inputValue === '' || unAcceptsymbols.test(this.inputValue)) {
+            if(this.inputValue === '' || unAcceptSymbols.test(this.inputValue)) {
                 this.inputValue = '';
                 return;
             }
@@ -82,11 +82,13 @@ Vue.component('todo-item', {
         }, 500),
 
         updateItem: function() {
+            if(this.todo.description === '' || unAcceptSymbols.test(this.todo.description)) {
+                this.todo.description.replace(unAcceptSymbols, "");
+                return;
+            }
             let formData = new FormData();
             let xhr = new XMLHttpRequest();
-            if(this.todo.description !== '' || !unAcceptsymbols.test(this.todo.description)) {
-                formData.append("description", this.todo.description);
-            }
+            formData.append("description", this.todo.description);
             xhr.open('PUT', '/todo/'+this.todo.id , true);
             xhr.send(formData);
         },
