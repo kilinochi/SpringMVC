@@ -24,10 +24,14 @@ h1 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: relative;
 }
-.todo_form {
+.todo_form  {
     border-bottom: 1px solid #E6E6E6;
     display: flex;
 }
+.wrong_highlight {
+    border: 1px solid red;
+}
+
 .todo_form_arrow {
     margin: auto;
     width: 11%;

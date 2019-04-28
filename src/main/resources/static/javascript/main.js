@@ -1,5 +1,11 @@
-let unAcceptSymbols = new RegExp(/[\/\\\-+<>=*@#$%^&]/);
+let unAcceptSymbols = new RegExp(/[\/\\\-+<>=*@#\$%^\&]/g);
 
+function highlightElement(element) {
+    element.classList.add("wrong_highlight");
+    setTimeout( ()=> {
+        element.classList.remove("wrong_highlight");
+    },2000);
+}
 
 const state = {
     todos: window.__TODOS_DATA,
@@ -17,6 +23,8 @@ let formEl = new Vue({
     methods: {
         postData: function () {
             if(this.inputValue === '' || unAcceptSymbols.test(this.inputValue)) {
+                let formElement = document.getElementById('todo-add-form');
+                highlightElement(formElement);
                 this.inputValue = '';
                 return;
             }
@@ -45,6 +53,9 @@ let formEl = new Vue({
     }
 });
 
+function replaceStr(str) {
+    return str.replace(unAcceptSymbols, "");
+}
 
 function debounce(f, ms) {
     let timer = null;
@@ -83,7 +94,7 @@ Vue.component('todo-item', {
 
         updateItem: function() {
             if(this.todo.description === '' || unAcceptSymbols.test(this.todo.description)) {
-                this.todo.description.replace(unAcceptSymbols, "");
+                this.todo.description = replaceStr(this.todo.description);
                 return;
             }
             let formData = new FormData();
