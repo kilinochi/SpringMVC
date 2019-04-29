@@ -2,6 +2,7 @@ import '../styles/default.scss';
 import TodosListModel from './models/TodosListModel';
 import TodosController from './controllers/TodosController';
 import { TodoCreatorView } from './views/TodoCreatorView';
+import todosService from "./services";
 
 const todoListModel = new TodosListModel();
 const controller = new TodosController(todoListModel);

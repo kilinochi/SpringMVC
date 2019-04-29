@@ -14,7 +14,6 @@ import ru.Technopolis.model.Todo;
 public class TodoHtmlController {
 
     private TodoDAOImpl dao;
-    private boolean isFirstLoad = true;
 
     @Autowired
     public TodoHtmlController(TodoDAOImpl dao) {

@@ -1,5 +1,17 @@
 import { apiUrl } from '../constants';
 
+function getMeta(metaName) {
+    const metas = document.getElementsByTagName('meta');
+
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            return metas[i].getAttribute('content');
+        }
+    }
+
+    return '';
+}
+
 function checkStatus(res) {
     if (res.ok) {
         return res.text();
@@ -15,6 +27,9 @@ function parseJSON(text) {
 
 function wrapFetch(url, options, contentType = 'application/json; charset=utf-8') {
     const headers = {};
+    const csrfToken = getMeta("_csrf");
+    const csrfHeader = getMeta("_csrf_header");
+    headers[csrfHeader] = csrfToken;
     if (contentType !== null) {
         headers['Content-Type'] = contentType;
         headers.Accept = contentType;
@@ -24,7 +39,7 @@ function wrapFetch(url, options, contentType = 'application/json; charset=utf-8'
         ...options,
     }).then(checkStatus)
       .then(parseJSON)
-      .catch(msg => console.log(msg));
+      .catch(msg => alert(msg));
 }
 
 function getTodos() {

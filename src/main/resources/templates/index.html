@@ -3,16 +3,21 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Todo MVC</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Todo MVC</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 
     <body>
       <div class="main-layout">
         <h1 class="todo-title">todos</h1>
+        <form class="logout-btn" th:action="@{/logout}" method="POST">
+            <input class="logout-btn_target" type="submit" value="Logout"/>
+        </form>
         <div class="todo-board">
             <div class="todo-board">
 

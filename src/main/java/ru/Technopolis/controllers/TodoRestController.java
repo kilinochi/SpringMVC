@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.Technopolis.dao.TodoDAOImpl;
+import ru.Technopolis.exceptions.BadRequestException;
 import ru.Technopolis.exceptions.ResourceNotFoundException;
 import ru.Technopolis.model.Todo;
 
@@ -49,14 +50,24 @@ public class TodoRestController {
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id = " + todoId));
     }
 
+
     @PostMapping(value = "/add")
     @ResponseBody
     public Todo save(@RequestBody String text){
+        if (Todo.isTextSizeCorrect(text)) {
+            throw new BadRequestException("Wrong todo size (" + Todo.MIN_SIZE_TODO
+                    + " <= size <= " + Todo.MAX_SIZE_TODO + ")");
+        }
         return dao.save(text);
     }
 
     @PutMapping(value = "/update")
     public ResponseEntity<?> update(@RequestBody Todo todo){
+        String text = todo.getText();
+        if (Todo.isTextSizeCorrect(text)) {
+            throw new BadRequestException("Wrong todo size (" + Todo.MIN_SIZE_TODO
+                    + " <= size <= " + Todo.MAX_SIZE_TODO + ")");
+        }
         return dao.update(todo)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id = " + todo.getId()));

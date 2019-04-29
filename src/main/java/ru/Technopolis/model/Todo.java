@@ -4,6 +4,9 @@ import java.util.Objects;
 
 public class Todo {
 
+    public static final int MIN_SIZE_TODO = 1;
+    public static final int MAX_SIZE_TODO = 100;
+
     private long id;
     private String text;
     private boolean ready;
@@ -39,6 +42,11 @@ public class Todo {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+
+    public static boolean isTextSizeCorrect(String text) {
+        return text.length() < MIN_SIZE_TODO
+                || text.length() >= MAX_SIZE_TODO;
     }
 
     @Override
