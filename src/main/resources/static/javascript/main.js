@@ -95,6 +95,8 @@ Vue.component('todo-item', {
         updateItem: function() {
             if(this.todo.description === '' || unAcceptSymbols.test(this.todo.description)) {
                 this.todo.description = replaceStr(this.todo.description);
+                let ulElement = document.getElementById('todo-list');
+                highlightElement(ulElement);
                 return;
             }
             let formData = new FormData();
