@@ -2,12 +2,10 @@ package ru.technopolis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.technopolis.dao.ToDoDAO;
 import ru.technopolis.model.ToDo;
 
@@ -56,11 +54,13 @@ public class Service {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
     ResponseEntity<Void> delete(@RequestParam String id) {
-        if (id.length() == 0 || id == null)
+        if (id == null || id.length() == 0)
             return ResponseEntity.badRequest().build();
         ToDo toDo = dao.delete(Long.parseLong(id));
         if (toDo == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok().build();
     }
+
+
 }

@@ -1,35 +1,59 @@
 package ru.technopolis.dao;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ru.technopolis.model.ToDo;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class ToDoDAO {
 
     private final AtomicLong counter = new AtomicLong();
-    private final ArrayList<ToDo> list = new ArrayList<>();
+    private final ConcurrentMap<String, ArrayList<ToDo>> todoList = new ConcurrentHashMap<>();
+    private final ArrayList<String> users = new ArrayList<>();
 
     public ToDo create(String description) {
-        list.add(new ToDo(counter.getAndIncrement(), description, false));
-        return list.get(list.size() - 1);
+        checkDB();
+        getList().add(new ToDo(counter.getAndIncrement(), description, false));
+        return getList().get(getList().size() - 1);
+    }
+
+    private List<ToDo> getList() {
+        return todoList.get(getUserName());
+    }
+
+    private void checkDB() {
+        if (!users.contains(getUserName())) {
+            users.add(getUserName());
+            todoList.put(getUserName(), new ArrayList<>());
+        }
+    }
+    
+    private String getUserName() {
+        return
+                SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     public ToDo update(long id, String description, boolean checked) {
         int todoId = getToDoId(id);
         if (todoId == -1)
             return null;
-        list.set(todoId, new ToDo(id, description == null ? list.get(todoId).getDescription() : description, checked));
-        return list.get(todoId);
+        checkDB();
+        getList().set(todoId, new ToDo(id, description == null ? getList().get(todoId).getDescription() : description, checked));
+        return getList().get(todoId);
     }
 
     private int getToDoId(long id) {
         if (id < 0)
             return -1;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getId() == id)
+        checkDB();
+        for (int i = 0; i < getList().size(); i++) {
+            if (getList().get(i).getId() == id)
                 return i;
         }
         return -1;
@@ -39,15 +63,14 @@ public class ToDoDAO {
         int taskId = getToDoId(id);
         if (taskId == -1)
             return null;
-        return list.remove(taskId);
+        checkDB();
+        return getList().remove(taskId);
     }
 
     public ToDo[] getToDos() {
-        ToDo[] toDos = new ToDo[list.size()];
-        return list.toArray(toDos);
-    }
+        checkDB();
+        ToDo[] toDos = new ToDo[getList().size()];
 
-    public boolean isEmpty() {
-        return list.size() == 0;
+        return getList().toArray(toDos);
     }
 }
