@@ -9,3 +9,30 @@
     color: rgba(175, 47, 47, 0.15);
 }
 
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.user-info-text {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: #666;
+    font-weight: 100;
+    text-align: center;
+}
+
+.user-info {
+    float: right;
+    margin: 8px 0;
+}
+
+.logout {
+    background: none;
+    outline: none;
+    border: 1px solid #ebdfdf;
+    border-radius: 10%;
+    padding: 3px 8px;
+    cursor: pointer;
+}

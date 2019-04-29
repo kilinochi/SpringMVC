@@ -37,6 +37,14 @@
 
 <div class="main-layout">
 
+    <div class="clearfix">
+        <div class="user-info">
+            <span class="user-info-text" th:inline="text">[[${#httpServletRequest.remoteUser}]]</span>
+            <form style="display: inline-block" th:action="@{/logout}" method="post">
+                <input class="logout user-info-text" type="submit" value="Sign Out"/>
+            </form>
+        </div>
+    </div>
     <h1 class="todo-title">Todos</h1>
 
     <div class="todo-board __has-content">
@@ -45,7 +53,7 @@
             <button class="todo-creator_check-all jsTodoCheckAllAsDone" aria-label="Check all items as done"></button>
             <div class="todo-creator_text-input-w">
                 <input class="todo-creator_text-input jsTodoText" type="text" placeholder="What needs to be done?"
-                       aria-label="Input new todo text"/>
+                       aria-label="Input new todo text" required minlength="1" maxlength="50"/>
             </div>
         </form>
 
