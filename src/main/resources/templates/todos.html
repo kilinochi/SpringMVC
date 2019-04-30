@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" content="text/html" http-equiv="Content-Type">
+    <meta charset="UTF-8" content="text/html" http-equiv="Content-Type"/>
+    <meta th:content="${_csrf.headerName}" th:name="_csrf_header"/>
+    <meta th:content="${_csrf.token}" th:name="_csrf"/>
     <title>Todo MVC</title>
     <link href="/styles/default.css" rel="stylesheet">
 </head>
 <body>
+
+<div class="logout">
+    <form class="logout-form" method="post" th:action="@{/logout}">
+        <button aria-label="Log out" class="logout-button" type="submit">Log out</button>
+    </form>
+</div>
 
 <div class="main-layout">
 
@@ -23,11 +31,11 @@
 
         <div class="todos-list">
             <div class="todos-list_item" style="display: block;"
-                 th:classappend="${todo.isDone()} ? __done"
-                 th:each="todo : ${todos}"
-                 th:id="${todo.getId()}">
+                 th:classappend="${toDo.isDone()} ? __done"
+                 th:each="toDo : ${toDos}"
+                 th:id="${toDo.getId()}">
                 <div class="custom-checkbox todos-list_item_ready-marker">
-                    <input aria-label="Mark todo as ready" class="custom-checkbox_target" th:checked="${todo.isDone()}"
+                    <input aria-label="Mark todo as ready" class="custom-checkbox_target" th:checked="${toDo.isDone()}"
                            type="checkbox">
                     <div class="custom-checkbox_visual">
                         <div class="custom-checkbox_visual_icon"></div>
@@ -36,7 +44,7 @@
                 <button aria-label="Delete todo" class="todos-list_item_remove"></button>
                 <div class="todos-list_item_text-w">
                     <textarea class="todos-list_item_text" maxlength="32" required
-                              th:text="${todo.getDescription()}"></textarea>
+                              th:text="${toDo.getDescription()}"></textarea>
                 </div>
             </div>
         </div>

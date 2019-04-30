@@ -1,5 +1,14 @@
 function request(url, method, body, callback) {
     let connection = new XMLHttpRequest();
+    let elementToken = document.querySelector('meta[name="_csrf"]');
+    let token = elementToken && elementToken.getAttribute("content");
+    let elementHeader = document.querySelector('meta[name="_csrf_header"]');
+    let header = elementHeader && elementHeader.getAttribute("content");
+    console.log(elementToken);
+    console.log(token);
+    console.log(elementHeader);
+    console.log(header);
+
     connection.open(method, url, true);
 
     connection.onload = function (onloadEvent) {
@@ -20,6 +29,8 @@ function request(url, method, body, callback) {
     connection.ontimeout = function (ontimeoutEvent) {
         console.error("Connection timed out");
     };
+
+    connection.setRequestHeader(header, token);
 
     connection.send(body);
 }

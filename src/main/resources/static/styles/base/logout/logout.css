@@ -1,0 +1,27 @@
+.logout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.logout-button {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 200;
+    margin: 8px;
+    padding: 2px 5px;
+    color: #000;
+    cursor: pointer;
+    background: none;
+    border: 1px solid #000;
+    border-radius: 2px;
+    transition-property: color, border;
+    transition-duration: 0.3s;
+}
+
+.logout-button:hover {
+    color: #3d0099;
+    border: 1px solid #3d0099;
+}

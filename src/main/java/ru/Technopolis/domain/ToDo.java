@@ -1,16 +1,27 @@
-package ru.Technopolis.model;
+package ru.Technopolis.domain;
 
+import javax.persistence.*;
 
+@Entity
 public class ToDo {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String description;
     private boolean done;
 
-    public ToDo(long id, String description, boolean isDone) {
-        this.id = id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public ToDo() {
+    }
+
+    public ToDo(String description, boolean done, User author) {
         this.description = description;
-        this.done = isDone;
+        this.done = done;
+        this.user = author;
     }
 
     public Long getId() {
@@ -29,7 +40,7 @@ public class ToDo {
         this.description = description;
     }
 
-    public Boolean isDone() {
+    public boolean isDone() {
         return done;
     }
 
@@ -37,4 +48,11 @@ public class ToDo {
         this.done = done;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -1,7 +1,9 @@
 //api endpoints
-const API_CREATE = '/create',
-    API_DELETE = '/delete',
-    API_UPDATE = '/update';
+const API = '/api',
+    API_VERSION = '/v1',
+    API_CREATE = API + API_VERSION + '/create',
+    API_DELETE = API + API_VERSION + '/delete',
+    API_UPDATE = API + API_VERSION + '/update';
 
 //vars
 var todosList,
