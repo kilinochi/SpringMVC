@@ -4,22 +4,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ru.technopolis.model.ToDo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class ToDoDAO {
 
-    private final AtomicLong counter = new AtomicLong();
-    private final ConcurrentMap<String, ArrayList<ToDo>> todoList = new ConcurrentHashMap<>();
-    private final ArrayList<String> users = new ArrayList<>();
+    private final ConcurrentMap<String, AtomicLong> counters = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, CopyOnWriteArrayList<ToDo>> todoList = new ConcurrentHashMap<>();
 
     public ToDo create(String description) {
         checkDB();
-        getList().add(new ToDo(counter.getAndIncrement(), description, false));
+        getList().add(new ToDo(counters.get(getUserName()).getAndIncrement(), description, false));
         return getList().get(getList().size() - 1);
     }
 
@@ -28,12 +27,12 @@ public class ToDoDAO {
     }
 
     private void checkDB() {
-        if (!users.contains(getUserName())) {
-            users.add(getUserName());
-            todoList.put(getUserName(), new ArrayList<>());
+        if (!todoList.containsKey(getUserName())) {
+            todoList.put(getUserName(), new CopyOnWriteArrayList<>());
+            counters.put(getUserName(), new AtomicLong());
         }
     }
-    
+
     private String getUserName() {
         return
                 SecurityContextHolder.getContext().getAuthentication().getName();
