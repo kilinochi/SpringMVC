@@ -17,7 +17,7 @@
             <button aria-label="Check all items as done" class="todo-creator_check-all"></button>
             <div class="todo-creator_text-input-w">
                 <input aria-label="Input new todo text" class="todo-creator_text-input" placeholder="New todo name"
-                       type="text"/>
+                       maxlength="32" pattern="^(?=.*\S).+$" required type="text"/>
             </div>
         </form>
 
@@ -35,7 +35,8 @@
                 </div>
                 <button aria-label="Delete todo" class="todos-list_item_remove"></button>
                 <div class="todos-list_item_text-w">
-                    <textarea class="todos-list_item_text" th:text="${todo.getDescription()}"></textarea>
+                    <textarea class="todos-list_item_text" maxlength="32" required
+                              th:text="${todo.getDescription()}"></textarea>
                 </div>
             </div>
         </div>

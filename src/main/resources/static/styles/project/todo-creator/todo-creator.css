@@ -39,14 +39,26 @@
 }
 
 .todo-creator_text-input {
-    border: none;
+    border: 1px solid transparent;
     background: none;
     outline: none;
     width: 100%;
-    /*box-sizing: border-box;*/
     font-size: 24px;
     color: #666;
     font-weight: 300;
+    box-sizing: border-box;
+    transition-duration: 0.5s;
+    transition-property: border;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.todo-creator .todo-creator_text-input:invalid:focus {
+    border: 1px solid red;
+}
+
+.todo-creator_text-input:valid:focus {
+    border: 1px solid limegreen;
 }
 
 .todo-creator_text-input::-webkit-input-placeholder {

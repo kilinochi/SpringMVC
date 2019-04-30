@@ -16,8 +16,11 @@ public class ToDoDAO {
     private ConcurrentHashMap<Long, ToDo> todos = new ConcurrentHashMap<>();
 
     public ToDo create(String description) {
+        if ((description.trim().isEmpty()) || (description.trim().length() > 32)) {
+            return null;
+        }
         long id = counter.incrementAndGet();
-        todos.put(id, new ToDo(id, description, false));
+        todos.put(id, new ToDo(id, description.trim(), false));
         return todos.get(id);
     }
 
@@ -38,10 +41,15 @@ public class ToDoDAO {
         return todos;
     }
 
-    public boolean update(ToDo item) {
+    public ToDo update(ToDo item) {
         if (todos.containsKey(item.getId())) {
             if (item.getDescription() != null) {
-                todos.get(item.getId()).setDescription(item.getDescription());
+                if ((item.getDescription().trim().isEmpty()) ||
+                        (item.getDescription().trim().length() > 32)) {
+                    return null;
+                } else {
+                    todos.get(item.getId()).setDescription(item.getDescription().trim());
+                }
             }
             if (item.isDone() != null) {
                 if (todos.get(item.getId()).isDone() != item.isDone()) {
@@ -53,9 +61,9 @@ public class ToDoDAO {
                     todos.get(item.getId()).setDone(item.isDone());
                 }
             }
-            return true;
+            return todos.get(item.getId());
         } else {
-            return false;
+            return null;
         }
     }
 

@@ -39,6 +39,9 @@ function addTodo(value, id) {
         let textArea = document.createElement('textarea');
         textArea.classList.add("todos-list_item_text");
         textArea.value = value;
+        textArea.setAttribute('required', '');
+        textArea.setAttribute('maxlength', '32');
+        addTextBlurEL(textArea);
         itemText.appendChild(textArea);
         return itemText;
     });

@@ -1,12 +1,18 @@
 //todos initialization
 function initTodos() {
-    var checkInputs = todosList.getElementsByClassName('custom-checkbox_target');
+    let checkInputs = todosList.getElementsByClassName('custom-checkbox_target');
     for (let i = 0; i < checkInputs.length; i++) {
         addCheckInputEL(checkInputs[i]);
     }
-    var removeButtons = todosList.getElementsByClassName('todos-list_item_remove');
+
+    let removeButtons = todosList.getElementsByClassName('todos-list_item_remove');
     for (let i = 0; i < removeButtons.length; i++) {
         addRemoveBtnEL(removeButtons[i]);
+    }
+
+    let todosTextAreas = todosList.getElementsByClassName('todos-list_item_text');
+    for (let i = 0; i < todosTextAreas.length; i++) {
+        addTextBlurEL(todosTextAreas[i]);
     }
 }
 
@@ -63,7 +69,7 @@ function changeCounter(count) {
 }
 
 function clearCompleted() {
-    for (var i = 0; i < todosList.children.length; i++) {
+    for (let i = 0; i < todosList.children.length; i++) {
         if (todosList.children[i].classList.contains('__done')) {
             request(API_DELETE, 'DELETE', JSON.stringify({
                 id: todosList.children[i].getAttribute('id')
@@ -86,13 +92,15 @@ function makeItemDone(item) {
         description: null,
         done: true
     }), function (response) {
-        if (response === true) {
-            if (!item.classList.contains("__done")) {
-                item.classList.add("__done");
-                changeCounter(-1);
+        if (response !== null) {
+            if (response.done === true) {
+                if (!item.classList.contains("__done")) {
+                    item.classList.add("__done");
+                    changeCounter(-1);
+                }
+                item.getElementsByClassName("custom-checkbox_target")[0].checked = true;
+                updateListByFilter();
             }
-            item.getElementsByClassName("custom-checkbox_target")[0].checked = true;
-            updateListByFilter();
         }
     });
 }
@@ -105,9 +113,9 @@ function addCheckInputEL(checkInput) {
             description: null,
             done: ev.target.checked
         }), function (response) {
-            if (response === true) {
-                var item = ev.target.closest(".todos-list_item");
-                if (ev.target.checked === true) {
+            if (response !== null) {
+                let item = ev.target.closest(".todos-list_item");
+                if (response.done === true) {
                     if (!item.classList.contains('__done')) {
                         item.classList.add('__done');
                     }
@@ -130,7 +138,7 @@ function addRemoveBtnEL(removeBtn) {
             id: ev.target.closest(".todos-list_item").getAttribute('id')
         }), function (response) {
             if (response !== null) {
-                if (!ev.target.closest('.todos-list_item').classList.contains('__done')) {
+                if (response.done) {
                     changeCounter(-1);
                 }
                 allCounter += -1;
@@ -138,5 +146,31 @@ function addRemoveBtnEL(removeBtn) {
                 showHideToolbar();
             }
         });
+    });
+}
+
+function addTextBlurEL(textField) {
+    textField.addEventListener('blur', function (ev) {
+        if (ev.target.validity.valid) {
+            request(API_UPDATE, 'PUT', JSON.stringify({
+                id: ev.target.closest(".todos-list_item").getAttribute('id'),
+                description: ev.target.value
+            }), function (response) {
+                if (response === null) {
+                    if (!ev.target.classList.contains('__incorrect')) {
+                        ev.target.classList.add('__incorrect');
+                    }
+                } else {
+                    if (ev.target.classList.contains('__incorrect')) {
+                        ev.target.classList.remove('__incorrect');
+                    }
+                    ev.target.value = response.description;
+                }
+            });
+        } else {
+            if (!ev.target.classList.contains('__incorrect')) {
+                ev.target.classList.add('__incorrect');
+            }
+        }
     });
 }
