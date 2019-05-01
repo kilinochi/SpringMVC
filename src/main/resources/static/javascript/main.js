@@ -7,6 +7,21 @@ function highlightElement(element) {
     },2000);
 }
 
+const token = getMeta("_csrf");
+const header = getMeta("_csrf_header");
+
+function getMeta(metaName) {
+    const metas = document.getElementsByTagName('meta');
+
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            return metas[i].getAttribute('content');
+        }
+    }
+
+    return '';
+}
+
 const state = {
     todos: window.__TODOS_DATA,
 };
@@ -34,6 +49,7 @@ let formEl = new Vue({
             let formData = new FormData();
             formData.append("description", this.inputValue);
             xhr.open('POST', '/todo', true);
+            xhr.setRequestHeader(header, token);
             xhr.send(formData);
             xhr.onreadystatechange = function () {
                 /**
@@ -103,12 +119,14 @@ Vue.component('todo-item', {
             let xhr = new XMLHttpRequest();
             formData.append("description", this.todo.description);
             xhr.open('PUT', '/todo/'+this.todo.id , true);
+            xhr.setRequestHeader(header, token);
             xhr.send(formData);
         },
         removeItem: function () {
             let xhr = new XMLHttpRequest();
             let that = this;
             xhr.open('DELETE', '/todo/'+that.todo.id , true);
+            xhr.setRequestHeader(header, token);
             xhr.send(null);
             that.$emit('deleteItem',that.todo.id);
         }

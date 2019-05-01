@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://ww.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" type="text/css" href="css/reset.css" media="all">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,400&amp;subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,100i,300,400&amp;subset=cyrillic"
@@ -15,7 +17,7 @@
     <div class="container">
         <h1>todos</h1>
 
-        <form th:action = "@{/logout}" method="post">
+        <form th:action = "@{/logout}" method="post" class="logout-form">
             <input type="submit" value="Sign Out">
         </form>
 
