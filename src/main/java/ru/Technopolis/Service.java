@@ -1,5 +1,7 @@
 package ru.Technopolis;
 
+import java.security.Principal;
+import java.sql.SQLException;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,25 +30,29 @@ public class Service {
 
     @RequestMapping ( value = "/todo" , method = RequestMethod.GET )
     public @ResponseBody
-    Collection<ToDo> getTodo(){
-        return dao.list();
+    Collection<ToDo> getTodo(Principal principal) throws SQLException {
+        return dao.list(principal.getName());
     }
 
     @RequestMapping ( value = "/todo", method = RequestMethod.DELETE )
     public @ResponseBody
-    ToDo deleteTodo(@RequestParam long id){
+    long deleteTodo(@RequestParam long id) throws SQLException {
         return dao.delete(id);
     }
 
     @RequestMapping ( value = "/todo", method = RequestMethod.POST )
     public @ResponseBody
-    ToDo createTodo(@RequestParam String description){
-        return dao.create(description);
+    ToDo createTodo(@RequestParam String description, Principal principal) throws SQLException {
+        return dao.create(description, principal.getName());
     }
 
     @RequestMapping ( value = "/todo", method = RequestMethod.PUT)
     public @ResponseBody
-    ToDo updateTodo(@RequestParam long id, @RequestParam String description, @RequestParam boolean isChecked){
-        return dao.update(id, description, isChecked);
+    ToDo updateTodo(
+            @RequestParam long id,
+            @RequestParam String description,
+            @RequestParam boolean isChecked,
+            Principal principal) throws SQLException {
+        return dao.update(id, description, principal.getName(), isChecked);
     }
 }

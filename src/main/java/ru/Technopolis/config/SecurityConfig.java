@@ -9,13 +9,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    final DataSource dataSource;
+    private final DataSource dataSource;
 
     @Autowired
     public SecurityConfig(DataSource dataSource) {
@@ -25,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
             .authorizeRequests()
             .anyRequest().authenticated()
             .and().formLogin().permitAll()
@@ -34,20 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.jdbcAuthentication().dataSource(dataSource)
+        auth.jdbcAuthentication()
+            .passwordEncoder(passwordEncoder())
+            .dataSource(dataSource)
             .usersByUsernameQuery("select username, password, enabled, id from users where username = ?")
-            .authoritiesByUsernameQuery("select ? as 'username', 'user' as 'role'");
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(passwordEncoder())
-//                .withUser("user")
-//                .password("user")
-//                .roles("USER");
-//
+            .authoritiesByUsernameQuery("select ? as 'username', 'user' as 'role'"); // затычка с ролями
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new TestPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 }

@@ -6,11 +6,14 @@ public class ToDo {
     private final long id;
     private String description;
     private boolean isChecked;
+    private String authorName;
 
-    public ToDo(long id, String description) {
+    public ToDo(long id, String description, String authorName, boolean isChecked) {
         this.id = id;
         this.description = description;
         this.isChecked = false;
+        this.authorName = authorName;
+        this.isChecked = isChecked;
     }
 
     public long getId() {
@@ -20,6 +23,7 @@ public class ToDo {
     public String getDescription() {
         return description;
     }
+
     public String setDescription(String description){
         this.description = description;
         return description;
@@ -32,5 +36,13 @@ public class ToDo {
     public boolean setIsChecked(boolean isChecked){
         this.isChecked = isChecked;
         return this.isChecked;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 }
