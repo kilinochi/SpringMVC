@@ -6,18 +6,46 @@
     <link href="/styles/default.css" rel="stylesheet">
 </head>
 <body>
-<b>Login page</b>
-<div th:if="${param.error}">
-    Invalid username and password.
+
+<div class="main-layout">
+
+    <h1 class="todo-title">Todos</h1>
+
+    <div class="login-board">
+
+        <div class="login-messages">
+            <div class="login-message login-error __invalid" th:if="${param.error}">
+                Invalid username or password.
+            </div>
+            <div class="login-message login-error __exists" th:if="${errorExists != null}">
+                User already exists.
+            </div>
+            <div class="login-message logout-message" th:if="${param.logout}">
+                You have been logged out.
+            </div>
+        </div>
+
+        <div class="login-inputs">
+
+            <form class="login-input__form" method="post" th:action="@{/login}">
+
+                <input class="login-input __login" name="username" placeholder="Login" type="text">
+                <input class="login-input __password" name="password" placeholder="Password" type="password">
+                <input class="login-input __password__confirm" name="password" placeholder="Confirm password"
+                       type="password">
+                <div class="login-buttons">
+                    <button class="login-button__btn" type="submit">Sign in</button>
+                    <button class="show-reg__btn">Don't have an account?</button>
+                    <button class="reg-button__btn" style="display: none" type="submit">Sign up</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form method="post" th:action="@{/login}">
-    <div><label> User Name : <input name="username" type="text"/> </label></div>
-    <div><label> Password: <input name="password" type="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-<a th:href="@{/registration}">Add new user</a>
+
 </body>
 </html>

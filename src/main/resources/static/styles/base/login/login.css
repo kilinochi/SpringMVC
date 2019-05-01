@@ -1,0 +1,99 @@
+.login-board {
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    position: relative;
+    text-align: center;
+    padding: 10px 5px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
+    color: #666;
+}
+
+.login-board:before,
+.login-board:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    z-index: -1;
+}
+
+.login-board:before {
+    left: 8px;
+    right: 8px;
+    height: 8px;
+}
+
+.login-board:after {
+    left: 4px;
+    right: 4px;
+    height: 4px;
+}
+
+.login-input__form {
+    width: 100%;
+}
+
+.login-messages {
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 30px;
+    font-weight: 200;
+}
+
+.login-message {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+}
+
+.login-error {
+    border: 1px solid red;
+}
+
+.login-input {
+    display: block;
+    box-sizing: border-box;
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+}
+
+.login-buttons button {
+    outline: none;
+    background: transparent;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.login-button__btn, .reg-button__btn {
+    border: 1px solid #666666;
+    color: #666666;
+    transition-property: color, border;
+    transition-duration: 0.3s;
+}
+
+.login-button__btn:hover, .reg-button__btn:hover {
+    border: 1px solid #3d0099;
+    color: #3d0099;
+}
+
+.show-reg__btn {
+    color: #af2f2f;
+    border: 1px solid transparent;
+    transition-property: border;
+    transition-duration: 0.3s;
+}
+
+.login-buttons .show-reg__btn:hover {
+    color: #af2f2f;
+    border: 1px solid #af2f2f;
+}
