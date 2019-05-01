@@ -1,6 +1,5 @@
 package ru.Technopolis.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,14 +14,16 @@ import ru.Technopolis.service.UserService;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/", "/api/**").authenticated()
                 .anyRequest().permitAll()

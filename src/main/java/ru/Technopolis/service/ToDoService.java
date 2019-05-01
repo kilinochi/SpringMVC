@@ -1,6 +1,5 @@
 package ru.Technopolis.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.Technopolis.domain.ToDo;
 import ru.Technopolis.domain.User;
@@ -12,8 +11,11 @@ import java.util.List;
 @Service
 public class ToDoService {
 
-    @Autowired
-    private ToDosRepo toDosRepo;
+    private final ToDosRepo toDosRepo;
+
+    public ToDoService(ToDosRepo toDosRepo) {
+        this.toDosRepo = toDosRepo;
+    }
 
     public ToDo create(User user, String description) {
         if ((description.trim().isEmpty()) || (description.trim().length() > 32)) {

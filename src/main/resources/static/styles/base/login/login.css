@@ -56,6 +56,10 @@
 }
 
 .login-input {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 200;
     display: block;
     box-sizing: border-box;
     outline: none;
@@ -64,6 +68,20 @@
     margin-bottom: 5px;
     border: 1px solid #666666;
     border-radius: 4px;
+    transition-property: border;
+    transition-duration: 0.3s;
+}
+
+.login-input.__wrong {
+    border: 1px solid red;
+}
+
+.login-input:invalid:focus {
+    border: 1px solid red;
+}
+
+.login-input:valid:focus {
+    border: 1px solid limegreen;
 }
 
 .login-buttons button {
@@ -74,26 +92,26 @@
     cursor: pointer;
 }
 
-.login-button__btn, .reg-button__btn {
+.sign-in-button, .sign-up-button {
     border: 1px solid #666666;
     color: #666666;
     transition-property: color, border;
     transition-duration: 0.3s;
 }
 
-.login-button__btn:hover, .reg-button__btn:hover {
+.sign-in-button:hover, .sign-up-button:hover {
     border: 1px solid #3d0099;
     color: #3d0099;
 }
 
-.show-reg__btn {
+.show-sign-up-button, .show-sign-in-button {
     color: #af2f2f;
     border: 1px solid transparent;
     transition-property: border;
     transition-duration: 0.3s;
 }
 
-.login-buttons .show-reg__btn:hover {
+.show-sign-up-button:hover, .show-sign-in-button:hover {
     color: #af2f2f;
     border: 1px solid #af2f2f;
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" content="text/html" http-equiv="Content-Type">
     <title>Login</title>
@@ -14,10 +14,11 @@
     <div class="login-board">
 
         <div class="login-messages">
-            <div class="login-message login-error __invalid" th:if="${param.error}">
+            <div class="login-message login-error __invalid"
+                 th:if="${param.error} or ${signup_input_error != null and signup_input_error == true}">
                 Invalid username or password.
             </div>
-            <div class="login-message login-error __exists" th:if="${errorExists != null}">
+            <div class="login-message login-error __exists" th:if="${signup_exist_error}">
                 User already exists.
             </div>
             <div class="login-message logout-message" th:if="${param.logout}">
@@ -27,16 +28,34 @@
 
         <div class="login-inputs">
 
-            <form class="login-input__form" method="post" th:action="@{/login}">
+            <form class="login-input__form" method="post"
+                  th:action="${after_signup_attempt != null and after_signup_attempt == true} ? '/signup' : '/login'">
 
-                <input class="login-input __login" name="username" placeholder="Login" type="text">
-                <input class="login-input __password" name="password" placeholder="Password" type="password">
-                <input class="login-input __password__confirm" name="password" placeholder="Confirm password"
+                <input class="login-input __login" maxlength="16" minlength="8" name="username"
+                       pattern="^[A-Za-z0-9]{8,16}$" placeholder="Login" required type="text">
+                <input class="login-input __password" maxlength="16" minlength="8" name="password"
+                       pattern="^[A-Za-z0-9]{8,16}$" placeholder="Password" required type="password">
+                <input class="login-input __password__confirm" maxlength="16"
+                       minlength="8" pattern="^[A-Za-z0-9]{8,16}$" placeholder="Confirm password" required
+                       th:style="${after_signup_attempt != null and after_signup_attempt == true} ? 'display: block' : 'display:none'"
                        type="password">
                 <div class="login-buttons">
-                    <button class="login-button__btn" type="submit">Sign in</button>
-                    <button class="show-reg__btn">Don't have an account?</button>
-                    <button class="reg-button__btn" style="display: none" type="submit">Sign up</button>
+                    <button class="sign-in-button"
+                            th:style="${after_signup_attempt != null and after_signup_attempt == true} ? 'display: none' : 'display: inline'"
+                            type="submit">Sign in
+                    </button>
+                    <button class="show-sign-up-button"
+                            th:style="${after_signup_attempt != null and after_signup_attempt == true} ? 'display: none' : 'display: inline'">
+                        Don't have an account?
+                    </button>
+                    <button class="sign-up-button"
+                            th:style="${after_signup_attempt != null and after_signup_attempt == true} ? 'display: inline' : 'display: none'"
+                            type="submit">Sign up
+                    </button>
+                    <button class="show-sign-in-button"
+                            th:style="${after_signup_attempt != null and after_signup_attempt == true} ? 'display: inline' : 'display: none'">
+                        Already registered?
+                    </button>
                 </div>
 
             </form>
@@ -47,5 +66,6 @@
 
 </div>
 
+<script src="/js/login.js"></script>
 </body>
 </html>

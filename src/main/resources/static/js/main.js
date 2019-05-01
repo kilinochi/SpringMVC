@@ -1,5 +1,3 @@
-console.log('init');
-
 document.addEventListener('DOMContentLoaded', function () {
     todosList = document.getElementsByClassName('todos-list')[0];
     todoInputField = document.getElementsByClassName("todo-creator_text-input")[0];

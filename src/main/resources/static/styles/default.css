@@ -1,6 +1,6 @@
 @import "reset.css";
 @import "base/main.css";
-@import "base/logout/logout.css";
+@import "base/login/logout.css";
 @import "base/login/login.css";
 @import "base/custom-checkbox/custom-checkbox.css";
 @import "project/todo-title/todo-title.css";

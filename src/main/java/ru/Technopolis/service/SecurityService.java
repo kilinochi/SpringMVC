@@ -1,6 +1,5 @@
 package ru.Technopolis.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SecurityService {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public SecurityService(AuthenticationManager authenticationManager, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+    }
 
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userService.loadUserByUsername(username);

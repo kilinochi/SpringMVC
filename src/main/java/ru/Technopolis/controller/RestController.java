@@ -1,6 +1,5 @@
 package ru.Technopolis.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.Technopolis.domain.ToDo;
@@ -13,8 +12,11 @@ import ru.Technopolis.service.ToDoService;
 @RequestMapping("/api/v1")
 public class RestController {
 
-    @Autowired
-    private ToDoService toDoService;
+    private final ToDoService toDoService;
+
+    public RestController(ToDoService toDoService) {
+        this.toDoService = toDoService;
+    }
 
     @PostMapping("/create")
     @ResponseBody

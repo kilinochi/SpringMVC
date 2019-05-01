@@ -10,6 +10,7 @@
 <body>
 
 <div class="logout">
+    <div class="user-name" th:text="'User: ' + ${userName}"></div>
     <form class="logout-form" method="post" th:action="@{/logout}">
         <button aria-label="Log out" class="logout-button" type="submit">Log out</button>
     </form>
@@ -71,3 +72,4 @@
 <script src="/js/utils.js"></script>
 <script src="/js/todo-factory.js"></script>
 </body>
+</html>

@@ -1,6 +1,6 @@
 package ru.Technopolis.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,11 +14,14 @@ import java.util.Collections;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepo userRepo, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
