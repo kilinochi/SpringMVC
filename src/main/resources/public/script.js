@@ -1,3 +1,16 @@
+window.onload = function() {
+    var inputField = document.getElementsByClassName("todo-creator__input")[0];
+    inputField.addEventListener('input', function (event) {
+        var inputField = document.getElementsByClassName("todo-creator__input")[0];
+        var button = document.getElementsByClassName("todo-creator__addButton")[0];
+        if (inputField.value.trim() === "") {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
+    });
+};
+
 function createRequest() {
     var request = false;
 
@@ -97,11 +110,6 @@ function deletionRequestHandler() {
     return;
 }
 
-function deleteTaskByEvent(mouseEvent) {
-    var id = mouseEvent.target.parentElement.id;
-    deleteTaskById(id);
-}
-
 function addNewTask(isChecked, description, id) {
     var taskClone = document.querySelector('.template').cloneNode(true);
     taskClone.classList.remove('template');
@@ -124,12 +132,14 @@ function addNewTask(isChecked, description, id) {
 
 function handleAddButtonClick() {
     var inputField = document.querySelector('.todo-creator__input');
-    var description = inputField.value;
+    var description = inputField.value.trim();
     if (description.trim() === "") {
         alert("Task text is empty!");
         return;
     }
     inputField.value = "";
+    var button = document.getElementsByClassName("todo-creator__addButton")[0];
+    button.disabled = true;
     var data = new FormData();
     data.append("description", description);
     sendPostRequest("/create", data, addNewTaskByJson);
@@ -215,12 +225,13 @@ function handleEditRequest() {
 }
 
 function editKeyPressed(event, textField) {
-    if (event.keyCode === 13){
+    if (event.keyCode === 13) {
         textField.blur();
     }
 }
 
 function saveTextAfterEdit(textField, text, id) {
     textField.contentEditable = 'false';
-    sendUpdateRequest(id, text);
+    textField.textContent = textField.textContent.trim();
+    sendUpdateRequest(id, text.trim());
 }

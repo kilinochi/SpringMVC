@@ -12,10 +12,10 @@
     <div class="todo-main">
         <div>
             <div class="todo-creator">
-                <input type="text" name="description" class="todo-creator__input" placeholder="What to do today?">
+                <input type="text" name="description" class="todo-creator__input" placeholder="What to do today?" required>
                 <input type="hidden" name="checked" th:value="false">
-                <input type="submit" name="AddButton" class="todo-creator__addButton" value=""
-                       onclick="handleAddButtonClick()">
+                <button name="AddButton" class="todo-creator__addButton" value="" disabled="true"
+                        onclick="handleAddButtonClick()"></button>
             </div>
         </div>
         <div class="todo-list">
