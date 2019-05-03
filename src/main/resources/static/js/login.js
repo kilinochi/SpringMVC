@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         signUpBtn.style.display = "inline";
         showSignInBtn.style.display = "inline";
         confirmPassInput.style.display = "block";
-        confirmPassInput.removeAttribute("required");
+        confirmPassInput.setAttribute("required", "required");
         if (loginInputForm.getAttribute("action") === "/login") {
             loginInputForm.setAttribute("action", "/signup");
         }
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
         signUpBtn.style.display = "none";
         showSignInBtn.style.display = "none";
         confirmPassInput.style.display = "none";
-        confirmPassInput.setAttribute("required", "required");
+        confirmPassInput.removeAttribute("required");
         if (loginInputForm.getAttribute("action") === "/signup") {
             loginInputForm.setAttribute("action", "/login");
         }
