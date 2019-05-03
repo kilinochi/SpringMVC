@@ -1,4 +1,4 @@
-import {createFromTemplate} from '../../utils/templatesManager.js';
+import {createFromTemplate, escapeHtml} from '../../utils/templatesManager.js';
 import {Eventable} from "../../lib/Eventable.js";
 import {request} from "../../TodoService.js";
 
@@ -44,11 +44,14 @@ export class TodoListComponent extends Eventable {
         todoItem.querySelector('.custom-button_target').addEventListener('click', () =>
             request("POST", "/delete?id=" + todoItem.id, () => this.removeTodo(todoItem)));
 
-        checkBox.addEventListener('change', () =>
+        checkBox.addEventListener('change', () => {
+            var desc = escapeHtml(todoItem.querySelector('.todos-list_item_text').innerHTML);
+            console.log(desc);
             request("POST",
                 '/update?id=' + todoItem.id +
-                '&description=' + todoItem.querySelector('.todos-list_item_text').innerHTML +
-                '&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged')));
+                '&description=' + desc +
+                '&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged'));
+        });
     }
 
     calcUncompleted() {

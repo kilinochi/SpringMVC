@@ -8,7 +8,7 @@ export function createFromTemplate(templateId, templateData) {
     const templateAsString = scriptElement.innerHTML;
 
     const templateWithData = templateAsString.replace(/{([^{}]*)}/g, (foundSubstring, dataKey) => {
-        const result = templateData[dataKey];
+        const result = escapeHtml(templateData[dataKey]);
 
         return typeof result === 'string'
         || typeof result === 'number'
@@ -20,4 +20,10 @@ export function createFromTemplate(templateId, templateData) {
     div.innerHTML = templateWithData;
 
     return div.children[0];
+}
+
+export function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
 }
