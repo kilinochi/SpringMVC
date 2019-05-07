@@ -1,4 +1,4 @@
-let unAcceptSymbols = new RegExp(/[\/\\\-+<>=*@#\$%^\&]/g);
+let unAcceptSymbols = new RegExp(/[\/\\\-\+<>=\*@#\$%^\&]/g);
 
 function highlightElement(element) {
     element.classList.add("wrong_highlight");
