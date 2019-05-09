@@ -8,8 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface TodoRepository extends CrudRepository <Todo, Long> {
-    @Override
-    Optional<Todo> findById(Long aLong);
-    @Override
-    void deleteById(Long aLong);
+    void removeByNameAndId(String name, Long aLong);
+    Optional<Todo> findByNameAndId(String name, long id);
+    Iterable<Todo> findAllByName(String name);
 }

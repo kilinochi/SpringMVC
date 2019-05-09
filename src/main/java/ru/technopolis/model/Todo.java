@@ -8,18 +8,20 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @JoinColumn(name = "user_id")
-    private User user;
-
     private String description;
+    private String name;
 
     public Todo(){
 
     }
 
-    public Todo(String description) {
+    public Todo(String name, String description) {
+        this.name = name;
         this.description = description;
+    }
+
+    public void setUsername(String username) {
+        this.name = username;
     }
 
     public Long getId() {
@@ -36,13 +38,5 @@ public class Todo {
 
     public String getDescription() {
         return description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

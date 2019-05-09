@@ -2,6 +2,7 @@ package ru.technopolis.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.technopolis.model.Todo;
 import ru.technopolis.repository.TodoRepository;
 
@@ -17,29 +18,34 @@ public class TodoDAO {
         this.todoRepository = todoRepository;
     }
 
-    public Todo create(String description) {
-       Todo todo = new Todo(description);
+    @Transactional
+    public Todo create(String name, String description) {
+       Todo todo = new Todo(name, description);
        todoRepository.save(todo);
        return todo;
     }
 
-    public Todo getTodo(long id) {
-        return todoRepository.findById(id).orElse(new Todo());
+    @Transactional
+    public Todo getTodo(String name, long id) {
+        return todoRepository.findByNameAndId(name, id).orElse(new Todo());
     }
 
-    public void delete(long id) {
-        todoRepository.deleteById(id);
+    @Transactional
+    public void delete(String name, long id) {
+        todoRepository.removeByNameAndId(name, id);
     }
 
-    public Todo update(long id, String data) {
-        Todo todo = todoRepository.findById(id).orElse(new Todo());
+    @Transactional
+    public Todo update(String name, long id, String data) {
+        Todo todo = todoRepository.findByNameAndId(name, id).orElse(new Todo(name,data));
         todo.setDescription(data);
         todoRepository.save(todo);
         return todo;
     }
 
-    public Todo[] getList() {
-        Iterable<Todo> todos = todoRepository.findAll();
+    @Transactional
+    public Todo[] getList(String name) {
+        Iterable<Todo> todos = todoRepository.findAllByName(name);
         return StreamSupport.stream(todos.spliterator(), false).toArray(Todo[]::new);
     }
 }
