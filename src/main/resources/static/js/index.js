@@ -178,7 +178,7 @@ function sendRequest(method, path, args, handler)
             if (Request.status == 200){
                 handler(Request);
             }else{
-                alert('error');
+                alert('error  12312313');
             }
 
         }
@@ -186,6 +186,10 @@ function sendRequest(method, path, args, handler)
     if (method.toLowerCase() === "get" && args.length > 0)
         path += "?" + args;
     Request.open(method, path, true);
+    var token = document.querySelector("meta[name='_csrf']").getAttribute('content');
+    var header = document.querySelector("meta[name='_csrf_header']").getAttribute('content');
+    Request.setRequestHeader(header, token);
+
     if (method.toLowerCase() === "post") {
         Request.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
         Request.send(args);
@@ -230,7 +234,12 @@ function checkRequestHandler(request) {
 
 function submitTextHandler(e) {
     e.preventDefault();
-    sendRequest('post', '/create',"description=" + encodeURIComponent(toDoManager.getDescription()),submitTextRequestHandler);
+    var text=toDoManager.getDescription();
+    if (text.length > 34) {
+        alert("Too long, maximum length of description is 34");
+        return;
+    }
+    sendRequest('post', '/create',"description=" + encodeURIComponent(text),submitTextRequestHandler);
 }
 function submitTextRequestHandler(request) {
     var toDoObj = JSON.parse(request.responseText);
