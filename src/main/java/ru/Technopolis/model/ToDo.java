@@ -1,40 +1,19 @@
 package ru.Technopolis.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
-public class ToDo implements Serializable, Comparable<ToDo>{
-    @Id
-    @GeneratedValue
-    private int id;
-
-    @Column
+public class ToDo implements Comparable<ToDo>{
+    private final long id;
     private String description;
+    private boolean completed;
+    private String username;
 
-    @Column
-    private boolean completed = false;
-
-    public ToDo() {
-        this.description = "";
-    }
-
-    public ToDo(String description, boolean completed) {
-        this.description = description;
-        this.completed = completed;
-    }
-
-    public ToDo(int id, String description, boolean completed) {
+    public ToDo(long id, String description, boolean completed, String username) {
         this.id = id;
         this.description = description;
         this.completed = completed;
+        this.username = username;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -46,10 +25,6 @@ public class ToDo implements Serializable, Comparable<ToDo>{
         return completed;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -58,8 +33,16 @@ public class ToDo implements Serializable, Comparable<ToDo>{
         this.completed = completed;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public int compareTo(ToDo o) {
-        return Integer.compare(id, o.getId());
+        return Long.compare(id, o.getId());
     }
 }

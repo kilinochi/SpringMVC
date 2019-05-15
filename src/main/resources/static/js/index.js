@@ -319,12 +319,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    var baseURL = "http://localhost:8080";
+    var token = document.querySelector("meta[name='_csrf']").getAttribute('content');
+    var header = document.querySelector("meta[name='_csrf_header']").getAttribute('content');
+
     //AJAX запрос добавления записи
-    function sendCreateAJAX(text, hiddenId) {
+    function sendCreateAJAX(description, hiddenId) {
         var httpRequest = new XMLHttpRequest();
-        httpRequest.open("POST", "http://localhost:5555/todos", true);
+        httpRequest.open("POST", baseURL + "/todos", true);
+        httpRequest.setRequestHeader(header, token);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        var body = 'text=' + encodeURIComponent(text) + '&completed=' + encodeURIComponent(false);
+        var body = 'description=' + encodeURIComponent(description);
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
@@ -337,22 +342,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //AJAX запрос изменения записи
-    function sendUpdateAJAX(id, text, isCompleted) {
+    function sendUpdateAJAX(id, description, isCompleted) {
         var httpRequest = new XMLHttpRequest();
-        httpRequest.open("PUT", "http://localhost:5555/todos", true);
+        httpRequest.open("PUT", baseURL + "/todos", true);
+        httpRequest.setRequestHeader(header, token);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        var body = 'id=' + encodeURIComponent(id) + '&text=' + encodeURIComponent(text) + '&completed=' + encodeURIComponent(isCompleted);
+        var body = 'id=' + encodeURIComponent(id) + '&description=' + encodeURIComponent(description) + '&completed=' + encodeURIComponent(isCompleted);
         httpRequest.send(body);
     }
 
-    //AJAX запрос добавления записи
+    //AJAX запрос удаления записи
     function sendDeleteAJAX(id) {
         var httpRequest = new XMLHttpRequest();
         var body = 'id=' + encodeURIComponent(id);
-        httpRequest.open("DELETE", "http://localhost:5555/todos?" + body, true);
+        httpRequest.open("DELETE", baseURL + "/todos?" + body, true);
+        httpRequest.setRequestHeader(header, token);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                //something wrong
                 if (httpRequest.status === 500) {
                     var response = JSON.parse(httpRequest.responseText);
                     console.log(response);
