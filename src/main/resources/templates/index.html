@@ -1,17 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://ww.thymeleaf.org">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Todo MVC</title>
-    <link href="bundle.css" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="main-layout"><h1 class="todo-title">Todos</h1></div>
-    <script src="js/1.5cbbd339.chunk.js"></script><script src="js/app.8810ff82.js"></script>
+    <link href="bundle.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main-layout">
+        <h1 class="todo-title">Todos</h1>
+        <div class="todo-board __has-content">
+            <div class="todos-list">
+                <div class="todos-list_item" th:each="todo : ${todos}" th:attr="data-id=${todo.id}">
+                    <div class="custom-checkbox todos-list_item_ready-marker">
+                        <input type="checkbox" class="custom-checkbox_target" th:checked="${todo.isChecked}">
+                        <div class="custom-checkbox_visual">
+                            <div class="custom-checkbox_visual_icon"></div>
+                        </div>
+                    </div>
+                    <button class="todos-list_item_remove cross-button"></button>
+                    <div class="todos-list_item_text-w">
+                        <textarea class="todos-list_item_text" th:text="${todo.description}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/1.5cbbd339.chunk.js"></script>
+    <script src="js/app.b76d2a73.js"></script>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out" />
     </form>
-  </body>
+</body>
+
 </html>

@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +21,9 @@ public class Service {
     private ToDoDAO dao;
 
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model, Principal principal) throws SQLException {
+        Collection<ToDo> todos = getTodo(principal);
+        model.addAttribute("todos", todos);
         return "index";
     }
 

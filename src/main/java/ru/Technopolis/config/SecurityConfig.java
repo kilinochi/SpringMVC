@@ -34,6 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        // 2 users
+        // Vasya:Vasya
+        // Petya:Petya
         auth.jdbcAuthentication()
             .passwordEncoder(passwordEncoder())
             .dataSource(dataSource)

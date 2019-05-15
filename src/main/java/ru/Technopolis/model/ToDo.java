@@ -11,7 +11,6 @@ public class ToDo {
     public ToDo(long id, String description, String authorName, boolean isChecked) {
         this.id = id;
         this.description = description;
-        this.isChecked = false;
         this.authorName = authorName;
         this.isChecked = isChecked;
     }
