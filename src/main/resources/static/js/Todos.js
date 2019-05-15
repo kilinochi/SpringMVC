@@ -1,4 +1,12 @@
-function Todos(creator, list, submitTextHandler, markAllHandler) {
+/**
+ * \
+ * @param {HTMLDivElement}creator
+ * @param {HTMLDivElement}list
+ * @param {EventListener}submitTextHandler
+ * @param {EventListener}markAllHandler
+ * @constructor
+ */
+export function Todos(creator, list, submitTextHandler, markAllHandler) {
     this._creator = creator;
     this._input = creator.querySelector('.todos-creator_text-input');
     this._list = list;

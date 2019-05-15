@@ -1,8 +1,7 @@
 package ru.Technopolis;
 
-import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,38 +10,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.Technopolis.model.ToDo;
-import ru.Technopolis.model.ToDoDAO;
+import ru.Technopolis.model.ToDoDAOMultUsers;
 
 @Controller
 public class Service {
-
-    private ToDoDAO dao;
-    private ToDo currentToDo;
+    private ToDoDAOMultUsers dao;
 
     @Autowired //Dependency Injection
-    public Service(ToDoDAO dao) {
+    public Service(ToDoDAOMultUsers dao) {
         this.dao = dao;
         this.dao.creatSampleExample();
     }
 
     @RequestMapping("/")
-    public String index(Model model) {
-        model.addAttribute("todosList",dao.getToDosArray());
-        model.addAttribute("counter",dao.size());
+    public String index(Model model, Authentication auth) {
+        model.addAttribute("todosList", dao.getToDosArray(auth.getName()));
+        model.addAttribute("counter", dao.size(auth.getName()));
         return "index";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    String create(@RequestParam String description) {
-        int id = dao.addDAO(description);
-        return dao.getDAO(id).toString();
+    String create(@RequestParam String description, Authentication auth) {
+        int id = dao.addDAO(description, auth.getName());
+        return dao.getDAO(id, auth.getName()).toString();
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public @ResponseBody
-    String remove(@RequestParam long id) {
-        if (!dao.deleteDAO(id)) {
+    String remove(@RequestParam long id, Authentication auth) {
+        if (!dao.deleteDAO(id, auth.getName())) {
             return String.format("Item %d is missing", id);
         }
         return String.valueOf(id);
@@ -50,33 +47,20 @@ public class Service {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
-    String update(@RequestParam long id, @RequestParam String description, @RequestParam ToDo.Status status) {
-        if (!dao.updateDAO(id, description,status)) {
+    String update(@RequestParam long id,
+            @RequestParam String description,
+            @RequestParam ToDo.Status status,
+            Authentication auth) {
+        if (!dao.updateDAO(id, description, status, auth.getName())) {
             return String.format("Item %d is missing", id);
         }
-        return dao.getDAO(id).toString();
+        return dao.getDAO(id, auth.getName()).toString();
     }
-    /*@RequestMapping(value = "/update", method = RequestMethod.POST)
-    public @ResponseBody
-    String update(@RequestParam long[] id, @RequestParam String[] description, @RequestParam ToDo.Status[] status) {
-        long idTodo;
-        String descriptionTodo;
-        ToDo.Status statusTodo;
-        for (int i = 0; i < id.length; i++) {
-            idTodo = id[i];
-            descriptionTodo = description[i];
-            statusTodo = status[i];
-            if (!dao.updateDAO(idTodo, descriptionTodo,statusTodo)) {
-                return String.format("Item %d is missing", id);
-            }
-        }
 
-        return String.valueOf(id);
-    }*/
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public @ResponseBody
-    String get(@RequestParam long id) {
-        currentToDo = dao.getDAO(id);
+    String get(@RequestParam long id, Authentication auth) {
+        final ToDo currentToDo = dao.getDAO(id, auth.getName());
         if (currentToDo == null) {
             return String.format("Item %d is missing", id);
         }
@@ -85,7 +69,7 @@ public class Service {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public @ResponseBody
-    ToDo[] read() {
-        return dao.getToDosArray();
+    ToDo[] read(Authentication auth) {
+        return dao.getToDosArray(auth.getName());
     }
 }

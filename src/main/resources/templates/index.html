@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Todos MVC</title>
 
     <link rel="stylesheet" href="../static/assets/css/styles/default.css" type="text/css" media="all" th:href="@{/assets/css/styles/default.css}" >
@@ -74,12 +75,15 @@
             </div>
 
         </div>
+        <form class="sign-out" th:action="@{/logout}" method="post">
+            <input class="btn-sign-out" type="submit" value="Sign out"/>
+        </form>
 
 
 </div>
 
 </body>
 
-<script type="text/javascript" th:src="@{/js/index.js}"></script>
+<script type="module" th:src="@{/js/index.js}"></script>
 
 </html>
