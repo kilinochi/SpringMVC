@@ -32,7 +32,7 @@ public class ToDoDAO {
     public ToDo create(String description, String username) {
         long id = counter.incrementAndGet();
         ToDo todos;
-        if ((description.length() < 34) && (description.length() > 0)) {
+        if ((description.length() < 35) && (description.length() > 0)) {
             todos = new ToDo(id, description);
             list.get(username).add(todos);
         } else {
@@ -68,7 +68,7 @@ public class ToDoDAO {
 
     public ToDo update(String description, long id, ToDo.State state, String username) {
         int index = search(id, username);
-        if ((index != -1) && (description.length() < 34) && (description.length() > 0)) {
+        if ((index != -1) && (description.length() < 35) && (description.length() > 0)) {
             list.get(username).get(index).setDescription(description);
             list.get(username).get(index).setState(state);
             return list.get(username).get(index);

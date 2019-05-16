@@ -232,7 +232,7 @@ function checkRequestHandler(request) {
             toDoManager.incrementCount();
         }
     } else {
-        alert("Can't update, check rule for desccription");
+        alert("Can't update, check rule for description");
         return;
     }
 }
@@ -241,7 +241,7 @@ function submitTextHandler(e) {
     e.preventDefault();
     var text=toDoManager.getDescription();
     if ((text.length > 34) || (text.length == 0)) {
-        alert("Minimal length more than 0 and less or equal than 34");
+        alert("Can't create. Minimal length is 1, maximal length is 34");
         return;
     }
     sendRequest('post', '/create',"description=" + encodeURIComponent(text),submitTextRequestHandler);
@@ -253,7 +253,7 @@ function submitTextRequestHandler(request) {
         toDoManager.createItem(toDoObj,deleteHandler,checkHandler,textareaResizeHandler);
         toDoManager.incrementCount();
     } else {
-        alert("Can't create, check rule for desccription");
+        alert("Can't create, check rule for description");
         return;
     }
 
@@ -266,8 +266,8 @@ function textareaResizeHandler(e) {
     var description = item.querySelector('.todo-list_item-text').value;
     var checked = item.querySelector('.custom-checkbox_target').checked;
     var state = checked? "COMPLETED" : "ACTIVE";
-    if ((description.length > 34) && (description.length > 0)) {
-        alert("Too long, maximum length of description is 34");
+    if ((description.length > 34) || (description.length == 0)) {
+        alert("Can't update. Minimal length is 1, maximal length is 34");
         return;
     }
     sendRequest('post','/update',"id=" + id + "&description=" + encodeURIComponent(description) + "&state=" + encodeURIComponent(state),checkRequestHandler);
