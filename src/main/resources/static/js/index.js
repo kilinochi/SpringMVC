@@ -241,7 +241,7 @@ function submitTextHandler(e) {
     e.preventDefault();
     var text=toDoManager.getDescription();
     if ((text.length > 34) || (text.length == 0)) {
-        alert("Minimal length more than 0 and less or equal than 34");
+        alert("Minimal length more than 0 and less than 35");
         return;
     }
     sendRequest('post', '/create',"description=" + encodeURIComponent(text),submitTextRequestHandler);
