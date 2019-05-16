@@ -14,17 +14,16 @@ import java.util.List;
 public class UserDAO implements UserDetailsService {
 
     private String[] usernames = {"admin",
-                                "user-Maria-01-spring-mvc-2019",
-                                "user-Svetlana-02-spring-mvc-2019", 
-                                "user-Pavel-03-spring-mvc-2019",
-                                "user-Anton-04-spring-mvc-2019",
-                                "user-Peter-05-spring-mvc-2019"};
+            "user-Maria-01-spring-mvc-2019",
+            "user-Svetlana-02-spring-mvc-2019",
+            "user-Pavel-03-spring-mvc-2019",
+            "user-Anton-04-spring-mvc-2019"};
     private String[] passwords = {"admin",
-                                "uMaria01p",
-                                "uSvetlana02p",
-                                "uPavel03p",
-                                "uAnton04p",
-                                "uPeter05p"};
+            "uMaria01p",
+            "uSvetlana02p",
+            "uPavel03p",
+            "uAnton04p"};
+    List<Role> roles = new ArrayList<>();
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
@@ -33,7 +32,6 @@ public class UserDAO implements UserDetailsService {
             if (usernames[i].equals(username)) {
                 user.setUsername(username);
                 user.setPassword(passwords[i]);
-                List<Role> roles = new ArrayList<>();
                 roles.add(Role.USER);
                 user.setAuthorities(roles);
                 return user;

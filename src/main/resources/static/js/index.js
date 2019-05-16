@@ -178,7 +178,7 @@ function sendRequest(method, path, args, handler)
             if (Request.status == 200){
                 handler(Request);
             }else{
-                alert('error  12312313');
+                alert('error');
             }
 
         }
@@ -222,29 +222,41 @@ function checkHandler(e) {
 
 function checkRequestHandler(request) {
     var response = request.responseText;
-    var toDoObj = JSON.parse(request.responseText);
-    if (toDoObj.state === "COMPLETED"){
-        toDoManager.markAsCompleted(toDoManager.getItem(toDoObj.id));
-        toDoManager.decrementCount();
-    }else{
-        toDoManager.markAsActive(toDoManager.getItem(toDoObj.id));
-        toDoManager.incrementCount();
+    if (response != null) {
+        var toDoObj = JSON.parse(request.responseText);
+        if (toDoObj.state === "COMPLETED"){
+            toDoManager.markAsCompleted(toDoManager.getItem(toDoObj.id));
+            toDoManager.decrementCount();
+        }else{
+            toDoManager.markAsActive(toDoManager.getItem(toDoObj.id));
+            toDoManager.incrementCount();
+        }
+    } else {
+        alert("Can't update, check rule for desccription");
+        return;
     }
 }
 
 function submitTextHandler(e) {
     e.preventDefault();
     var text=toDoManager.getDescription();
-    if (text.length > 34) {
-        alert("Too long, maximum length of description is 34");
+    if ((text.length > 34) || (text.length == 0)) {
+        alert("Minimal length more than 0 and less or equal than 34");
         return;
     }
     sendRequest('post', '/create',"description=" + encodeURIComponent(text),submitTextRequestHandler);
 }
 function submitTextRequestHandler(request) {
-    var toDoObj = JSON.parse(request.responseText);
-    toDoManager.createItem(toDoObj,deleteHandler,checkHandler,textareaResizeHandler);
-    toDoManager.incrementCount();
+    var response = request.responseText;
+    if (response != null) {
+        var toDoObj = JSON.parse(request.responseText);
+        toDoManager.createItem(toDoObj,deleteHandler,checkHandler,textareaResizeHandler);
+        toDoManager.incrementCount();
+    } else {
+        alert("Can't create, check rule for desccription");
+        return;
+    }
+
 }
 
 function textareaResizeHandler(e) {
@@ -254,6 +266,10 @@ function textareaResizeHandler(e) {
     var description = item.querySelector('.todo-list_item-text').value;
     var checked = item.querySelector('.custom-checkbox_target').checked;
     var state = checked? "COMPLETED" : "ACTIVE";
+    if ((description.length > 34) && (description.length > 0)) {
+        alert("Too long, maximum length of description is 34");
+        return;
+    }
     sendRequest('post','/update',"id=" + id + "&description=" + encodeURIComponent(description) + "&state=" + encodeURIComponent(state),checkRequestHandler);
 }
 
