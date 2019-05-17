@@ -241,11 +241,8 @@ function submitTextHandler(e) {
     e.preventDefault();
     var text=toDoManager.getDescription();
     if ((text.length > 34) || (text.length == 0)) {
-<<<<<<< HEAD
         alert("Can't create. Minimal length is 1, maximal length is 34");
-=======
         alert("Minimal length more than 0 and less than 35");
->>>>>>> a7b663b9a84285a9c8add1e74cd69b8d697d2d3e
         return;
     }
     sendRequest('post', '/create',"description=" + encodeURIComponent(text),submitTextRequestHandler);
