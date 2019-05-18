@@ -85,12 +85,26 @@ document.addEventListener("DOMContentLoaded", function () {
         redraw();
     }
 
+    String.prototype.replaceAll = function (search, replacement) {
+        let target = this;
+        return target.replace(new RegExp(search, 'g'), replacement);
+    };
+
     // xss protect
-    function replaceBadSigns(str) {
-        str = str.replaceAll('<', '&lt');
-        str = str.replaceAll('>', '&gt');
-        str = str.replaceAll('"', '&quot');
-        return str;
+    function replaceBadSigns(s) {
+        let map = new Map();
+        map.set('<', ' &lt ');
+        map.set('>', ' &gt ');
+        map.set('"', ' &quot ');
+        for (let i = 0; i < s.length; i++) {
+            if (map.has(s.charAt(i))) {
+                s = s.substring(0, i)
+                        + map.get(s.charAt(i))
+                        + s.substring(i + 1, s.length);
+            }
+        }
+
+        return s;
     }
 
     function addItem(description, mark) {
@@ -113,8 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 description +
                 '</textarea> </div> </div>';
 
-        // text = replaceBadSigns(text);
-
+        /*console.log("MY_TEXT1 : " + text);
+        text = replaceBadSigns(text);
+        console.log("MY_TEXT2 : " + text);*/
 
         list.insertAdjacentHTML("beforeend", text);
 
@@ -144,10 +159,34 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     let item = this.closest('.todos-list_item');
                     let textItem = item.querySelector('.todos-list_item_text');
-                    changeChecked(textItem.value);
+                    changeChecked(textItem.value.trim());
                     redraw();
                 }
         );
+    }
+
+    function contains(s) {
+        for (let i = 0; i < itemsChecked.length; i++) {
+            if (itemsChecked[i].description === s) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function isValid(s) {
+        if (s.length > 50) {
+            return false;
+        }
+
+        let badSigns = "@#-+$=*^&%<>";
+        for (let i = 0; i < badSigns.length; i++) {
+            if (s.indexOf(badSigns[i]) > -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     input.addEventListener("keydown", function (e) {
@@ -156,6 +195,17 @@ document.addEventListener("DOMContentLoaded", function () {
             let description = input.value.trim();
             if (description.length > 0) {
                 input.value = "";
+
+                if (contains(description)) {
+                    alert("Такой элемент уже существует!");
+                    return;
+                }
+
+                if (!isValid(description)) {
+                    alert("Элемент имеет неверный формат!");
+                    return;
+                }
+
                 let index = itemsChecked.length;
                 itemsChecked[index] = {description: description, mark: false, id: -1};
                 addItem(description, false);
@@ -234,5 +284,4 @@ document.addEventListener("DOMContentLoaded", function () {
                 redraw();
             }
     )
-})
-;
+});
