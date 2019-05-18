@@ -1,4 +1,4 @@
-import {createFromTemplate, escapeHtml} from '../../utils/templatesManager.js';
+import {createFromTemplate} from '../../utils/templatesManager.js';
 import {Eventable} from "../../lib/Eventable.js";
 import {request} from "../../TodoService.js";
 
@@ -45,12 +45,15 @@ export class TodoListComponent extends Eventable {
             request("POST", "/delete?id=" + todoItem.id, () => this.removeTodo(todoItem)));
 
         checkBox.addEventListener('change', () => {
-            var desc = escapeHtml(todoItem.querySelector('.todos-list_item_text').innerHTML);
-            console.log(desc);
-            request("POST",
-                '/update?id=' + todoItem.id +
-                '&description=' + desc +
-                '&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged'));
+            var desc = todoItem.querySelector('.todos-list_item_text').textContent;
+            if (desc.length > 0 && desc.length <= 50) {
+                request("POST",
+                    '/update?id=' + todoItem.id +
+                    '&description=' + desc +
+                    '&completed=' + checkBox.checked, () => this.trigger('checkedCountChanged'));
+            } else {
+                alert("Description length is not acceptable");
+            }
         });
     }
 

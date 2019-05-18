@@ -25,5 +25,5 @@ export function createFromTemplate(templateId, templateData) {
 export function escapeHtml(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
+    return div.innerHTML.replace(/"/g, "&quot;");
 }
