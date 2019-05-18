@@ -1,5 +1,19 @@
 const token = getMeta("_csrf");
 const header = getMeta("_csrf_header");
+const badSigns = "@#-+$=*^&%<>";
+const goodSigns = [
+    ' &commat ',
+    ' &#35 ',
+    ' &#45 ',
+    ' &#43 ',
+    ' &#36 ',
+    ' &#61 ',
+    ' &#42 ',
+    ' &#94 ',
+    ' &#37 ',
+    ' &lt ',
+    ' &gt '];
+
 
 function getMeta(metaName) {
     let metas = document.getElementsByTagName('meta');
@@ -93,9 +107,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // xss protect
     function replaceBadSigns(s) {
         let map = new Map();
-        map.set('<', ' &lt ');
-        map.set('>', ' &gt ');
-        map.set('"', ' &quot ');
+        for (let i = 0; i < badSigns.length; i++) {
+            map.set(badSigns[i], goodSigns[i]);
+        }
+
         for (let i = 0; i < s.length; i++) {
             if (map.has(s.charAt(i))) {
                 s = s.substring(0, i)
@@ -179,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return false;
         }
 
-        let badSigns = "@#-+$=*^&%<>";
         for (let i = 0; i < badSigns.length; i++) {
             if (s.indexOf(badSigns[i]) > -1) {
                 return false;
