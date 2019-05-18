@@ -1,8 +1,7 @@
-
 .custom-checkbox {
     display: inline-block;
     position: relative;
-    }
+}
 
     .custom-checkbox_target {
         position: absolute;
@@ -16,7 +15,7 @@
         margin: 0;
         border-radius: 50%;
         z-index: 1;
-        }
+    }
 
     .custom-checkbox_visual {
         width: 36px;
@@ -25,11 +24,13 @@
         border: 1px solid #ccc;
         border-radius: 50%;
         position: relative;
-	background-color: #fff;
-        }
+	    background-color: rgb(255, 255, 255);
+    }
+
         .custom-checkbox .custom-checkbox_target:checked ~ .custom-checkbox_visual {
-            border-color: #5dc2af;
-            }
+            border-color: rgb(93, 194, 175);
+        }
+
         .custom-checkbox_target:checked ~ .custom-checkbox_visual .custom-checkbox_visual_icon {
             width: 20px;
             height: 20px;
@@ -38,4 +39,4 @@
             left: 50%;
             margin: -10px;
             background: url(../../../images/completed.png);
-            }
+        }

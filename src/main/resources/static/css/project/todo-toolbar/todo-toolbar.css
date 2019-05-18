@@ -1,28 +1,40 @@
-
 .todo-toolbar {
-    display:flex;
-    padding:10px;
-    margin-top:50px;
-    border-top:#DCDCDC solid 1px;
+    display: flex;
+    padding: 10px;
+    margin-top: 50px;
+    border-top: rgb(220, 220, 220) solid 1px;
+}
+
+    .todo-toolbar_unready-counter{
+        color: rgb(128, 128, 128);
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 12px;
+        position: relative;
+        top: 4px;
     }
-        .todo-toolbar_unready-counter{
-            color:#808080;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 12px;
-            position:relative;
-            top:4px;
-            }
 
-        .todo-toolbar_filters{
-            margin:auto;
-        }
+    .todo-toolbar_filters{
+        margin: auto;
+    }
 
-        .todo-toolbar_clear-completed{
-            float:right;
-            border: none;
-            outline:none;
-            background:none;
-            color:#808080;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 12px;
-        }
+    .todo-toolbar_clear-completed{
+        float: right;
+        border: none;
+        outline: none;
+        background: none;
+        color: rgb(128, 128, 128);
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 12px;
+    }
+
+    .logout-button {
+        margin: 20px;
+        float:right;
+        text-align: center;
+        border-radius: 2px;
+        background: rgb(114, 159, 249);
+        border-color: rgb(89, 144, 255);
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 100;
+        color: rgb(255, 255, 255);
+    }

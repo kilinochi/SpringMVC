@@ -1,0 +1,42 @@
+.signin-board {
+    text-align: center;
+}
+
+    .signin-board_heading {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 30px;
+        font-weight: 100;
+        color: rgba(175, 47, 47, 0.15);
+        margin: 8px 0;
+    }
+
+    .signin-board_item-input {
+        margin: 5px;
+        width: 250px;
+        height: 25px;
+        border-radius: 2px;
+    }
+
+    .signin-board_signup-button,
+    .signin-board_signin-button {
+        text-align: center;
+        width: 260px;
+        height: 35px;
+        border-radius: 2px;
+        background: rgb(114, 159, 249);
+        border-color: rgb(89, 144, 255);
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 100;
+        font-size: 15px;
+        color: rgb(255, 255, 255);
+        margin: 5px;
+    }
+
+    .signin-error-label {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 100;
+        color: rgba(175, 47, 47, 0.35);
+        margin: 8px 0;
+        display: none;
+    }

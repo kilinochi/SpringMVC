@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Please sign up</title>
+    <link rel="stylesheet" href="css/default.css"/>
+</head>
+<body>
+<div class="main-layout">
+    <form class="signup-board" action="/signup" method="post">
+        <h2 class="signup-board_heading">Please sign up</h2>
+        <div class="signup-board_items">
+            <div class="signup-board_item">
+                <div class="signup-error-label"
+                     th:style="${userExist} ? 'display : block' : 'display : none'">User already exist, try again</div>
+                <div th:style="${invalidUsername} ? 'display : block' : 'display : none'"
+                     class="signup-error-label username-label" for="username">Invalid username</div>
+                <input type="text" id="username" name="username" class="signup-board_item-input username"
+                       th:value="${username}"
+                       placeholder="Username"
+                       aria-label="Input your username"
+                       autofocus>
+            </div>
+            <div class="signup-board_item">
+                <div th:style="${invalidEmail} ? 'display : block' : 'display : none'"
+                     class="signup-error-label email-label" for="email">Invalid email</div>
+                <input type="text" id="email" name="email" class="signup-board_item-input email" placeholder="Email"
+                       th:value="${email}"
+                       aria-label="Input your email">
+            </div>
+            <div class="signup-board_item">
+                <div th:style="${invalidPassword} ? 'display : block' : 'display : none'"
+                     class="signup-error-label password-label" for="password">Invalid username</div>
+                <input type="password" id="password" name="password" class="signup-board_item-input password"
+                       placeholder="Password"
+                       th:value="${password}"
+                       aria-label="Input your password">
+            </div>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button class="signup-board_submit-button" type="submit" aria-label="Press to sign up">Sign up</button>
+    </form>
+</div>
+<script src="/javascript/signup.js"></script>
+</body>
+</html>

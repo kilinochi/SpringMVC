@@ -1,56 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Todo MVC</title>
     <link rel="stylesheet" href="css/default.css"/>
 </head>
 <body>
 
 <div class="main-layout">
-
     <h1 class="todo-title">Todos</h1>
-
+    <h2 class="todo-user-name" th:text="'Welcome, ' + ${userName} + '!'"></h2>
     <div class="todo-board">
-
+        <div class="todo-error-label creator-error">Invalid description</div>
+        <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
         <form class="todo-creator">
-            <button class="todo-creator_check-all" aria-label="Check all items as done"></button>
             <div class="todo-creator_text-input-w">
                 <input class="todo-creator_text-input" type="text" placeholder="What needs to be done?"
-                       aria-label="Input new todo text"/>
+                       aria-label="Input new todo text"
+                       autofocus/>
             </div>
         </form>
-
         <div class="todo-list">
             <div class="todo-list_item" th:each="item : ${data}" th:id="${item.getId()}">
                 <div class="custom-checkbox todo-list_item_ready-marker">
-                    <input type="checkbox" th:checked="${item.getIsDone()}" class="custom-checkbox_target" aria-label="Mark todo as ready"/>
+                    <input type="checkbox" th:checked="${item.getIsDone()}" class="custom-checkbox_target"
+                           aria-label="Mark todo as ready"/>
                     <div class="custom-checkbox_visual">
                         <div class="custom-checkbox_visual_icon"></div>
                     </div>
                 </div>
                 <button class="todo-list_item_remove" aria-label="Delete todo"></button>
                 <div class="todo-list_item_text-w">
-                    <textarea class="todo-list_item_text" th:text="${item.getDescription()}"></textarea>
+                    <div class="todo-error-label">Invalid description</div>
+                    <textarea class="todo-list_item_text" th:text="${item.getDescription()}"
+                              th:style="${item.getIsDone()} ? 'text-decoration: line-through' : ''"></textarea>
                 </div>
             </div>
         </div>
-
         <div class="todo-toolbar">
-            <div class="todo-toolbar_unready-counter">0 items left</div>
-
+            <div class="todo-toolbar_unready-counter">
+                <label class="todo-toolbar_unready-counter-number" th:text="${left}"></label>
+                <label class="todo-toolbar_unready-counter-tail"> items left</label>
+            </div>
             <div class="filters todo-toolbar_filters">
                 <button class="filters_item all __selected" aria-label="Filter: All, is selected">All</button>
                 <button class="filters_item active" aria-label="Filter: Active">Active</button>
                 <button class="filters_item completed" aria-label="Filter: Completed">Completed</button>
             </div>
-
             <button class="todo-toolbar_clear-completed">Clear completed</button>
-
         </div>
-
+    </div>
+    <div class="logout">
+        <form class="logout-form" method="post" th:action="@{/logout}">
+            <button class="logout-button" type="submit" aria-label="Log out">Log out</button>
+        </form>
     </div>
 </div>
-<script type="text/javascript" th:src="@{/javascript/index.js}" async></script>
+<script src="/javascript/index.js"></script>
 </body>
-</html>>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Please sign in</title>
+    <link rel="stylesheet" href="css/default.css"/>
+</head>
+<body>
+<div class="main-layout">
+    <form class="signin-board" th:action="@{/signin}" method="post">
+        <h2 class="signin-board_heading">Please sign in</h2>
+        <div class="signin-board_items">
+            <div class="signin-board_item">
+                <label for="email" class="signin-error-label email-label">Invalid email</label>
+                <input type="email" id="email" name="email" class="signin-board_item-input email" placeholder="Email"
+                       aria-label="Input your email"
+                       autofocus>
+            </div>
+            <div class="signin-board_item">
+                <label for="password" class="signin-error-label password-label">Invalid password</label>
+                <input type="password" id="password" name="password" class="signin-board_item-input password"
+                       placeholder="Password"
+                       aria-label="Input your password">
+            </div>
+        </div>
+        <div class="signin-board_signin">
+            <button class="signin-board_signin-button" type="submit" aria-label="Press to sign in">Sign in</button>
+        </div>
+        <div class="signin-board_signup">
+            <button class="signin-board_signup-button" type="button" aria-label="Press to sign up">Sign up</button>
+        </div>
+    </form>
+</div>
+<script src="/javascript/signin.js"></script>
+</body>
+</html>
