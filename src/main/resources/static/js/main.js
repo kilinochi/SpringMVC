@@ -1,12 +1,25 @@
-console.log('init');
 
+const token = getMeta("_csrf");
+const header = getMeta("_csrf_header");
+
+function getMeta(metaName) {
+    let metas = document.getElementsByTagName('meta');
+
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            return metas[i].getAttribute('content');
+        }
+    }
+
+    return '';
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     let input = document.querySelector('.todo-creator_text-input');
     let list = document.querySelector('.todos-list');
     let buttonClear = document.querySelector('.todos-toolbar_clear-completed');
     let filters = document.querySelectorAll('.filters-item');
-    var filter = 1;
+    let filter = 1;
     let itemsChecked = [];
 
     let requestRead = new XMLHttpRequest();
@@ -19,13 +32,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
     requestRead.open("GET", "http://localhost:8080/read", true);
+    requestRead.setRequestHeader(header, token);
     requestRead.send(null);
 
 
     initialization();
 
     function redraw() {
-        var unreadyCounter = 0;
+        let unreadyCounter = 0;
         list.innerHTML = '';
         for (let i = 1; i < 4; i++) {
             document.getElementById("filter" + i).mark = filter === i;
@@ -73,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function addItem(description, mark) {
-        var s = '';
+        let s = '';
         if (mark) {
             s = "checked";
         }
@@ -96,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (mark) {
             let items = list.querySelectorAll('.todos-list_item');
-            var textItem = items[items.length - 1].querySelector('.todos-list_item_text');
+            let textItem = items[items.length - 1].querySelector('.todos-list_item_text');
             textItem.style.color = 'grey';
             textItem.style.textDecoration = 'line-through';
         }
@@ -106,14 +120,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 "click",
                 function (e) {
                     e.preventDefault();
-                    var item = this.closest('.todos-list_item');
-                    var textItem = item.querySelector('.todos-list_item_text');
+                    let item = this.closest('.todos-list_item');
+                    let textItem = item.querySelector('.todos-list_item_text');
                     removeByText(textItem.value.trim());
                     list.removeChild(item);
                 }
         );
 
-        var checkBoxItems = list.querySelectorAll('.custom-checkbox_target');
+        let checkBoxItems = list.querySelectorAll('.custom-checkbox_target');
         checkBoxItems[checkBoxItems.length - 1].addEventListener(
                 "click",
                 function (e) {
@@ -129,27 +143,28 @@ document.addEventListener("DOMContentLoaded", function () {
     input.addEventListener("keydown", function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            var description = input.value.trim();
+            let description = input.value.trim();
             if (description.length > 0) {
                 input.value = "";
-                var index = itemsChecked.length;
+                let index = itemsChecked.length;
                 itemsChecked[index] = {description: description, mark: false, id: -1};
                 addItem(description, false);
                 redraw();
 
-                var formData = new FormData();
+                let formData = new FormData();
                 formData.append("description", description);
-                var requestCreate = new XMLHttpRequest();
+                let requestCreate = new XMLHttpRequest();
                 requestCreate.onreadystatechange = function () {
                     if (requestCreate.readyState === XMLHttpRequest.DONE) {
                         if (requestRead.status === 200) {
-                            var response = JSON.parse(requestCreate.responseText);
+                            let response = JSON.parse(requestCreate.responseText);
                             console.log(response);
                             itemsChecked[index].id = response.id;
                         }
                     }
                 };
                 requestCreate.open("POST", "http://localhost:8080/create");
+                requestCreate.setRequestHeader(header, token);
                 requestCreate.send(formData);
             }
         }
@@ -158,12 +173,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function removeByText(s) {
         for (let i = 0; i < itemsChecked.length; i++) {
             if (itemsChecked[i].description === s) {
-
-                var formData = new FormData();
+                let formData = new FormData();
                 formData.append("id", itemsChecked[i].id);
-                var requestCreate = new XMLHttpRequest();
-                requestCreate.open("DELETE", "http://localhost:8080/delete");
-                requestCreate.send(formData);
+                let requestRemove = new XMLHttpRequest();
+                requestRemove.open("DELETE", "http://localhost:8080/delete");
+                requestRemove.setRequestHeader(header, token);
+                requestRemove.send(formData);
                 console.log('remove ' + itemsChecked[i].description + ' id ' + itemsChecked[i].id);
 
                 itemsChecked.splice(i, 1);
@@ -176,12 +191,13 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let i = 0; i < itemsChecked.length; i++) {
             if (itemsChecked[i].description === s) {
                 itemsChecked[i].mark = !itemsChecked[i].mark;
-                var requestCreate = new XMLHttpRequest();
-                var formData = new FormData();
+                let requestCheck = new XMLHttpRequest();
+                let formData = new FormData();
                 formData.append("id", itemsChecked[i].id);
                 formData.append("mark", itemsChecked[i].mark);
-                requestCreate.open("PUT", "http://localhost:8080/mark");
-                requestCreate.send(formData);
+                requestCheck.open("PUT", "http://localhost:8080/mark");
+                requestCheck.setRequestHeader(header, token);
+                requestCheck.send(formData);
 
                 return itemsChecked[i].mark;
             }
@@ -194,9 +210,10 @@ document.addEventListener("DOMContentLoaded", function () {
             function (e) {
                 e.preventDefault();
 
-                var requestCreate = new XMLHttpRequest();
-                requestCreate.open("DELETE", "http://localhost:8080/delete_mark");
-                requestCreate.send(null);
+                let requestDeleteAll = new XMLHttpRequest();
+                requestDeleteAll.open("DELETE", "http://localhost:8080/delete_mark");
+                requestDeleteAll.setRequestHeader(header, token);
+                requestDeleteAll.send(null);
 
                 for (let i = 0; i < itemsChecked.length; i++) {
                     if (itemsChecked[i].mark) {
