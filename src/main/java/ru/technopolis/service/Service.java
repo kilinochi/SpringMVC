@@ -1,15 +1,15 @@
 package ru.technopolis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ru.technopolis.model.ToDo;
 import ru.technopolis.model.ToDoDAO;
-
 
 @Controller
 public class Service {
@@ -17,49 +17,74 @@ public class Service {
     private ToDoDAO dao;
 
     @Autowired
-    public Service(ToDoDAO dao) {
+    public Service(final ToDoDAO dao) {
         this.dao = dao;
     }
 
     @RequestMapping("/")
-    public String index(Model model) {
-        model.addAttribute("data", dao.read());
+    public String index(final Model model, final Authentication auth) throws IllegalAccessException {
+        if (auth == null || auth.getName() == null) {
+            throw new IllegalAccessException("You must log in!");
+        }
+        model.addAttribute("data", dao.read(auth.getName()));
         return "index";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
-    String delete(long id) {
-        return dao.delete(id);
+    ResponseEntity delete(final long id, final Authentication auth) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(403).build();
+        }
+        return dao.delete(id, auth.getName());
     }
 
     @RequestMapping(value = "/delete_mark", method = RequestMethod.DELETE)
     public @ResponseBody
-    String deleteMarked() {
-        return dao.deleteMark();
+    ResponseEntity deleteMarked(final Authentication auth) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(403).build();
+
+        }
+        dao.deleteMark(auth.getName());
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    ToDo create(String description) {
-        return dao.create(description);
+    ResponseEntity create(final String description, final Authentication auth) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(403).build();
+
+        }
+        return ResponseEntity.ok(dao.create(description, auth.getName()));
     }
 
     @RequestMapping(value = "/mode", method = RequestMethod.PUT)
     public @ResponseBody
-    String mode(long id, String description) {
-        return dao.mode(id, description);
+    ResponseEntity mode(final long id, final String description, final Authentication auth) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(403).build();
+        }
+        return dao.mode(id, description, auth.getName());
     }
 
     @RequestMapping(value = "/read", method = RequestMethod.GET)
     public @ResponseBody
-    ToDo[] read() {
-        return dao.read();
+    ResponseEntity read(final Authentication auth) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(403).build();
+        }
+        return ResponseEntity.ok(dao.read(auth.getName()));
     }
 
     @RequestMapping(value = "/mark", method = RequestMethod.PUT)
     public @ResponseBody
-    void setMark(long id, boolean mark) {
-        dao.setMark(id, mark);
+    ResponseEntity setMark(final long id, final boolean mark, final Authentication auth) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(403).build();
+        }
+        dao.setMark(id, mark, auth.getName());
+        return ResponseEntity.ok().build();
     }
 }

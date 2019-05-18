@@ -1,5 +1,7 @@
 package ru.technopolis.config;
 
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,15 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.w3c.dom.UserDataHandler;
+
+import ru.technopolis.model.User;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private static final String ROLE = "USER";
-    private static final String[] USERS = new String[]{"user", "Arkasha", "login", "User101", "Fedor", "LOGINOV"};
-    private static final String[] PASSWORDS = new String[]{"user", "ahsakrA", "password", "101resU", "rodeF", "VONIGOL"};
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
@@ -32,12 +32,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        for (int i = 0; i < USERS.length; i++) {
+        for (final Map.Entry<String, User.UserData> entry : User.USER_MAP.entrySet()) {
             auth.inMemoryAuthentication()
                     .passwordEncoder(passwordEncoder())
-                    .withUser(USERS[i])
-                    .password(passwordEncoder().encode(PASSWORDS[i]))
-                    .roles(ROLE);
+                    .withUser(entry.getKey())
+                    .password(passwordEncoder().encode(entry.getValue().getPassword()))
+                    .roles(User.ROLE);
         }
     }
 

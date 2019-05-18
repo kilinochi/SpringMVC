@@ -4,10 +4,12 @@ public class ToDo {
     private final long id;
     private String description;
     private boolean mark;
+    private final String username;
 
-    public ToDo(final long id, final String description) {
+    public ToDo(final long id, final String description, final String username) {
         this.id = id;
         this.description = description;
+        this.username = username;
         mark = false;
     }
 
@@ -29,5 +31,9 @@ public class ToDo {
 
     public void setMark(final boolean mark) {
         this.mark = mark;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
