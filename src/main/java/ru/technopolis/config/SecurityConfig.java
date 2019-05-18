@@ -12,13 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String ROLE = "USER";
+    private static final String[] USERS = new String[]{"user", "Arkasha", "login", "User101", "Fedor", "LOGINOV"};
+    private static final String[] PASSWORDS = new String[]{"user", "ahsakrA", "password", "101resU", "rodeF", "VONIGOL"};
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-
-                .cors()
+        http.cors()
                 .and()
-                . authorizeRequests()
+                .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
@@ -29,17 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("user")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER");
-
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("second")
-                .password(passwordEncoder().encode("second"))
-                .roles("USER");
+        for (int i = 0; i < USERS.length; i++) {
+            auth.inMemoryAuthentication()
+                    .passwordEncoder(passwordEncoder())
+                    .withUser(USERS[i])
+                    .password(passwordEncoder().encode(PASSWORDS[i]))
+                    .roles(ROLE);
+        }
     }
 
     @Bean

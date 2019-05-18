@@ -1,4 +1,3 @@
-
 const token = getMeta("_csrf");
 const header = getMeta("_csrf_header");
 
@@ -86,17 +85,24 @@ document.addEventListener("DOMContentLoaded", function () {
         redraw();
     }
 
+    // xss protect
+    function replaceBadSigns(str) {
+        str = str.replaceAll('<', '&lt');
+        str = str.replaceAll('>', '&gt');
+        str = str.replaceAll('"', '&quot');
+        return str;
+    }
+
     function addItem(description, mark) {
-        let s = '';
+        let markStr = '';
         if (mark) {
-            s = "checked";
+            markStr = "checked";
         }
-        list.insertAdjacentHTML(
-                "beforeend",
-                ' <div class="todos-list_item">' +
+
+        let text = ' <div class="todos-list_item">' +
                 '<div class="custom-checkbox todos-list_item_ready-marker">' +
                 ' <input type="checkbox"' +
-                s +
+                markStr +
                 ' class="custom-checkbox_target" aria-label="Mark todo as ready" />' +
                 '<div class="custom-checkbox_visual">' +
                 ' <div class="custom-checkbox_visual_icon"></div>' +
@@ -105,8 +111,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 '<div class="todos-list_item_text-w">\n' +
                 '<textarea readonly class="todos-list_item_text">' +
                 description +
-                '</textarea> </div> </div>'
-        );
+                '</textarea> </div> </div>';
+
+        // text = replaceBadSigns(text);
+
+
+        list.insertAdjacentHTML("beforeend", text);
 
         if (mark) {
             let items = list.querySelectorAll('.todos-list_item');
@@ -115,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             textItem.style.textDecoration = 'line-through';
         }
 
-        var removeItems = list.querySelectorAll('.todos-list_item_remove');
+        let removeItems = list.querySelectorAll('.todos-list_item_remove');
         removeItems[removeItems.length - 1].addEventListener(
                 "click",
                 function (e) {

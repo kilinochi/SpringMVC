@@ -5,7 +5,7 @@ public class ToDo {
     private String description;
     private boolean mark;
 
-    public ToDo(long id, String description) {
+    public ToDo(final long id, final String description) {
         this.id = id;
         this.description = description;
         mark = false;
@@ -27,7 +27,7 @@ public class ToDo {
         return mark;
     }
 
-    public void setMark(boolean mark) {
+    public void setMark(final boolean mark) {
         this.mark = mark;
     }
 }
