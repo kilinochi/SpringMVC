@@ -3,6 +3,33 @@ import {createFromTemplate} from '../../utils/templatesManager.js';
 import {COMPLETED_VALUE} from '../../lib/CONST.js';
 import {HIDDEN_VALUE} from '../../lib/CONST.js';
 
+
+const token = getMeta("_csrf");
+const header = getMeta("_csrf_header");
+
+function getMeta(metaName) {
+    const metas = document.getElementsByTagName('meta');
+
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            return metas[i].getAttribute('content');
+        }
+    }
+
+    return '';
+}
+
+function checkField(todoName) {
+    var str = todoName.toString().toLowerCase();
+    var alphabet = "abcdefghigklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < todoName.length; i++) {
+        if (!alphabet.includes(str.charAt(i))) {
+            return false;
+        }
+    }
+    return true;
+}
+
 export class TodoListComponent {
 
     constructor(root, todoList) {
@@ -49,6 +76,7 @@ export class TodoListComponent {
         console.log(item.id);
         var request = new XMLHttpRequest();
         request.open('DELETE', '/delete?id=' + item.id, true);
+        request.setRequestHeader(header, token);
         request.addEventListener('readystatechange', function () {
             if ((request.readyState === 4) && (request.status === 200)) {
                 item.parentNode.removeChild(item);
@@ -72,17 +100,20 @@ export class TodoListComponent {
     createTodo(todoName) {
         var list = this._list;
         var component = this;
-        var request = new XMLHttpRequest();
-        request.open('POST', '/create', true);
-        request.addEventListener('readystatechange', function () {
-            if ((request.readyState === 4) && (request.status === 200)) {
-                component.addTodo(todoName, request.responseText);
-                list.trigger('itemAdd');
-            }
-        });
-        var frm = new FormData();
-        frm.append('description', todoName);
-        request.send(frm);
+        if (checkField(todoName)) {
+            var request = new XMLHttpRequest();
+            request.open('POST', '/create', true);
+            request.setRequestHeader(header, token);
+            request.addEventListener('readystatechange', function () {
+                if ((request.readyState === 4) && (request.status === 200)) {
+                    component.addTodo(todoName, request.responseText);
+                    list.trigger('itemAdd');
+                }
+            });
+            var frm = new FormData();
+            frm.append('description', todoName);
+            request.send(frm);
+        }
     }
 
 
@@ -123,20 +154,24 @@ export class TodoListComponent {
 
     updateItem(id, description, checked) {
         console.log(id + " " + description + " " + checked);
-        var request = new XMLHttpRequest();
-        request.open('POST', '/update', true);
-        request.addEventListener('readystatechange', function () {
-            if ((request.readyState === 4) && (request.status === 200)) {
-                console.log("checked");
+
+        if (checkField(todoName)) {
+            var request = new XMLHttpRequest();
+            request.open('POST', '/update', true);
+            request.setRequestHeader(header, token);
+            request.addEventListener('readystatechange', function () {
+                if ((request.readyState === 4) && (request.status === 200)) {
+                    console.log("checked");
+                }
+            });
+            var frm = new FormData();
+            frm.append('id', id);
+            if (description != null) {
+                frm.append('description', description);
             }
-        });
-        var frm = new FormData();
-        frm.append('id', id);
-        if (description != null) {
-            frm.append('description', description);
+            frm.append('checked', checked);
+            request.send(frm);
         }
-        frm.append('checked', checked);
-        request.send(frm);
     }
 
 

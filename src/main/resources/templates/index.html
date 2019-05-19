@@ -3,8 +3,8 @@
 <head>
     <title>Spring Web</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="style.css" media="all" data-th-href="@{style.css}" rel="stylesheet" type="text/css">
     <script type="module" src="js/index.js"></script>
     <script type="module" src="js/UI/components/TodoCreatorComponent.js"></script>
@@ -79,6 +79,8 @@
 
     </div>
 </div>
-
+<form th:action="@{/logout}" method="post">
+    <input type="submit" class="logout_button" value="Logout"/>
+</form>
 </body>
 </html>
