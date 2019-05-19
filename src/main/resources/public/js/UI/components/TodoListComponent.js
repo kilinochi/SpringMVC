@@ -21,7 +21,7 @@ function getMeta(metaName) {
 
 function checkField(todoName) {
     var str = todoName.toString().toLowerCase();
-    var alphabet = "abcdefghigklmnopqrstuvwxyz0123456789";
+    var alphabet = "abcdefghigklmnopqrstuvwxyz0123456789 ";
     for (let i = 0; i < todoName.length; i++) {
         if (!alphabet.includes(str.charAt(i))) {
             return false;
