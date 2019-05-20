@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Todos</title>
     <link rel="stylesheet" href="style.css">
     <script src="crud.js"></script>
@@ -42,7 +44,6 @@
         <input class="filter-button" type="button" value="Unchecked" onclick="viewNotCheck()"/>
     </div>
 </div>
-
 
 </body>
 
