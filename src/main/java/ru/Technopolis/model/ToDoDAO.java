@@ -1,73 +1,83 @@
 package ru.Technopolis.model;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.stereotype.Component;
 
 @Component /*Кладем в контейнер */
 public class ToDoDAO {
 
-   private static AtomicLong counter = new AtomicLong();
-   private static ConcurrentMap<Long, ToDo> values = new ConcurrentHashMap<>();
+    private static AtomicLong counter = new AtomicLong();
+    private Map<String, Map<Long, ToDo>> userTodos = new HashMap<>();
 
-   public ToDoDAO() {
-      create("Покормить кошку", true);
-      create("Сходить в магазин", false);
-      create("Помыть машину", false);
-      create("бла бла бла бла", true);
-   }
+    public ToDo create(String description, boolean checked, String userName) {
+        if (!userTodos.containsKey(userName)) {
+            userTodos.put(userName, new TreeMap<>());
+        }
+        long id = counter.incrementAndGet();
+        ToDo newTodo = new ToDo(id, description, checked);
+        userTodos.get(userName).put(newTodo.getId(), newTodo);
+        return newTodo;
+    }
 
-   public ToDo create(String description, boolean checked) {
-      long id = counter.incrementAndGet();
-      ToDo newTodo = new ToDo(id, description, checked);
-      values.put(newTodo.getId(), newTodo);
-      return newTodo;
-   }
+    public ToDo update(long id, String description, String userName) {
+        if (!userTodos.containsKey(userName)) {
+            userTodos.put(userName, new TreeMap<>());
+        }
+        Map<Long, ToDo> values = userTodos.get(userName);
+        if (values == null) {
+            throw new IllegalStateException("No map for this user");
+        }
+        if (!values.containsKey(id)) {
+            return null;
+        }
+        ToDo old = values.get(id);
+        ToDo todo = new ToDo(id, description, old.getChecked());
+        values.replace(id, todo);
+        return todo;
+    }
 
-   public ToDo update(long id, String description) {
-      if (!values.containsKey(id)) {
-         return null;
-      }
-      ToDo old = values.get(id);
-      ToDo todo = new ToDo(id, description, old.getChecked());
-      values.replace(id, todo);
-      return todo;
-   }
 
+    public void delete(long id, String userName) {
+        if (!userTodos.containsKey(userName)) {
+            userTodos.put(userName, new TreeMap<>());
+        }
+        Map<Long, ToDo> values = userTodos.get(userName);
+        if (values == null) {
+            throw new IllegalStateException("No map for this user");
+        }
+        if (!values.containsKey(id)) {
+            return;
+        }
+        values.remove(id);
+    }
 
-   public void delete(long id) {
-      if (!values.containsKey(id)) {
-         return;
-      }
-      values.remove(id);
-   }
+    public Collection<ToDo> getAll(String userName) {
+        if (!userTodos.containsKey(userName)) {
+            userTodos.put(userName, new TreeMap<>());
+        }
+        Map<Long, ToDo> values = userTodos.get(userName);
+        if (values == null) {
+            throw new IllegalStateException("No map for this user");
+        }
+        return values.values();
+    }
 
-   public Collection<ToDo> getAll() {
-      return values.values();
-   }
-
-   public void changeCheckedState(long id, boolean isChecked) {
-      if (!values.containsKey(id)) {
-         //Error!
-         return;
-      }
-      ToDo todo = values.get(id);
-      todo.setChecked(isChecked);
-      values.replace(id, todo);
-      printValues();
-   }
-
-   private void printValues() {
-      System.out.println("------------");
-      for (ToDo todo: values.values()) {
-         System.out.println(todo);
-         System.out.println("----");
-      }
-      System.out.println("------------");
-   }
-
+    public void changeCheckedState(long id, boolean isChecked, String userName) {
+        if (!userTodos.containsKey(userName)) {
+            userTodos.put(userName, new TreeMap<>());
+        }
+        Map<Long, ToDo> values = userTodos.get(userName);
+        if (!values.containsKey(id)) {
+            //Error!
+            return;
+        }
+        ToDo todo = values.get(id);
+        todo.setChecked(isChecked);
+        values.replace(id, todo);
+    }
 }

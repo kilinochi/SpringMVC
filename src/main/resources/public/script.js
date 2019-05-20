@@ -137,6 +137,10 @@ function handleAddButtonClick() {
         alert("Task text is empty!");
         return;
     }
+    if (description.trim().length > 100) {
+        alert("Task is too long!")
+        return;
+    }
     inputField.value = "";
     var button = document.getElementsByClassName("todo-creator__addButton")[0];
     button.disabled = true;
