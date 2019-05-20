@@ -35,9 +35,6 @@
     border-color: #5bc3ca;
 }
 
-
-
-
 .custom-checkbox_target:checked~.custom-checkbox_visual .custom-checkbox_visual_icon {
     width: 20px;
     height: 20px;
