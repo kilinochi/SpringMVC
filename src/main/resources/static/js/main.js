@@ -1,19 +1,6 @@
 const token = getMeta("_csrf");
 const header = getMeta("_csrf_header");
-const badSigns = "@#-+$=*^&%<>";
-const goodSigns = [
-    ' &commat ',
-    ' &#35 ',
-    ' &#45 ',
-    ' &#43 ',
-    ' &#36 ',
-    ' &#61 ',
-    ' &#42 ',
-    ' &#94 ',
-    ' &#37 ',
-    ' &lt ',
-    ' &gt '];
-
+const badSigns = new Set(["@", "#", "-", "+ ", "$", "= ", "*", "^", "&", "%", "<", " >"]);
 
 function getMeta(metaName) {
     let metas = document.getElementsByTagName('meta');
@@ -99,24 +86,17 @@ document.addEventListener("DOMContentLoaded", function () {
         redraw();
     }
 
-    String.prototype.replaceAll = function (search, replacement) {
-        let target = this;
-        return target.replace(new RegExp(search, 'g'), replacement);
-    };
-
     // xss protect
-    function replaceBadSigns(s) {
-        let map = new Map();
-        for (let i = 0; i < badSigns.length; i++) {
-            map.set(badSigns[i], goodSigns[i]);
-        }
+    function validation(s) {
 
         for (let i = 0; i < s.length; i++) {
-            if (map.has(s.charAt(i))) {
-                s = s.substring(0, i)
-                        + map.get(s.charAt(i))
-                        + s.substring(i + 1, s.length);
+            if (badSigns.has(s.charAt(i))) {
+                s = s.split(s.charAt(i)).join('');
             }
+        }
+
+        if(s.length > 50){
+            s = s.substring(0, 50);
         }
 
         return s;
@@ -189,20 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
     }
 
-    function isValid(s) {
-        if (s.length > 50) {
-            return false;
-        }
-
-        for (let i = 0; i < badSigns.length; i++) {
-            if (s.indexOf(badSigns[i]) > -1) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     input.addEventListener("keydown", function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
@@ -214,11 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert("Такой элемент уже существует!");
                     return;
                 }
-
-                if (!isValid(description)) {
-                    alert("Элемент имеет неверный формат!");
-                    return;
-                }
+                description = validation(description);
 
                 let index = itemsChecked.length;
                 itemsChecked[index] = {description: description, mark: false, id: -1};
