@@ -1,6 +1,7 @@
 var Eventable = require('../modules/Eventable');
 var extendConstructor = require('../utils/extendConstructor');
 var templatesEngine = require('../modules/templatesEngine');
+var meta = require('../modules/meta');
 
 var READY_MODIFICATOR = '__ready';
 var HIDDEN_MODIFICATOR = '__hide';
@@ -98,6 +99,7 @@ todoItemConstructorPrototype.setText = function (text) {
         var req = new XMLHttpRequest();
         req.open("PUT", "/todos/" + this.model.id);
         req.setRequestHeader("Content-Type", "application/json");
+        req.setRequestHeader(meta("_csrf_header"), meta("_csrf"));
         req.onreadystatechange = function () {
             if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
                 item.model = JSON.parse(req.responseText);
@@ -134,6 +136,7 @@ todoItemConstructorPrototype.setReady = function (ready) {
         var req = new XMLHttpRequest();
         req.open("PUT", "/todos/" + this.model.id);
         req.setRequestHeader("Content-Type", "application/json");
+        req.setRequestHeader(meta("_csrf_header"), meta("_csrf"));
         req.onreadystatechange = function () {
             if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
                 item.model = JSON.parse(req.responseText);
@@ -154,6 +157,7 @@ todoItemConstructorPrototype.remove = function () {
     var item = this;
     var req = new XMLHttpRequest();
     req.open("DELETE", "/todos/" + this.model.id);
+    req.setRequestHeader(meta("_csrf_header"), meta("_csrf"));
     req.onreadystatechange = function () {
         if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
             item._root.parentNode.removeChild(item._root);

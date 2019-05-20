@@ -1,6 +1,7 @@
 var Eventable = require('../modules/Eventable');
 var extendConstructor = require('../utils/extendConstructor');
 var papseItem = require('../modules/parseItem');
+var meta = require('../modules/meta');
 
 var TodoItem = require('../components/TodoItem');
 
@@ -58,6 +59,7 @@ todoListConstructorPrototype.createItem = function (data, onError) {
     var req = new XMLHttpRequest();
     req.open("POST", "/todos");
     req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader(meta("_csrf_header"), meta("_csrf"));
     req.onreadystatechange = function () {
         if (req.readyState === XMLHttpRequest.DONE) {
             if (req.status === 200) {
