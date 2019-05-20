@@ -11,3 +11,13 @@
     margin: 0 auto;
     padding: 0;
 }
+
+.todos-user {
+    font-size: 20px;
+    color: $c-todos-title;
+    margin-bottom: $offset;
+
+    .todos-user-logout {
+        display: inline-block;
+    }
+}

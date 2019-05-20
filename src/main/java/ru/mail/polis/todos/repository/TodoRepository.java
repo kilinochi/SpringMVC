@@ -1,5 +1,6 @@
 package ru.mail.polis.todos.repository;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import ru.mail.polis.todos.model.Todo;
 
@@ -13,25 +14,40 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class TodoRepository {
-
-    private final Map<Long, Todo> storage = new ConcurrentHashMap<>();
+    private final Map<String, Map<Long, Todo>> storage = new ConcurrentHashMap<>();
     private final AtomicLong counter = new AtomicLong();
 
     @PostConstruct
     private void fakeData() {
-        for (long i = 0; i < 3; i++) {
-            Todo todo = new Todo();
-            todo.setDescription("Test todo " + i);
-            save(todo);
+        final String[] users = {"user1", "user2"};
+        for (final String user : users) {
+            Map<Long, Todo> userStorage = new ConcurrentHashMap<>();
+            for (long i = 0; i < 3; i++) {
+                String description = "Test todo " + i + " for user " + user;
+                Todo todo = new Todo(counter.getAndIncrement(), description, i % 2 == 0);
+                userStorage.put(todo.getId(), todo);
+            }
+            storage.put(user, userStorage);
         }
     }
 
+    private Map<Long, Todo> getCurrentUserStorage() {
+        String name = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+        if (!storage.containsKey(name)) {
+            storage.put(name, new ConcurrentHashMap<>());
+        }
+        return storage.get(name);
+    }
+
     public Collection<Todo> findAll() {
-        return Collections.unmodifiableCollection(storage.values());
+        return Collections.unmodifiableCollection(getCurrentUserStorage().values());
     }
 
     public Optional<Todo> getById(Long id) {
-        return Optional.ofNullable(storage.get(id));
+        return Optional.ofNullable(getCurrentUserStorage().get(id));
     }
 
     public void save(Todo todo) {
@@ -41,10 +57,10 @@ public class TodoRepository {
         if (todo.isReady() == null) {
             todo.setReady(false);
         }
-        storage.put(todo.getId(), todo);
+        getCurrentUserStorage().put(todo.getId(), todo);
     }
 
     public void deleteById(Long id) {
-        storage.remove(id);
+        getCurrentUserStorage().remove(id);
     }
 }

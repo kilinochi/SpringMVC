@@ -5,6 +5,15 @@ public class Todo {
     private String description;
     private Boolean ready;
 
+    public Todo() {
+    }
+
+    public Todo(Long id, String description, Boolean ready) {
+        this.id = id;
+        this.description = description;
+        this.ready = ready;
+    }
+
     public Long getId() {
         return id;
     }
