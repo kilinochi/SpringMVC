@@ -1,6 +1,6 @@
 const token = getMeta("_csrf");
 const header = getMeta("_csrf_header");
-const badSigns = new Set(["@", "#", "-", "+ ", "$", "= ", "*", "^", "&", "%", "<", " >"]);
+const badSigns = new Set(["@", "#", "-", "+ ", "$", "=", "*", "^", "&", "%", "<", ">"]);
 
 function getMeta(metaName) {
     let metas = document.getElementsByTagName('meta');
@@ -31,10 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     };
+
     requestRead.open("GET", "http://localhost:8080/read", true);
     requestRead.setRequestHeader(header, token);
     requestRead.send(null);
-
 
     initialization();
 
@@ -92,10 +92,11 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let i = 0; i < s.length; i++) {
             if (badSigns.has(s.charAt(i))) {
                 s = s.split(s.charAt(i)).join('');
+                i--;
             }
         }
 
-        if(s.length > 50){
+        if (s.length > 50) {
             s = s.substring(0, 50);
         }
 
@@ -121,10 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 '<textarea readonly class="todos-list_item_text">' +
                 description +
                 '</textarea> </div> </div>';
-
-        /*console.log("MY_TEXT1 : " + text);
-        text = replaceBadSigns(text);
-        console.log("MY_TEXT2 : " + text);*/
 
         list.insertAdjacentHTML("beforeend", text);
 
@@ -182,10 +179,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 description = validation(description);
 
+                if(description.length === 0){
+                    alert("Введите не пустой элемент!");
+                    return;
+                }
                 let index = itemsChecked.length;
                 itemsChecked[index] = {description: description, mark: false, id: -1};
                 addItem(description, false);
-                redraw();
 
                 let formData = new FormData();
                 formData.append("description", description);
