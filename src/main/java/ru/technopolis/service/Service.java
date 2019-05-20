@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ru.technopolis.model.ToDo;
 import ru.technopolis.model.ToDoDAO;
 
 @Controller
@@ -57,6 +58,11 @@ public class Service {
             return ResponseEntity.status(403).build();
 
         }
+
+        if(!ToDo.isValid(description)){
+            return ResponseEntity.badRequest().build();
+        }
+
         return ResponseEntity.ok(dao.create(description, auth.getName()));
     }
 
@@ -66,6 +72,11 @@ public class Service {
         if (auth == null || auth.getName() == null) {
             return ResponseEntity.status(403).build();
         }
+
+        if(!ToDo.isValid(description)){
+            return ResponseEntity.badRequest().build();
+        }
+
         return dao.mode(id, description, auth.getName());
     }
 
