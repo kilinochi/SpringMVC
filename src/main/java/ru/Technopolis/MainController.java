@@ -16,6 +16,7 @@ import ru.Technopolis.model.ToDoDAO;
 
 @Controller
 public class MainController {
+    private static final ToDo EMPTY_TODO = new ToDo(0L, "", false, "");
     private ToDoDAO dao;
 
     @Autowired //Dependency Injection
@@ -38,7 +39,11 @@ public class MainController {
     @RequestMapping ( value = "/todos", method = RequestMethod.POST )
     public @ResponseBody
     ToDo createTodo(@RequestParam String description, Principal principal) throws SQLException {
-        return dao.create(description, principal.getName());
+        if (description.length() > 0 && description.length() <= 50) {
+            return dao.create(description, principal.getName());
+        } else {
+            return EMPTY_TODO;
+        }
     }
 
     @RequestMapping ( value = "/todos", method = RequestMethod.PUT)
@@ -48,6 +53,10 @@ public class MainController {
             @RequestParam String description,
             @RequestParam boolean completed,
             Principal principal) throws SQLException {
-        return dao.update(id, description, completed, principal.getName());
+        if (description.length() > 0 && description.length() <= 50) {
+            return dao.update(id, description, completed, principal.getName());
+        } else {
+            return EMPTY_TODO;
+        }
     }
 }

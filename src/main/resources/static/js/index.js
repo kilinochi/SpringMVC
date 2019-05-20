@@ -87,8 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
     AddComponent.prototype.useCurrentText = function () {
         var text = this._input.value.trim();
         if (text) {
-            this._input.value = '';
-            this.trigger('add', text);
+            if (text.length <= 50 ) {
+                this._input.value = '';
+                this.trigger('add', text);
+            } else {
+                alert("Длина текста = "+text.length+" - превышает допустимые 50 символов!");
+            }
         }
     };
 
@@ -314,7 +318,17 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             oldText.addEventListener('change', function (e) {
                 e.preventDefault();
-                sendUpdateAJAX(this.parentNode.parentNode.querySelector('.js-hidden-id').value, this.value, this.parentNode.parentNode.querySelector('.custom-checkbox_target').checked);
+                if (this.value.length > 0 && this.value.length <= 50) {
+                    sendUpdateAJAX(
+                    this.parentNode.parentNode.querySelector('.js-hidden-id').value,
+                    this.value,
+                    this.parentNode.parentNode.querySelector('.custom-checkbox_target').checked
+                    );
+                } else if (this.value.length > 50){
+                    alert("Длина текста = " + this.value.length + " - превышает допустимые 50 символов!");
+                } else {
+                    alert("Пустая строка не допустима");
+                }
             });
         }
     }
