@@ -57,8 +57,8 @@ function submitTextHandler(e) {
     e.preventDefault();
     var text = todos.readText();
     var reg = new RegExp('[//<>]');
-    if (text.length > 64 || text.match(reg) !== null){
-        alert('Длина заметки не более 64 символов.!');
+    if (text.length > 64 || text.match(reg) !== null || text.length <=0){
+        alert('Длина заметки не более 64 символов и не используйте /<>');
         return;
     }
     sendRequest('post', '/create',"description=" + encodeURIComponent(text),submitTextRequestHandler);
@@ -188,7 +188,12 @@ function btnClearCompletedHandler(e) {
  * @param {XMLHttpRequest}request
  */
 function submitTextRequestHandler(request) {
-    var json = JSON.parse(request.responseText);
+    var text = request.responseText;
+    if (text.length === 0){
+        alert('Длина заметки не более 64 символов и не используйте /<>');
+        return;
+    }
+    var json = JSON.parse(text);
     todos.addItem(json,removeHandler,checkHandler,textareaResizeHandler);
     toolbar.incrementCounter();
 }

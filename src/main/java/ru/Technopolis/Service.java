@@ -1,5 +1,8 @@
 package ru.Technopolis;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,12 @@ public class Service {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     String create(@RequestParam String description, Authentication auth) {
+        Pattern pattern = Pattern.compile("[//<>]");
+        Matcher matcher = pattern.matcher(description);
+        if (matcher.find() || description.length() <= 0 || description.length() > 64) {
+            System.out.println("YES");
+            return null;
+        }
         int id = dao.addDAO(description, auth.getName());
         return dao.getDAO(id, auth.getName()).toString();
     }
