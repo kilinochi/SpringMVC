@@ -38,7 +38,6 @@ public class Service {
         Pattern pattern = Pattern.compile("[//<>]");
         Matcher matcher = pattern.matcher(description);
         if (matcher.find() || description.length() <= 0 || description.length() > 64) {
-            System.out.println("YES");
             return null;
         }
         int id = dao.addDAO(description, auth.getName());
