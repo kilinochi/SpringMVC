@@ -2,9 +2,25 @@ var all = 4;
 var completed = 1;
 var mode = 'all';
 
+const token = getMeta("_csrf");
+const header = getMeta("_csrf_header");
+
+function getMeta(metaName) {
+    const metas = document.getElementsByTagName('meta');
+
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            return metas[i].getAttribute('content');
+        }
+    }
+
+    return '';
+}
+
 function removeNode(item) {
     var request = new XMLHttpRequest();
     request.open('DELETE', '/delete?id=' + item.id, true);
+    request.setRequestHeader(header, token);
     request.addEventListener('readystatechange', function () {
         if ((request.readyState === 4) && (request.status === 200)) {
             item.parentNode.removeChild(item);
@@ -97,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (text.length !== 0) {
             var request = new XMLHttpRequest();
             request.open('POST', '/create', true);
+            request.setRequestHeader(header, token);
             request.addEventListener('readystatechange', function () {
                 if ((request.readyState === 4) && (request.status === 200)) {
                     add(text, request.responseText);
@@ -116,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function editText(item, description) {
     var request = new XMLHttpRequest();
     request.open('POST', '/update', true);
+    request.setRequestHeader(header, token);
     request.addEventListener('readystatechange', function () {
         if ((request.readyState === 4) && (request.status === 200)) {
             console.log(request.responseText);

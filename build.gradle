@@ -15,7 +15,7 @@ apply plugin: 'io.spring.dependency-management'
 
 bootJar {
     baseName = 'gs-serving-web-content'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {
@@ -29,5 +29,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-starter-security")
     testCompile("junit:junit")
 }
