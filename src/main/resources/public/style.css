@@ -47,10 +47,33 @@ ul {
     background-color: black;
     color: white;
     }
+
 .todo-creator_button:hover {
     background-color: lightblue;
     }
+
 .todo-creator_button:active {
+    background-color: dodgerblue;
+    }
+
+.btn_logout {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    }
+
+input[value="Sign Out"] {
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    }
+
+input[value="Sign Out"]:hover {
+    background-color: lightblue;
+    }
+
+input[value="Sign Out"]:active {
     background-color: dodgerblue;
     }
 
@@ -109,9 +132,11 @@ ul {
     background-color: black;
     color: white;
     }
+
 .todo-list-item_delete:hover {
     background-color: lightblue;
     }
+
 .todo-list-item_delete:active {
     background-color: dodgerblue;
     }
@@ -136,6 +161,7 @@ ul {
 .filter-button:hover {
     background-color: lightblue;
     }
+
 .filter-button:active {
     background-color: dodgerblue;
     }
