@@ -29,24 +29,38 @@ public class Service {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    String create(@RequestParam String description) {
-        return String.valueOf(dao.create(description).getId());
+    ResponseEntity<String> create(@RequestParam String description) {
+        if (description == null || description.trim().length() == 0 || description.length() > 100)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(String.valueOf(dao.create(description).getId()));
     }
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
-    public ToDo[] read() {
-        return dao.getList();
+    public @ResponseBody
+    ResponseEntity<ToDo[]> read() {
+        return ResponseEntity.ok(dao.getList());
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ToDo update(@RequestParam String id, String description, @RequestParam boolean checked) {
-        return dao.update(Long.parseLong(id), description, checked);
+    public @ResponseBody
+    ResponseEntity<ToDo> update(@RequestParam String id, String description, @RequestParam boolean checked) {
+        if (description != null && (description.trim().length() == 0 || description.length() > 100
+                || id == null))
+            return ResponseEntity.badRequest().build();
+        ToDo toDo = dao.update(Long.parseLong(id), description, checked);
+        if (toDo == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(toDo);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public @ResponseBody
     ResponseEntity<Void> delete(@RequestParam String id) {
+        if (id == null || id.length() == 0)
+            return ResponseEntity.badRequest().build();
         ToDo toDo = dao.delete(Long.parseLong(id));
+        if (toDo == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok().build();
     }
 }
