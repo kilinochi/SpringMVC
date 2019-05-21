@@ -52,6 +52,10 @@ function sendPostRequest(path, args, handlerMethod) {
     };
 
     request.open("POST", path, true);
+
+    var token = document.querySelector("meta[name='_csrf']").getAttribute('content');
+    var header = document.querySelector("meta[name='_csrf_header']").getAttribute('content');
+    request.setRequestHeader(header, token);
     // request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
     request.send(args);
 }
