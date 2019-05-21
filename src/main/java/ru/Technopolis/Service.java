@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ui.Model;
 import ru.Technopolis.model.ToDo;
 import ru.Technopolis.model.ToDoDAO;
-
+import org.springframework.security.core.Authentication;
 
 @Controller
 public class Service {
 
     private ToDoDAO dao;
-
-
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -30,34 +28,33 @@ public class Service {
         this.dao = dao;
     }
 
-    @RequestMapping( value = "/create", method = RequestMethod.GET)
+    @RequestMapping( value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     ToDo create(@RequestParam String desc){
         return dao.create(desc);
     }
 
-    @RequestMapping( value = "/update", method = RequestMethod.GET)
+    @RequestMapping( value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     ToDo update(@RequestParam Long id,Boolean hidden){
         return dao.update(id,hidden);
     }
 
-    @RequestMapping( value = "/name", method = RequestMethod.GET)
+    @RequestMapping( value = "/name", method = RequestMethod.POST)
     public @ResponseBody
     ToDo read(@RequestParam Long id){
         return dao.get(id);
     }
 
-    @RequestMapping( value = "/delete", method = RequestMethod.GET)
+    @RequestMapping( value = "/delete", method = RequestMethod.POST)
     public @ResponseBody
     ToDo delet(@RequestParam Long id){
         return dao.delete(id);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     public @ResponseBody
     Collection<ToDo> getToDoList() {
         return dao.getToDoList();
     }
-
 }

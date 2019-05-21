@@ -1,3 +1,6 @@
+var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute('content');
+var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute('content');
+
 function CreateRequest() {
     var Request = false;
     if (window.XMLHttpRequest) Request = new XMLHttpRequest();
@@ -17,10 +20,17 @@ function SendRequest(r_method, r_path, r_args, r_handler) {
     {
         if (Request.readyState == 4) r_handler(Request);
     }
-    if (r_method.toLowerCase() == "get" && r_args.length > 0) r_path += "?" + r_args;
-    Request.open(r_method, r_path, true);
-    if (r_method.toLowerCase() == "post")
+    if (r_method.toLowerCase() == "get" ) {
+        r_path += "?" + r_args.toString();
+        console.log("GET :",r_path);
+        Request.open(r_method, r_path, true);
+        Request.send(null);
+    }
+    else if (r_method.toLowerCase() == "post" )
     {
+        console.log("POST :",r_args);
+        Request.open(r_method, r_path, true);
+        Request.setRequestHeader(csrfHeader,csrfToken);
         Request.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
         Request.send(r_args);
     }
@@ -28,7 +38,7 @@ function SendRequest(r_method, r_path, r_args, r_handler) {
 }
 
 function ListProd() {
-    SendRequest("GET","/list", "",ListRequest);
+    SendRequest("POST","/list", "",ListRequest);
 }
 
 function ListRequest(request) {
@@ -40,10 +50,8 @@ function DeleteProd(id){
     console.log("Delete Prod %d",id);
     var resultActionUser = confirm("Delete Product "+desc.title+"?");
     if (!resultActionUser) return;
-    var data = new FormData();
-    data.append("id", id);
-    id="id="+id;
-    SendRequest("GET","/delete",id,DeleteRequest);
+    id="id="+encodeURIComponent(id);
+    SendRequest("POST","/delete",id,DeleteRequest);
 }
 
 function DeleteRequest(request) {
@@ -55,8 +63,8 @@ function DeleteRequest(request) {
 
 function GetProd(id) {
     console.log("GetProd %s", id);
-    id="id="+id;
-    SendRequest("GET","/name",id,GetRequest);
+    id="id="+encodeURIComponent(id);
+    SendRequest("POST","/name",id,GetRequest);
 }
 
 function GetRequest(request) {
@@ -72,16 +80,16 @@ function CreateProd() {
     if (str.trim() === "") {alert("Task text is empty!");return;}
     nodes.value = "";
     console.log("Create %s", str);
-    str="desc="+str;
-    SendRequest("GET","/create",str, DefRequest);
+    str="desc="+encodeURIComponent(str);
+    SendRequest("POST","/create",str, DefRequest);
     location.reload ();
 }
 function UpdateProd(id) {
     var elem = document.getElementById(id).querySelector('.custom-checkbox_target_t');
     var hidden = elem.checked;
-    var query="id="+id+"&hidden="+hidden;
+    var query="id="+encodeURIComponent(id)+"&hidden="+encodeURIComponent(hidden);
     console.log("UpdateProd "+query);
-    SendRequest("GET","/update",query,DefRequest);
+    SendRequest("POST","/update",query,DefRequest);
 }
 
 function UpdateRequest(request) {

@@ -10,10 +10,7 @@ public class ToDo {
         this.description = description;
         this.hidden = hidden;
     }
-
     public long getId() { return id; }
-
     public String getDescription() { return description; }
-
     public boolean getHidden(){ return hidden;}
 }
