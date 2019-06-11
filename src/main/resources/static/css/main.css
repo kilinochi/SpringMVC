@@ -1,0 +1,194 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    background-color: #eee;
+}
+h1 {
+    font-size: 90px;
+    font-weight: 100;
+    color: #EBD7D7;
+    text-align: center;
+    margin: 0.1em 0;
+}
+
+
+.todo {
+    max-width: 560px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.todo_form  {
+    border-bottom: 1px solid #E6E6E6;
+    display: flex;
+}
+.wrong_highlight {
+    border: 1px solid red;
+}
+
+.todo_form_arrow {
+    margin: auto;
+    width: 11%;
+    height: 16px;
+    background: url("../images/select-all@2x.png") no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+}
+.todo_form_input {
+    font: inherit;
+    font-weight: 100;
+    font-style: italic;
+    font-size: 26px;
+    display: block;
+    width: 89%;
+    border: none;
+    outline: none;
+    padding: 0.5em 0.5em 0.5em 0.01em;
+}
+
+
+.todo_list {
+    font-family: 'Work Sans', sans-serif;
+    margin-bottom: 60px;
+}
+
+
+.todo_list_item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #E6E6E6;
+    font-size: 26px;
+    font-weight: 300;
+    padding: 13px;
+    cursor: pointer;
+}
+.todo_list_item__completed .todo_list_item_name {
+    text-decoration: line-through;
+}
+.todo_list_item_name {
+    margin-left: 13px;
+    flex-grow: 1;
+    font: inherit;
+    border: none;
+    outline: none;
+}
+.todo_list_item_remove {
+    width: 16px;
+    height: 16px;
+    background: url(../images/close.png) no-repeat center / contain;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+.todo_list_item_remove:hover {
+    opacity: 1!important;
+}
+.todo_list_item:hover .todo_list_item_remove {
+    opacity: 0.2;
+}
+.todo_toolbar {
+    border-top: 1px solid #E6E6E6;
+    font-family: 'Work Sans', sans-serif;
+    display: flex;
+    padding: 0.8em;
+    font-size: 15px;
+}
+.todo_toolbar_buttons {
+    display: inherit;
+    padding: 0.25em;
+    text-align: center;
+}
+.todo_toolbar_buttons_item {
+    padding: 0.3em;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.todo_toolbar_buttons_item:hover {
+    border: 1px solid #EBDFDF;
+}
+.todo_toolbar_buttons_item.active {
+    border-color: #61C3B1;
+}
+.todo_toolbar_completed {
+    margin-left: auto;
+    padding: 0.25em;
+}
+.todo_toolbar_count {
+    margin-right: auto;
+    padding: 0.25em;
+    display: flex;
+    align-items: center;
+}
+.todo::before,
+.todo::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    background-color: #ffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.todo::before {
+    left: 8px;
+    right: 8px;
+    height: 8px;
+    z-index: -2;
+}
+.todo::after {
+    left: 4px;
+    right: 4px;
+    height: 4px;
+    z-index: -1;
+}
+.checkbox_input {
+    position: fixed;
+    top: -99999px;
+    left: -99999px;
+    opacity: 0;
+    z-index: -20;
+}
+.checkbox_input + label {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: block;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.checkbox_input + label::before,
+.checkbox_input + label::after {
+    content: "";
+    position: absolute;
+    display: block;
+    transition: all 0.2s ease;
+}
+.checkbox_input + label::before {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    border: 1px solid #E8E8E8;
+}
+.checkbox_input + label::after {
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    background: url(../images/completed.png) no-repeat center / contain;
+    opacity: 0;
+}
+.checkbox_input:checked + label::before {
+    border-color: #61C3B1;
+}
+.checkbox_input:checked + label::after {
+    opacity: 1;
+}

@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://ww.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" media="all">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,400&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,100i,300,400&amp;subset=cyrillic"
+          rel="stylesheet">
+    <link href="css/main.css" media="all" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title>TodoList</title>
 </head>
-<body>
-<p>Hello, world</p>
-</body>
-</html>-
+<div id="#app">
+    <body>
+    <div class="container">
+        <h1>todos</h1>
+
+        <form th:action = "@{/logout}" method="post" class="logout-form">
+            <input type="submit" value="Sign Out">
+        </form>
+
+        <div class="todo" id="todo_list">
+            <form class="todo_form" id="todo-add-form" @submit.prevent="postData">
+                <div class="todo_form_arrow" id="todo-all-done"></div>
+                <input v-model="inputValue" type="text" placeholder="What needs to be done?" class="todo_form_input"  minlength="1" maxlength="40">
+            </form>
+            <div class="todo_list_wrapper" id="todo-wrapper" >
+                <ul class="todo_list" id="todo-list" th:if="${DAO_DATA != null && DAO_DATA.length > 0}">
+                    <li class="todo_list_item" th:each="item : ${DAO_DATA}">
+                        <input class="todo_list_item_name" data-server-rendered="true" th:value="${item.getDescription()}"/>
+                        <div class="todo_list_item_remove"></div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="todo_toolbar">
+                <div class="todo_toolbar_count" id="todo-count"></div>
+                <div class="todo_toolbar_buttons" id="filter-btn"></div>
+                <div class="todo_toolbar_completed">
+                    <div class="todo_toolbar_buttons_item" id="clear-completed">Clear completed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline = "javascript" type="text/javascript">
+        /*<![CDATA[*/
+
+        window.__TODOS_DATA = [[${DAO_DATA}]]
+
+        /*]]>*/
+    </script>
+
+    <script
+            type="text/javascript" th:src="@{/javascript/main.js}" async>
+    </script>
+    </body>
+</div>
+</html>
